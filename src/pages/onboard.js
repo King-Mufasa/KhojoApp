@@ -1,16 +1,23 @@
 import React, { Fragment } from 'react';
-import { IntroSlider } from '@pspatel/react-native-app-intro';
+import { IntroSlider } from '../module/IntroSlider';
 import Images from '../styles/images';
 import { KButton } from '../components/KButton';
-import { Platform } from 'react-native';
+import { Platform,StatusBar } from 'react-native';
 import Color from '../styles/color';
+import PhoneInput from '../components/phoneinput';
+import GeneralStatusBarColor from '../styles/statusbar';
+import SkipButton from '../components/skipbutton';
 
 const OnBoardingScreen = () => {
     return (
         <Fragment>
+            <GeneralStatusBarColor/>
+            <SkipButton />
             <IntroSlider
                 showPagination
                 buttonProps={{
+                    activeDotColor:Color.primary,
+                    renderNextButton: false,
                     showSkipButton: true,
                     onDonePress: () => {
                         alert('Done Pressed');
@@ -19,34 +26,36 @@ const OnBoardingScreen = () => {
                 paginationProps={{
                     animationType: 'expanding',
                     dotSpacing: 8,
-                  }}>
+                }}>
                 <IntroSlider.Page
-                    title={'A Personal Computer'}
+                    title={'Your Online Pharmacy'}
                     image={Images.Board1}
                     containerStyle={{ backgroundColor: Color.white }}
                     description={
-                        'Computer Science is no more about computers than astronomy is about the telescopes ...'
+                        'Welcome to your All in One Pharmacy, you can buy medicines, Helathcare Products and more here.'
                     }
                 />
                 <IntroSlider.Page
-                    title={'A Smartphone'}
+                    title={'Upload Prescription to Order'}
                     image={Images.Board2}
                     containerStyle={{ backgroundColor: Color.white }}
                     description={
-                        'Mobile phone usage is on the rise and smartphone lovers are on a constant hunt to buy the best smartphone at a reasonable price'
+                        'Upload the Image of Valid Prescription of your Doctor & Order Medicines at your fingertips.'
                     }
                 />
                 <IntroSlider.Page
-                    title={'A Smart watch'}
+                    title={'Consult & Appoint with Doctors'}
                     image={Images.Board3}
                     containerStyle={{ backgroundColor: Color.white }}
                     description={
-                        'A watch has become so much more than something to tell time. With smart watches ...'
+                        'Any Health Related Issues? Consult with TOp Rated Doctors ONline or Schedule Consultation according to your time.'
                     }
                 />
             </IntroSlider>
+            <PhoneInput/>
             
         </Fragment>
+
     )
 }
 

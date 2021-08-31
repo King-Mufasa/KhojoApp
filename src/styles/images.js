@@ -4,6 +4,8 @@ const Images = {
     Board3:require('../assets/image/onboard_3.png'),
     otp1:require('../assets/image/otp1.png'),
     otp2:require('../assets/image/otp2.png'),
+    check:require('../assets/image/check.png'),
+    flag:require('../assets/image/flag.png')
 }
 
 

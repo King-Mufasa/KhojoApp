@@ -25,6 +25,7 @@
  } from 'react-native/Libraries/NewAppScreen';
  import { IntroSlider } from "@pspatel/react-native-app-intro";
  import OnBoardingScreen from './pages/onboard';
+
  const Screen = ({ title }) => {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -39,7 +40,7 @@
    }, []);
  
    return (
-    <OnBoardingScreen />
+       <OnBoardingScreen />
    );
  };
  
