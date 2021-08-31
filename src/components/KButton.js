@@ -6,7 +6,7 @@ import Color from '../styles/color'
 const KButton = (props) => {
     return (
         <TouchableHighlight
-            style={styles.button}
+            style={[styles.button,props.style]}
             onPress={(props.click)}
             underlayColor={Color.white}>
             <Text style={styles.submitText}>{props.name}</Text>

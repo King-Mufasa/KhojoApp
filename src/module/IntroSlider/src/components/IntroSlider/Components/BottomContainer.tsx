@@ -76,7 +76,7 @@ export const BottomContainer = (props: Props) => {
         renderPagination={renderPagination}
         {...paginationProps}
       />
-      <If condition={Boolean(renderNextButton)}>
+      {/* <If condition={Boolean(renderNextButton)}>
         {renderNextButton &&
           renderNextButton({
             activeIndex,
@@ -93,7 +93,7 @@ export const BottomContainer = (props: Props) => {
           titleStyle={nextTextStyle}
           onPress={onNextPress}
         />
-      </If>
+      </If> */}
     </View>
   );
 };

@@ -8,11 +8,11 @@ import PhoneInput from '../components/phoneinput';
 import GeneralStatusBarColor from '../styles/statusbar';
 import SkipButton from '../components/skipbutton';
 
-const OnBoardingScreen = () => {
+const OnBoardingScreen = (props) => {
     return (
         <Fragment>
             <GeneralStatusBarColor/>
-            <SkipButton />
+            <SkipButton click={props.skip}/>
             <IntroSlider
                 showPagination
                 buttonProps={{

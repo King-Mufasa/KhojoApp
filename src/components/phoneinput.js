@@ -5,12 +5,12 @@ import { SafeAreaView, StyleSheet, TextInput, Image, Text } from "react-native";
 const PhoneInput = (props) => {
     return (
         <SafeAreaView style={styles.base}><Text style={[styles.welcome,{textAlign:props.align}]}>Welcome to Medigo</Text>
-            <Text style={styles.description}>Enter your Mobile Number and Verify OTP sent to your Mobile</Text>
+            <Text style={[styles.description,{textAlign:props.align}]}>Enter your Mobile Number and Verify OTP sent to your Mobile</Text>
             <SafeAreaView style={styles.container}>
-
                 <Image style={styles.flag} source={Images.flag} />
                 <Text style={styles.baseText}>+ 91</Text>
                 <TextInput
+                    editable={props.editable}
                     style={styles.input}
                     placeholder="Input your phone number"
                     keyboardType="numeric"
@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
     },
     image: {
         margin: 10
-    }
+    },
+
 })
 export default PhoneInput

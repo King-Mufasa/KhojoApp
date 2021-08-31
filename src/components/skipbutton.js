@@ -4,11 +4,11 @@ import Images from '../styles/images';
 import { SafeAreaView, StyleSheet, TextInput, Image, Text } from "react-native";
 import KButton from './KButton';
 
-const SkipButton = () => {
+const SkipButton = (props) => {
     return (
         <SafeAreaView style={styles.container}>
             <SafeAreaView style={styles.subcontainer}>
-                <Text style={styles.skip}>Skip</Text>
+                <Text style={[styles.skip,{display:props.show}]} onPress={props.click}>Skip</Text>
             </SafeAreaView>
         </SafeAreaView>
     )
