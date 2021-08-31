@@ -2,16 +2,21 @@ import React from 'react'
 import Color from '../styles/color'
 import Images from '../styles/images';
 import { SafeAreaView, StyleSheet, TextInput, Image, Text } from "react-native";
+import { screenHeight, screenWidth } from '../module/IntroSlider/src/themes';
+import Fontsize from '../styles/fontsize';
 const PhoneInput = (props) => {
     return (
-        <SafeAreaView style={styles.base}><Text style={[styles.welcome,{textAlign:props.align}]}>Welcome to Medigo</Text>
-            <Text style={[styles.description,{textAlign:props.align}]}>Enter your Mobile Number and Verify OTP sent to your Mobile</Text>
+        <SafeAreaView style={styles.base}>
+            <SafeAreaView style={styles.title}>
+                <Text style={[styles.welcome, Fontsize.small, { textAlign: props.align }]}>Welcome to Medigo</Text>
+                <Text style={[styles.description, { textAlign: props.align }, Fontsize.mini]}>Enter your Mobile Number and Verify OTP sent to your Mobile</Text>
+            </SafeAreaView>
             <SafeAreaView style={styles.container}>
                 <Image style={styles.flag} source={Images.flag} />
-                <Text style={styles.baseText}>+ 91</Text>
+                <Text style={[styles.baseText, Fontsize.small]}>+ 91</Text>
                 <TextInput
                     editable={props.editable}
-                    style={styles.input}
+                    style={[styles.input, Fontsize.small]}
                     placeholder="Input your phone number"
                     keyboardType="numeric"
                     maxLength={10}
@@ -24,17 +29,21 @@ const PhoneInput = (props) => {
 
 
 const styles = StyleSheet.create({
-    base:{
-        padding:20
+    base: {
+        height: screenHeight * 0.25,
+        padding: 20
+    },
+    title: {
+        width: screenWidth * 0.85
     },
     welcome: {
         fontWeight: "bold",
         fontSize: 18,
     },
     description: {
-        marginTop:5,
+        marginTop: 5,
         fontSize: 15,
-        color:Color.lightdark
+        color: Color.lightdark
     },
     container: {
         flexDirection: "row",
@@ -44,7 +53,7 @@ const styles = StyleSheet.create({
         borderColor: Color.lightgrey,
         borderWidth: 1,
         marginBottom: 30,
-        marginTop:20,
+        marginTop: 10,
         alignItems: 'center',
         justifyContent: 'center'
 

@@ -11,6 +11,7 @@ import CheckBox from '@react-native-community/checkbox';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import KButton from '../components/KButton';
 import { BackgroundImage } from 'react-native-elements/dist/config';
+import Fontsize from '../styles/fontsize';
 const setSelection = () => {
     alert("CHCK");
 }
@@ -49,7 +50,7 @@ class SendOtp extends Component<Props, State>{
                 </SafeAreaView>
                 <KButton click={setSelection} style={styles.send} name="Send OTP" />
                 <SafeAreaView style={styles.change}>
-                    <Text style={styles.label} onPress={
+                    <Text style={[styles.label,Fontsize.mini]} onPress={
                         ()=>{
                             this.setState({
                                 editable:true,
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
         resizeMode: "contain",
         width: screenWidth * 0.3,
         height: screenWidth * 0.3,
-        marginTop: screenHeight * 0.25
+        marginTop: screenHeight * 0.2
     },
     agree: {
         width: screenWidth * 0.85,

@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { If } from "../../index";
 import { Colors, normalize, screenHeight, screenWidth } from "../../../themes";
-
+import Fontsize from '../../../../../../styles/fontsize';
 interface PageProps {
   title: string;
   image: ImageSourcePropType;
@@ -37,9 +37,9 @@ export const Page = (props: PageProps) => {
     <View style={[styles.container, containerStyle]}>
       
       <Image source={image} style={[styles.image, imageStyle]} />
-      <Text style={[styles.title, titleStyle]}>{title}</Text>
+      <Text style={[styles.title, titleStyle,Fontsize.small]}>{title}</Text>
       <If condition={Boolean(description)}>
-        <Text style={[styles.description, descriptionStyle]}>
+        <Text style={[styles.description, descriptionStyle,Fontsize.mini]}>
           {description}
         </Text>
       </If>
@@ -50,7 +50,10 @@ export const Page = (props: PageProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignSelf: "center",
     justifyContent: "center",
+    width:screenWidth*0.8,
+
   },
   title: {
     color:Colors.primary,
@@ -61,7 +64,7 @@ const styles = StyleSheet.create({
   image: {
     alignSelf: "center",
     resizeMode: "contain",
-    width:screenWidth * 0.6,
+    width:screenWidth * 0.5,
     height:screenHeight * 0.4
   },
   description: {

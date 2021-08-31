@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
         resizeMode: "contain",
         width: screenWidth * 0.3,
         height: screenWidth * 0.3,
-        marginTop: screenHeight * 0.25
+        marginTop: screenHeight * 0.2
     },
     agree: {
         width: screenWidth * 0.85,

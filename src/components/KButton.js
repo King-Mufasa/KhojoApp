@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableHighlight, Text, StyleSheet } from 'react-native'
 import Color from '../styles/color'
-
+import Fontsize from '../styles/fontsize';
 
 const KButton = (props) => {
     return (
@@ -9,7 +9,7 @@ const KButton = (props) => {
             style={[styles.button,props.style]}
             onPress={(props.click)}
             underlayColor={Color.white}>
-            <Text style={styles.submitText}>{props.name}</Text>
+            <Text style={[styles.submitText,Fontsize.small]}>{props.name}</Text>
         </TouchableHighlight>
     );
 }
