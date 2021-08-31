@@ -31,6 +31,7 @@ class SendOtp extends Component<Props, State>{
         };
     }
     render() {
+        const {navigate} = this.props.navigation;
         return (
             <SafeAreaView style={styles.container}>
                 <GeneralStatusBarColor />
@@ -48,7 +49,7 @@ class SendOtp extends Component<Props, State>{
                         tintColors={{true: Color.primary}}
                     /><Text style={styles.label}>I agree to Terms & Conditions.</Text>
                 </SafeAreaView>
-                <KButton click={setSelection} style={styles.send} name="Send OTP" />
+                <KButton  style={styles.send} name="Send OTP" click={()=>navigate("VerifyOtp")}/>
                 <SafeAreaView style={styles.change}>
                     <Text style={[styles.label,Fontsize.mini]} onPress={
                         ()=>{
@@ -65,14 +66,15 @@ class SendOtp extends Component<Props, State>{
 
 const styles = StyleSheet.create({
     container: {
+        flex:1,
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+        backgroundColor:Color.white
     },
     icon: {
         resizeMode: "contain",
         width: screenWidth * 0.3,
         height: screenWidth * 0.3,
-        marginTop: screenHeight * 0.2
     },
     agree: {
         width: screenWidth * 0.85,

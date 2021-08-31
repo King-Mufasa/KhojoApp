@@ -34,7 +34,7 @@ export const Page = (props: PageProps) => {
     descriptionStyle,
   } = props;
   return (
-    <View style={[styles.container, containerStyle]}>
+    <View style={[styles.container]}>
       
       <Image source={image} style={[styles.image, imageStyle]} />
       <Text style={[styles.title, titleStyle,Fontsize.small]}>{title}</Text>
@@ -52,8 +52,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: "center",
     justifyContent: "center",
-    width:screenWidth*0.8,
-
+    backgroundColor:Colors.white,
   },
   title: {
     color:Colors.primary,

@@ -12,9 +12,7 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 import KButton from '../components/KButton';
 import { BackgroundImage } from 'react-native-elements/dist/config';
 import { color } from 'react-native-elements/dist/helpers';
-const setSelection = () => {
-    alert("CHCK");
-}
+
 
 type Props = {};
 type State = {
@@ -46,6 +44,7 @@ class VerifyOtp extends Component<Props, State>{
         };
     }
     render() {
+        const {navigate} = this.props.navigation;
         return (
             <SafeAreaView style={styles.container}>
                 <GeneralStatusBarColor />
@@ -60,7 +59,7 @@ class VerifyOtp extends Component<Props, State>{
                     <OtpInput focus={true} /><OtpInput /><OtpInput /><OtpInput />
                 </SafeAreaView>
 
-                <KButton click={setSelection} style={styles.send} name="Verify OTP" />
+                <KButton style={styles.send} name="Verify OTP" />
                 <SafeAreaView style={styles.change}>
                     <Text style={styles.label}>Didnt's Receive a OTP?</Text>
                     <Text style={{ color: Color.primary }} onPress={
@@ -79,13 +78,14 @@ class VerifyOtp extends Component<Props, State>{
 const styles = StyleSheet.create({
     container: {
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+        flex:1,
+        backgroundColor:Color.white
     },
     icon: {
         resizeMode: "contain",
         width: screenWidth * 0.3,
         height: screenWidth * 0.3,
-        marginTop: screenHeight * 0.2
     },
     agree: {
         width: screenWidth * 0.85,
@@ -128,9 +128,6 @@ const styles = StyleSheet.create({
     input: {
         fontSize: 30,
     }
-
-
-
 })
 
 export default VerifyOtp

@@ -31,7 +31,8 @@ const PhoneInput = (props) => {
 const styles = StyleSheet.create({
     base: {
         height: screenHeight * 0.25,
-        padding: 20
+        padding: 20,
+        backgroundColor:Color.white
     },
     title: {
         width: screenWidth * 0.85

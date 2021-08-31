@@ -7,7 +7,8 @@ const colors = {
 	danger: "#FB4659",
 	white:"#FFFFFF",
 	lightdark:"#8F8F8F",
-	lightgrey:"#EDDEEE"
+	lightgrey:"#EDDEEE",
+	lightblue:"#E6FCFC",
 }
 
 export default colors;
