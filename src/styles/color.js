@@ -5,6 +5,7 @@ const colors = {
 	review: "#388E3C",
 	success: "#2BB673",
 	danger: "#FB4659",
+	white:"#FFFFFF"
 }
 
 export default colors;
