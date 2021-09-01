@@ -8,20 +8,7 @@ import Fontsize from '../styles/fontsize';
 
 
 class Rating extends React.Component {
-    // state = {
-    //     backgroud: Color.success
-    // }
-    // constructor(){
-    //     if(this.props.rating<4){
-    //         this.setState({backgroud:Color.warning})
-    //     }
-    //     else if(this.props.rating<3){
-    //         this.setState({backgroud:Color.danger})
-    //     }
-    //     else if(this.props.rating>=4){
-    //         this.setState({backgroud:Color.success})
-    //     }
-    // }
+
     render() {
         return (
             <SafeAreaView style={styles.container}>
