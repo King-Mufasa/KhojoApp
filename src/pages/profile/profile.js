@@ -1,11 +1,12 @@
 import React from 'react'
-import { SafeAreaView, Image, StyleSheet, Text, View, SectionList, ScrollView } from 'react-native'
+import { SafeAreaView, Image, StyleSheet, Text, View, SectionList, TouchableHighlight } from 'react-native'
 import Colors from '../../styles/color'
 import Fontsize from '../../styles/fontsize'
 import BadgeButton from '../../components/badgebtn'
 import { screenWidth } from '../../module/IntroSlider/src/themes'
 import { Divider, } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
+
 class ProfileHeader extends React.Component {
     render() {
         const navigate = this.props.nav
@@ -18,27 +19,6 @@ class ProfileHeader extends React.Component {
                 </View>
                 <BadgeButton style={styles.edit} name="Edit" click={()=>navigate("EditProfile")} />
             </View>
-        )
-    }
-}
-
-class MyAccount extends React.Component {
-    render() {
-        return (
-            <SafeAreaView>
-
-            </SafeAreaView>
-        )
-    }
-}
-
-
-class More extends React.Component {
-    render() {
-        return (
-            <SafeAreaView>
-
-            </SafeAreaView>
         )
     }
 }
@@ -58,8 +38,8 @@ class Profile extends React.Component {
                     sections={[
                         {
                             title: 'My Account', data: [
-                                { icon: "first-order", label: 'My Order' }
-                                , { icon: "address-book", label: 'Manage Address' }
+                                { icon: "first-order", label: 'My Order', key:"order" }
+                                , { icon: "address-book", label: 'Manage Address', key:"ManageAddress" }
                                 , { icon: "heart", label: 'Wishlist' }
                                 , { icon: "flask", label: 'My Lab Tests' }
                                 , { icon: "credit-card-alt", label: 'Payment Methods' }
@@ -74,7 +54,7 @@ class Profile extends React.Component {
                             ]
                         },
                     ]}
-                    renderItem={({ item }) => <SafeAreaView style={styles.listitem}><Icon name={item.icon} size={25} style={styles.icon} /><Text style={styles.item}>{item.label}</Text></SafeAreaView>}
+                    renderItem={({ item }) => <TouchableHighlight style={styles.listbutton} activeOpacity={0.6} underlayColor="#DDDDDD" onPress={()=> navigate(item.key)}><SafeAreaView style={styles.listitem}><Icon name={item.icon} size={25} style={styles.icon} /><Text style={styles.item}>{item.label}</Text></SafeAreaView></TouchableHighlight>}
                     renderSectionHeader={({ section }) => <Text style={[styles.sectionHeader, Fontsize.small]}>{section.title}</Text>}
                     keyExtractor={(item, index) => index}
                 />
@@ -129,6 +109,9 @@ const styles = StyleSheet.create({
     listitem: {
         flexDirection: "row",
         alignItems: "center",
+        
+    },
+    listbutton:{
         padding: 10,
         borderRadius: 10,
         backgroundColor: Colors.white,

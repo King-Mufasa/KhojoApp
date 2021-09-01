@@ -16,8 +16,6 @@ const KButton = (props) => {
 
 const styles = StyleSheet.create({
     button: {
-        marginRight: 40,
-        marginLeft: 40,
         marginTop: 10,
     },
     submitText: {

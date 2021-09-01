@@ -16,6 +16,7 @@ import VerifyOtp from './pages/verifyotp';
 
 import MyProfile from './pages/profile/profile';
 import EditProfile from './pages/profile/editprofile';
+import ManageAddress from './pages/profile/manageaddress';
 const Onboard = createStackNavigator(
   {
     OnBoard: {
@@ -52,6 +53,9 @@ const Profile = createStackNavigator(
     },
     EditProfile: {
       screen: EditProfile
+    },
+    ManageAddress: {
+      screen: ManageAddress
     }
   }
 )
