@@ -10,9 +10,6 @@ import { screenHeight, screenWidth } from '../module/IntroSlider/src/themes';
 import CheckBox from '@react-native-community/checkbox';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import KButton from '../components/KButton';
-import { BackgroundImage } from 'react-native-elements/dist/config';
-import { color } from 'react-native-elements/dist/helpers';
-
 
 type Props = {};
 type State = {
@@ -59,7 +56,7 @@ class VerifyOtp extends Component<Props, State>{
                     <OtpInput focus={true} /><OtpInput /><OtpInput /><OtpInput />
                 </SafeAreaView>
 
-                <KButton style={styles.send} name="Verify OTP" />
+                <KButton style={styles.send} name="Verify OTP" click={()=>navigate("MyProfile")}/>
                 <SafeAreaView style={styles.change}>
                     <Text style={styles.label}>Didnt's Receive a OTP?</Text>
                     <Text style={{ color: Color.primary }} onPress={

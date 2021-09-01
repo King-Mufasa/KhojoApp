@@ -10,7 +10,6 @@ import { screenHeight, screenWidth } from '../module/IntroSlider/src/themes';
 import CheckBox from '@react-native-community/checkbox';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import KButton from '../components/KButton';
-import { BackgroundImage } from 'react-native-elements/dist/config';
 import Fontsize from '../styles/fontsize';
 const setSelection = () => {
     alert("CHCK");

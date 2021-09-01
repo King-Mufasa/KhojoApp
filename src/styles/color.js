@@ -9,6 +9,7 @@ const colors = {
 	lightdark:"#8F8F8F",
 	lightgrey:"#EDDEEE",
 	lightblue:"#E6FCFC",
+	primaryBack:"#F8FFFF",
 }
 
 export default colors;

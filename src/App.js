@@ -70,17 +70,14 @@ const Profile = createStackNavigator(
 const RootStack = createSwitchNavigator(
   {
     OnBoard: Onboard,
-    Otp: OtpStack
+    Otp: OtpStack,
+    Profile:Profile
   },
   {
     initialRouteName: "OnBoard",
     headerMode: 'none'
   }
 )
-const Skip = () => {
-  alert("KILL");
-}
-
 
 const App = createAppContainer(RootStack)
 

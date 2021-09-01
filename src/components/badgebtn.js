@@ -9,7 +9,7 @@ const BadgeButton = (props) => {
             style={[styles.button,props.style]}
             onPress={(props.click)}
             underlayColor={Color.white}>
-            <Text style={[styles.submitText,Fontsize.small]}>{props.name}</Text>
+            <Text style={[styles.submitText,Fontsize.mini]}>{props.name}</Text>
         </TouchableHighlight>
     );
 }
@@ -19,15 +19,13 @@ const styles = StyleSheet.create({
         marginRight: 40,
         marginLeft: 40,
         marginTop: 10,
-        backgroundColor:Color.lightblue
+        backgroundColor:"transparent"
     },
     submitText: {
-        fontSize:20,
-        paddingTop: 10,
-        paddingBottom: 10,
-        color: Color.primary,
+        padding:3,
+        color:Color.primary,
         textAlign: 'center',
-        backgroundColor: Color.primary,
+        backgroundColor: Color.lightblue,
         borderRadius: 10,
         borderWidth: 1,
         borderColor: '#fff'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { SafeAreaView, Image, StyleSheet } from 'react-native'
+import { SafeAreaView, Image, StyleSheet, Text } from 'react-native'
 import Colors from '../../styles/color'
 import Fontsize from '../../styles/fontsize'
 import BadgeButton from '../../components/badgebtn'
