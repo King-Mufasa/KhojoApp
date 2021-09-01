@@ -38,7 +38,7 @@ class Profile extends React.Component {
                     sections={[
                         {
                             title: 'My Account', data: [
-                                { icon: "first-order", label: 'My Order', key:"order" }
+                                { icon: "first-order", label: 'My Order', key:"SelectDoctor" }
                                 , { icon: "address-book", label: 'Manage Address', key:"ManageAddress" }
                                 , { icon: "heart", label: 'Wishlist' }
                                 , { icon: "flask", label: 'My Lab Tests' }

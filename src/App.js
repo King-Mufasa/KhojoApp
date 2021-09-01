@@ -17,6 +17,10 @@ import VerifyOtp from './pages/verifyotp';
 import MyProfile from './pages/profile/profile';
 import EditProfile from './pages/profile/editprofile';
 import ManageAddress from './pages/profile/manageaddress';
+
+import SelectSpeciality from './pages/doctor/selectspeciality';
+import DoctorGallery from './pages/doctor/selectdoctor';
+
 const Onboard = createStackNavigator(
   {
     OnBoard: {
@@ -60,6 +64,17 @@ const Profile = createStackNavigator(
   }
 )
 
+const Doctor = createStackNavigator(
+  {
+    SelectSpec:{
+      screen:SelectSpeciality
+    },
+    SelectDoctor:{
+      screen:DoctorGallery
+    }
+  }
+)
+
 // const TabStck = createBottomTabNavigator(
 //   {
 //     Home: Onboard,
@@ -75,7 +90,8 @@ const RootStack = createSwitchNavigator(
   {
     OnBoard: Onboard,
     Otp: OtpStack,
-    Profile:Profile
+    Profile:Profile,
+    Doctor:Doctor
   },
   {
     initialRouteName: "OnBoard",
