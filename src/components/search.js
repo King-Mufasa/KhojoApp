@@ -11,7 +11,7 @@ class SearchComponent extends React.Component {
             <View style={styles.searchview}>
                 <View style={styles.searchcontainer}>
                     <Icon name={'search'} size={25} style={styles.icon} />
-                    <TextInput placeholder="Search Doctor, Specialities, Clinics, Hospitals" />
+                    <TextInput onChangeText={this.props.callback} placeholder="Search Doctor, Specialities, Clinics, Hospitals" />
                     <Image source={this.props.url} style={styles.avatar} />
                 </View>
             </View>

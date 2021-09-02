@@ -21,11 +21,11 @@ class Rating extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-         backgroundColor: Color.danger, 
+         backgroundColor: Color.success, 
          borderRadius: 5, 
          paddingHorizontal: 8, 
-         width: 50,
          flexDirection:'row',
+         alignSelf:'baseline',
          alignItems:'center'
         }
 })

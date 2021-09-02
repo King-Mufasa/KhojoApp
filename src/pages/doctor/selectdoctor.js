@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Image,Text } from 'react-native-animatable'
+import { View, Image, Text } from 'react-native-animatable'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StyleSheet, SectionList } from 'react-native'
 import Rating from '../../components/rating'
@@ -9,96 +9,144 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../styles/color'
 import SearchComponent from '../../components/search'
 import Fontsize from '../../styles/fontsize'
+import APIkit from '../../api/apikit'
+import { connect } from 'react-redux';
+import Spinner from 'react-native-loading-spinner-overlay';
 
-class DoctorItem extends React.Component{
-    render(){
-        let avatar = { uri: 'https://drive.google.com/thumbnail?id=1RHt9vhUZdUlzEJwO6du8JJRwsfCXSr3I' };
-        return(
+
+const initialState = {
+    search_filter: '',
+    errors: {},
+    doctors: {},
+    isLoading: false,
+    token: ""
+}
+
+
+class DoctorItem extends React.Component {
+    render() {
+        const avatar = this.props.info.image
+        return (
             <SafeAreaView style={styles.doctor}>
-                <Image style={styles.avatar} source={avatar}/>
+                {(avatar != null) ?
+                    <Image style={styles.avatar} source={{ uri: 'http://192.168.114.29:8080/' + avatar }} /> :
+                    <Image style={styles.fakeavatar} source={{ uri: 'http://192.168.114.29:8080/assets/images/symbol.png' }} />}
                 <SafeAreaView style={styles.doctorinfo}>
                     <View>
                         <Text style={[Fontsize.medium]}>{this.props.info.name}</Text>
-                        <Rating rating={4.5} />
+                        {this.props.info.rating > 0 && <Rating rating={this.props.info.rating} />}
                     </View>
                     <Text style={styles.text}>{this.props.info.address}</Text>
-                    <Text style={styles.text}>{this.props.info.experience}</Text>
+                    <Text style={styles.text}>License on {this.props.info.experience}</Text>
                     <Text style={styles.text}>{this.props.info.clinic}</Text>
                     <View style={styles.budget}>
                         <Text style={styles.text}>Consultation fee:  </Text>
-                        <Text style={styles.text}><Icon name="inr"/> {this.props.info.fee}</Text>
+                        <Text style={styles.text}><Icon name="inr" /> {this.props.info.fee}</Text>
                     </View>
-                    <KButton name="Book Consultation" style={{width:"100%"}}/>
+                    <KButton name="Book Consultation" style={{ width: "100%" }} />
                 </SafeAreaView>
             </SafeAreaView>
         )
     }
 }
 
-class DoctorGallery extends React.Component{
 
-    render(){
-        return(
-            <SafeAreaView style={{backgroundColor:Colors.primaryBack}}>
-            <SearchComponent />
-            <Text style={[Fontsize.medium,{margin:20}]}>Select Doctor</Text>
-            <SectionList
+
+class DoctorGallery extends React.Component {
+    state = initialState
+    changeSearchFilter = search_filter => {
+        this.setState({ search_filter })
+        this.getDoctor()
+    }
+    getDoctor() {
+        const { search_filter } = this.state
+        const keyword = { filter_name: search_filter };
+        console.log(keyword)
+        const onSuccess = ({ data }) => {
+            console.log(data)
+            this.setState({ doctors: data, isLoading: false  })
+
+        }
+
+        const onFailue = error => {
+            console.log(error.response.data)
+            this.setState({ errors: error.response.data, isLoading: false })
+        }
+
+        this.setState({ isLoading: true })
+
+        console.log(APIkit.defaults.headers)
+        APIkit.post('customer.getDoctor/', keyword).then(onSuccess).catch(onFailue)
+    }
+
+    render() {
+        const { isLoading } = this.state;
+        // console.log(this.props)
+        // this.getDoctor()
+        return (
+            <SafeAreaView style={{ backgroundColor: Colors.primaryBack, flex: 1 }}>
+                <Spinner visible={isLoading} />
+                <SearchComponent callback={this.changeSearchFilter} />
+                <Text style={[Fontsize.medium, { margin: 20 }]}>Select Doctor</Text>
+                <SectionList
                     style={styles.scrollView}
                     sections={[
                         {
-                            title: 'Doctors', data: [
-                                { avatar: "first-order", name: 'My Order', experience:"SelectDoctor", address:"Ghost street bone building", fee:500, rating:4.5, clinic:"Denber" }
-                                , { avatar: "address-book", name: 'Manage Address', experience:"SelectDoctor", address:"Ghost street bone building", fee:500, rating:4.5, clinic:"Denber" }
-                                , { avatar: "heart", name: 'Wishlist',experience:"SelectDoctor", address:"Ghost street bone building", fee:500, rating:4.5, clinic:"Denber" }
-                                , { avatar: "flask", name: 'My Lab Tests',experience:"SelectDoctor", address:"Ghost street bone building", fee:500, rating:4.5, clinic:"Denber" }
-                                , { avatar: "credit-card-alt", name: 'Payment Methods',experience:"SelectDoctor", address:"Ghost street bone building", fee:500, rating:4.5, clinic:"Denber" }
-                            ]
+                            title: 'Doctors', data: this.state.doctors
                         },
                     ]}
-                    renderItem={({ item }) => <DoctorItem info={item}/>}
+                    renderItem={({ item }) => <DoctorItem info={item} />}
                     keyExtractor={(item, index) => index}
                 />
-                </SafeAreaView>
+            </SafeAreaView>
         )
     }
 }
 
 
 const styles = StyleSheet.create({
-    doctor:{
-        flexDirection:'row',
-        backgroundColor:Colors.white,
-        borderRadius:10,
-        marginTop:20,
-        paddingVertical:10,
+    doctor: {
+        flexDirection: 'row',
+        backgroundColor: Colors.white,
+        borderRadius: 10,
+        marginTop: 20,
+        paddingVertical: 10,
         shadowColor: '#000',
         shadowOffset: { width: 1, height: 1 },
         shadowOpacity: 0.8,
         shadowRadius: 45,
         elevation: 8,
         margin: 10
-    },  
-    avatar:{
-        margin:5,
-        width:"30%",
-        height:screenHeight*0.2,
-        borderRadius:5,
-        marginEnd:20
     },
-    doctorinfo:{
-        width:'60%',
-        marginEnd:20,
+    avatar: {
+        margin: 5,
+        width: "30%",
+        height: screenHeight * 0.2,
+        borderRadius: 5,
+        marginEnd: 20
     },
-    budget:{
-        flexDirection:'row'
+    fakeavatar: {
+        margin: 5,
+        width: "30%",
+        height: screenHeight * 0.2,
+        borderRadius: 5,
+        marginEnd: 20,
+        resizeMode: "center"
     },
-    text:{
-        color:Colors.lightdark
+    doctorinfo: {
+        width: '60%',
+        marginEnd: 20,
+    },
+    budget: {
+        flexDirection: 'row'
+    },
+    text: {
+        marginTop: 5,
+        color: Colors.lightdark
     },
     scrollView: {
         paddingHorizontal: 20,
-        marginBottom:200
-
+        marginBottom: 20
     },
 })
 

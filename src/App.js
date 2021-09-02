@@ -21,6 +21,7 @@ import ManageAddress from './pages/profile/manageaddress';
 import SelectSpeciality from './pages/doctor/selectspeciality';
 import DoctorGallery from './pages/doctor/selectdoctor';
 
+import Login from './pages/auth/login';
 const Onboard = createStackNavigator(
   {
     OnBoard: {
@@ -35,6 +36,9 @@ const Onboard = createStackNavigator(
 )
 const OtpStack = createStackNavigator(
   {
+    Login:{
+      screen:Login
+    },
     SendOtp: {
       screen: SendOtp,
       navigationOptions: {

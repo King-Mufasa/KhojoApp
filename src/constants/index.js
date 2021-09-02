@@ -1,0 +1,6 @@
+
+const CONSTANTS={
+    COUNTER_CHANGE:'COUNTER_CHANGE',
+    SAVE_TOKEN:'SAVE_TOKEN'
+}
+export default CONSTANTS
