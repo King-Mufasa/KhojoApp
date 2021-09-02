@@ -7,7 +7,7 @@ import styles from './GeneralStatusBarColorStyles';
 
 const GeneralStatusBarColor = ({ backgroundColor, ...props }) => (
     <View style={[styles.statusBar]}>
-    <StatusBar translucent backgroundColor={Color.primary} {...props} />
+        <StatusBar translucent backgroundColor={Color.primary} {...props} />
     </View>
     );
 

@@ -38,7 +38,8 @@ const styles=StyleSheet.create({
         paddingHorizontal: 15
     },
     icon: {
-        width: screenWidth * 0.1
+        width: screenWidth * 0.1,
+        color:Colors.lightdark
     }
 })
 

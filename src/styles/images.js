@@ -23,6 +23,9 @@ const Images = {
     spots:require('../assets/image/list-items/spots.png'),
     stomach:require('../assets/image/list-items/stomach.png'),
     teeth:require('../assets/image/list-items/teeth.png'),
+    cat_pharmacy:require('../assets/image/cat_pharmacy.png'),
+    cat_doctor:require('../assets/image/cat_doctor.png'),
+    cat_lab:require('../assets/image/cat_lab.png'),
 }
 
 

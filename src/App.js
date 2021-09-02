@@ -8,10 +8,13 @@
 import React, { Fragment, useEffect } from 'react';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { View } from 'react-native';
 import Colors from './styles/color';
 import OnBoardingScreen from './pages/onboard';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
+
+import Home from './pages/home';
 import SendOtp from './pages/sendotp'
 import VerifyOtp from './pages/verifyotp';
 
@@ -25,7 +28,6 @@ import DoctorGallery from './pages/doctor/selectdoctor';
 import Login from './pages/auth/login';
 import ScheduleAppointment from './pages/doctor/bookappointment';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Onboard = createStackNavigator(
   {
@@ -90,7 +92,7 @@ const Doctor = createStackNavigator(
 const BottomTabNav = createMaterialBottomTabNavigator(
   {
     HomeScreen: {
-      screen: Onboard,
+      screen: Home,
       navigationOptions: {
         tabBarLabel: 'Home',
         tabBarIcon: ({ tintColor }) => (
@@ -100,7 +102,7 @@ const BottomTabNav = createMaterialBottomTabNavigator(
       }
     },
     DoctorScreen: {
-      screen: Doctor,
+      screen: DoctorGallery,
       navigationOptions: {
         tabBarLabel: 'Ask Doctor',
         tabBarIcon: ({ tintColor }) => (
@@ -108,33 +110,33 @@ const BottomTabNav = createMaterialBottomTabNavigator(
             <Icon style={[{ color: tintColor }]} size={25} name={'user-md'} />
           </View>),
       }
-    },
-    CartScreen: {
-      screen: Onboard,
-      navigationOptions: {
-        tabBarLabel: 'Cart',
-        tabBarIcon: ({ tintColor }) => (
-          <View>
-            <Icon style={[{ color: tintColor }]} size={25} name={'shopping-cart'} />
-          </View>),
+      },
+      CartScreen: {
+        screen: Onboard,
+        navigationOptions: {
+          tabBarLabel: 'Cart',
+          tabBarIcon: ({ tintColor }) => (
+            <View>
+              <Icon style={[{ color: tintColor }]} size={25} name={'shopping-cart'} />
+            </View>),
+        }
+      },
+      ProfileScreen: {
+        screen: Profile,
+        navigationOptions: {
+          tabBarLabel: 'Profile',
+          tabBarIcon: ({ tintColor }) => (
+            <View>
+              <Icon style={[{ color: tintColor }]} size={25} name={'user'} />
+            </View>),
+        }
       }
     },
-    ProfileScreen: {
-      screen: Profile,
-      navigationOptions: {
-        tabBarLabel: 'Profile',
-        tabBarIcon: ({ tintColor }) => (
-          <View>
-            <Icon style={[{ color: tintColor }]} size={25} name={'user'} />
-          </View>),
-      }
-    }
-  },
-  {  
-    initialRouteName: "HomeScreen",  
-    activeColor: Colors.primary,  
-    inactiveColor: Colors.lightdark,  
-    barStyle: { backgroundColor: Colors.white },  
+  {
+    initialRouteName: "HomeScreen",
+    activeColor: Colors.primary,
+    inactiveColor: Colors.lightdark,
+    barStyle: { backgroundColor: Colors.white },
   },
 
 )
@@ -142,11 +144,12 @@ const BottomTabNav = createMaterialBottomTabNavigator(
 const RootStack = createSwitchNavigator(
   {
     OnBoard: Onboard,
+    Login:Login,
     Otp: OtpStack,
     Home: BottomTabNav
   },
   {
-    initialRouteName: "OnBoard",
+    initialRouteName: "Login",
     headerMode: 'none'
   }
 )

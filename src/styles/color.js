@@ -12,6 +12,7 @@ const Colors = {
 	lightblue:"#E6FCFC",
 	primaryBack:"#F8FFFF",
 	secondary:"#F9F9F9",
+	primaryShadow:"#E7FCFC"
 }
 
 export default Colors;
