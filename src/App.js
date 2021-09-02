@@ -149,7 +149,7 @@ const RootStack = createSwitchNavigator(
     Home: BottomTabNav
   },
   {
-    initialRouteName: "Login",
+    initialRouteName: "OnBoard",
     headerMode: 'none'
   }
 )
