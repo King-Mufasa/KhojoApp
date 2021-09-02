@@ -38,7 +38,6 @@ class Login extends React.Component {
     }
 
     navigate() {
-
         const { navigate } = this.props.navigation
         navigate("MyProfile")
     }

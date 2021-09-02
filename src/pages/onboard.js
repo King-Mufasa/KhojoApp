@@ -20,7 +20,7 @@ class OnBoardingScreen extends React.Component {
         return (
             <Fragment>
                 <GeneralStatusBarColor />
-                <SkipButton click={()=> navigate('Otp')}/>
+                <SkipButton click={()=> navigate('Home')}/>
                 <IntroSlider
                     showPagination
                     buttonProps={{

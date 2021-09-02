@@ -8,9 +8,10 @@
 import React, { Fragment, useEffect } from 'react';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-// import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { View } from 'react-native';
+import Colors from './styles/color';
 import OnBoardingScreen from './pages/onboard';
-
+import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import SendOtp from './pages/sendotp'
 import VerifyOtp from './pages/verifyotp';
 
@@ -22,6 +23,10 @@ import SelectSpeciality from './pages/doctor/selectspeciality';
 import DoctorGallery from './pages/doctor/selectdoctor';
 
 import Login from './pages/auth/login';
+import ScheduleAppointment from './pages/doctor/bookappointment';
+
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 const Onboard = createStackNavigator(
   {
     OnBoard: {
@@ -36,8 +41,8 @@ const Onboard = createStackNavigator(
 )
 const OtpStack = createStackNavigator(
   {
-    Login:{
-      screen:Login
+    Login: {
+      screen: Login
     },
     SendOtp: {
       screen: SendOtp,
@@ -70,32 +75,75 @@ const Profile = createStackNavigator(
 
 const Doctor = createStackNavigator(
   {
-    SelectSpec:{
-      screen:SelectSpeciality
+    SelectSpec: {
+      screen: SelectSpeciality
     },
-    SelectDoctor:{
-      screen:DoctorGallery
+    SelectDoctor: {
+      screen: DoctorGallery
+    },
+    Schedule: {
+      screen: ScheduleAppointment
     }
   }
 )
 
-// const TabStck = createBottomTabNavigator(
-//   {
-//     Home: Onboard,
-//     AskDoctor: OtpStack,
-//     Cart: Onboard,
-//     Profile: Profile
+const BottomTabNav = createMaterialBottomTabNavigator(
+  {
+    HomeScreen: {
+      screen: Onboard,
+      navigationOptions: {
+        tabBarLabel: 'Home',
+        tabBarIcon: ({ tintColor }) => (
+          <View>
+            <Icon style={[{ color: tintColor }]} size={25} name={'home'} />
+          </View>),
+      }
+    },
+    DoctorScreen: {
+      screen: Doctor,
+      navigationOptions: {
+        tabBarLabel: 'Ask Doctor',
+        tabBarIcon: ({ tintColor }) => (
+          <View>
+            <Icon style={[{ color: tintColor }]} size={25} name={'user-md'} />
+          </View>),
+      }
+    },
+    CartScreen: {
+      screen: Onboard,
+      navigationOptions: {
+        tabBarLabel: 'Cart',
+        tabBarIcon: ({ tintColor }) => (
+          <View>
+            <Icon style={[{ color: tintColor }]} size={25} name={'shopping-cart'} />
+          </View>),
+      }
+    },
+    ProfileScreen: {
+      screen: Profile,
+      navigationOptions: {
+        tabBarLabel: 'Profile',
+        tabBarIcon: ({ tintColor }) => (
+          <View>
+            <Icon style={[{ color: tintColor }]} size={25} name={'user'} />
+          </View>),
+      }
+    }
+  },
+  {  
+    initialRouteName: "HomeScreen",  
+    activeColor: Colors.primary,  
+    inactiveColor: Colors.lightdark,  
+    barStyle: { backgroundColor: Colors.white },  
+  },
 
-//   },
-
-// )
+)
 
 const RootStack = createSwitchNavigator(
   {
     OnBoard: Onboard,
     Otp: OtpStack,
-    Profile:Profile,
-    Doctor:Doctor
+    Home: BottomTabNav
   },
   {
     initialRouteName: "OnBoard",

@@ -43,7 +43,7 @@ class DoctorItem extends React.Component {
                         <Text style={styles.text}>Consultation fee:  </Text>
                         <Text style={styles.text}><Icon name="inr" /> {this.props.info.fee}</Text>
                     </View>
-                    <KButton name="Book Consultation" style={{ width: "100%" }} />
+                    <KButton name="Book Consultation" style={{ width: "100%" }} click={this.props.click}/>
                 </SafeAreaView>
             </SafeAreaView>
         )
@@ -58,31 +58,29 @@ class DoctorGallery extends React.Component {
         this.setState({ search_filter })
         this.getDoctor()
     }
+
     getDoctor() {
         const { search_filter } = this.state
+        console.log(this.state)
         const keyword = { filter_name: search_filter };
-        console.log(keyword)
         const onSuccess = ({ data }) => {
-            console.log(data)
             this.setState({ doctors: data, isLoading: false  })
 
         }
-
         const onFailue = error => {
             console.log(error.response.data)
             this.setState({ errors: error.response.data, isLoading: false })
         }
 
         this.setState({ isLoading: true })
-
-        console.log(APIkit.defaults.headers)
         APIkit.post('customer.getDoctor/', keyword).then(onSuccess).catch(onFailue)
     }
-
+    navigate = () =>{
+        const {navigate} = this.props.navigation
+        navigate('Schedule')
+    }
     render() {
         const { isLoading } = this.state;
-        // console.log(this.props)
-        // this.getDoctor()
         return (
             <SafeAreaView style={{ backgroundColor: Colors.primaryBack, flex: 1 }}>
                 <Spinner visible={isLoading} />
@@ -95,7 +93,7 @@ class DoctorGallery extends React.Component {
                             title: 'Doctors', data: this.state.doctors
                         },
                     ]}
-                    renderItem={({ item }) => <DoctorItem info={item} />}
+                    renderItem={({ item }) => <DoctorItem click={this.navigate} info={item} />}
                     keyExtractor={(item, index) => index}
                 />
             </SafeAreaView>
