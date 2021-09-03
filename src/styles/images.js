@@ -27,6 +27,21 @@ const Images = {
     cat_pharmacy:require('../assets/image/cat_pharmacy.png'),
     cat_doctor:require('../assets/image/cat_doctor.png'),
     cat_lab:require('../assets/image/cat_lab.png'),
+    key_bone:require('../assets/image/bone.png'),
+    key_brain:require('../assets/image/brain.png'),
+    key_ear:require('../assets/image/ear.png'),
+    key_endocrine:require('../assets/image/endocrine.png'),
+    key_female:require('../assets/image/female.png'),
+    key_hair:require('../assets/image/hair.png'),
+    key_hand:require('../assets/image/hand.png'),
+    key_heart:require('../assets/image/heart.png'),
+    key_kidney:require('../assets/image/kidney.png'),
+    key_lungs:require('../assets/image/lungs.png'),
+    key_male:require('../assets/image/male.png'),
+    key_stome:require('../assets/image/stome.png'),
+    key_tooth:require('../assets/image/tooth.png'),
+    key_virus:require('../assets/image/virus.png'),
+    key_vision:require('../assets/image/vision.png'),
 }
 
 

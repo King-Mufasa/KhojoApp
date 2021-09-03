@@ -22,7 +22,6 @@ const initialState = {
     token: ""
 }
 
-
 class DoctorGallery extends React.Component {
     state = initialState
     changeSearchFilter = search_filter => {
@@ -42,7 +41,6 @@ class DoctorGallery extends React.Component {
             console.log(error.response.data)
             this.setState({ errors: error.response.data, isLoading: false })
         }
-
         this.setState({ isLoading: true })
         APIkit.post('customer.getDoctor/', keyword).then(onSuccess).catch(onFailue)
     }

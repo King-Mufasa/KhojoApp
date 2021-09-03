@@ -25,7 +25,7 @@ const DoctorItem = (props) => {
                     <Text style={styles.text}>Consultation fee:  </Text>
                     <Text style={styles.text}><Icon name="inr" /> {props.info.fee}</Text>
                 </View>
-                <KButton name="Book Consultation" style={{ width: "100%" }} click={props.click} />
+                <KButton name="Book Consultation" style={{ width: screenWidth * 0.4 }} click={props.click} />
             </SafeAreaView>
         </SafeAreaView>
     )
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginTop: 20,
         paddingVertical: 10,
-        shadowColor: '#000',
+        shadowColor: Colors.primary,
         shadowOffset: { width: 1, height: 1 },
         shadowOpacity: 0.8,
         shadowRadius: 45,
@@ -47,27 +47,27 @@ const styles = StyleSheet.create({
     },
     avatar: {
         margin: 5,
-        width: "30%",
+        width: screenWidth * 0.3,
         height: screenHeight * 0.2,
         borderRadius: 5,
         marginEnd: 20
     },
     fakeavatar: {
         margin: 5,
-        width: "30%",
+        width: screenWidth * 0.3,
         height: screenHeight * 0.2,
         borderRadius: 5,
         marginEnd: 20,
         resizeMode: "center"
     },
     doctorinfo: {
-        width: '60%',
+        // width: '60%',
         marginEnd: 20,
     },
     budget: {
         flexDirection: 'row'
     },
-    name:{
+    name: {
     },
     text: {
         marginTop: 5,
