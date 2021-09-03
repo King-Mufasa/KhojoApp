@@ -5,7 +5,8 @@ type Action =
     | { type: 'setEmail'; email: string }
     | { tyle: 'setGender'; gender: string }
     | { type: 'setImage'; image: object }
-    | { type: 'setPhone'; phone: number };
+    | { type: 'setPhone'; phone: number }
+    | { type: 'setToken'; token: string };
 
 
 export const { dispatch, useGlobalState } = createStore(
@@ -56,6 +57,11 @@ export const { dispatch, useGlobalState } = createStore(
                     }
 
                 }
+            case "setToken":
+                return{
+                    ...state,
+                    token:action.token
+                }    
             default: return state
         }
     },
@@ -66,6 +72,7 @@ export const { dispatch, useGlobalState } = createStore(
             email: '',
             image: null,
             phone: '',
-        }
+        },
+        token:'',
     }
 )

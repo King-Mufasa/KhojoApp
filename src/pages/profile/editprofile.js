@@ -12,6 +12,9 @@ import { RadioButton } from 'react-native-paper';
 import APIkit from '../../api/apikit'
 import { dispatch, useGlobalState } from '../../store/state';
 import Images from '../../styles/images'
+import FormData from 'form-data'
+import Modal from "react-native-modal";
+import ModalContent from '../../components/modalcontent'
 class EditView extends React.Component {
     render() {
         return (
@@ -44,9 +47,13 @@ const gender = [
 const EditProfile = () => {
     const [user] = useGlobalState('user');
     const { email, name, image, gender } = user;
-    const [tempname,setTempName] = useState(name)
-    
-
+    // const { token } = useGlobalState('token');
+    const [tempname, setTempName] = useState(name)
+    const [tempemail, setTempEmail] = useState(email)
+    const [tempimage, setTempImage] = useState(image)
+    const [tempgender, setTempGender] = useState(gender)
+    const [modalshow, setModalShow] = useState(false)
+    const [modalmessage, setModalmessage] = useState("")
     const setName = name => {
         dispatch({
             type: "setName",
@@ -64,63 +71,111 @@ const EditProfile = () => {
 
     const cropImage = () => {
         ImagePicker.openPicker({
-            width: 300,
+            width: 400,
             height: 400,
             cropping: true
         }).then(image => {
-            dispatch({
-                type: "setImage",
-                image: {
-                    uri: image.path,
-                    width: image.width,
-                    height: image.height,
-                    mime: image.mime,
-                }
-            })
+
+            setTempImage({
+                uri: image.path,
+                width: image.width,
+                height: image.height,
+                mime: image.mime,
+            }
+            )
 
         });
     }
     const PostProfile = () => {
+        
         const onSuccess = ({ data }) => {
             console.log(data)
+            dispatch({
+                type: 'setEmail',
+                email: tempemail
+            })
+            dispatch({
+                type: 'setName',
+                name: tempname
+            })
+            dispatch({
+                type: 'setImage',
+                image: tempimage
+            })
+            dispatch({
+                type: 'setGender',
+                gender: tempgender
+            })
+            setModalShow(true)
+            setModalmessage(data.message)
+            console.log(data)
+
         }
-        const onFailue = ({ data }) => {
+        const onFailue = data => {
+            setModalShow(true)
+            setModalmessage(data.message)
             console.log(data)
         }
-        console.log(image)
+
         var data = new FormData()
-        data.append("name", name)
-        data.append('gender', gender)
-        data.append(image,
+        data.append("name", tempname)
+        data.append('gender', tempgender)
+        data.append('email', tempemail)
+        data.append("image",
             {
-                uri: image.uri,
-                type: image.mime
+                uri: tempimage.uri,
+                type: 'image/jpeg',
+                name: 'userprofile.jpeg'
             })
-        APIkit.post(data).then(onSuccess).catch(onFailue)
+
+        console.log(APIkit.defaults.headers)
+        APIkit.post('customer.profile.update', data, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then(onSuccess).catch(onFailue)
+
     }
 
-     
+
     useEffect(() => {
-        console.log(name)
-    }, [name]);
+        console.log(tempemail)
+    }, [tempemail]);
     useEffect(() => {
     }, []);
     return (
         <SafeAreaView style={styles.container}>
+            <Modal
+                testID={'modal'}
+                isVisible={modalshow}
+                onSwipeComplete={() => setModalShow(false)}
+                swipeDirection={['up', 'left', 'right', 'down']}
+                style={styles.view}>
+                <ModalContent onPress={() => setModalShow(false)} message={modalmessage}/>
+            </Modal>
+            {/* <Modal
+                isVisible={modalshow}
+                onSwipeComplete={() => setModalVisible(false)}
+                swipeDirection="left"
+            >
+                <View style={{ flex: 1 }}>
+                    <Text>{modalmessage}</Text>
+                </View>
+            </Modal> */}
             <Text style={Fontsize.medium}>Edit Profile</Text>
             <SafeAreaView style={styles.subcontainer}>
                 <Image source={{ uri: (image != null ? image.uri : Images.default_symbol) }} style={styles.avatar} openPicker={cropImage} />
                 <BadgeButton name="edit" click={cropImage} />
                 <SafeAreaView style={styles.namearea}>
-                    <EditView label="Name" style={styles.name} onChangeText={setTempName} value={tempname} />
+                    <EditView label="Name" style={styles.name} onChangeText={(value) => { setTempName(value) }} value={tempname} />
                 </SafeAreaView>
                 <View style={styles.genderarea}>
                     <View style={styles.gender}>
                         <Text style={styles.label}>Male</Text>
                         <RadioButton
                             value="m"
-                            status={gender === 'm' ? 'checked' : 'unchecked'}
-                            onPress={() => setGender('m')}
+                            status={tempgender === 'm' ? 'checked' : 'unchecked'}
+                            onPress={() => setTempGender('m')}
                             style={
                                 { width: 300 }
                             }
@@ -130,14 +185,14 @@ const EditProfile = () => {
                         <Text style={styles.label}>Female</Text>
                         <RadioButton
                             value="f"
-                            status={gender === 'f' ? 'checked' : 'unchecked'}
-                            onPress={() => setGender('f')}
+                            status={tempgender === 'f' ? 'checked' : 'unchecked'}
+                            onPress={() => setTempGender('f')}
                             color={Colors.danger}
                         />
                     </View>
                 </View>
 
-                <EditView label="Email" value={email} />
+                <EditView label="Email" value={tempemail} onChangeText={(value) => { setTempEmail(value) }} />
                 {/* <EditView label="Mobile Number" /> */}
                 <KButton name="Save" style={{ width: "100%", marginTop: 40 }} click={PostProfile} />
             </SafeAreaView>
@@ -181,7 +236,7 @@ const styles = StyleSheet.create({
     genderarea: {
         flexDirection: 'row',
         alignSelf: 'baseline',
-        alignItems:'flex-start',
+        alignItems: 'flex-start',
         width: '45%',
         justifyContent: 'space-between',
         marginTop: 20,
@@ -193,7 +248,11 @@ const styles = StyleSheet.create({
     },
     label: {
         alignSelf: 'center'
-    }
+    },
+    modal: {
+        justifyContent: 'flex-end',
+        margin: 0,
+    },
 
 })
 

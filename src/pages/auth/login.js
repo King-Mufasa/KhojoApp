@@ -28,6 +28,8 @@ const Login = (props) => {
     const [password, setPassword] = useState({ password: '' })
 
     const [user] = useGlobalState('user');
+    // const { token } = useGlobalState('token');
+
     const { email, name, image, gender } = user;
     const onUsernameChange = email => {
         dispatch({
@@ -60,7 +62,7 @@ const Login = (props) => {
             dispatch(
                 {
                     image: {
-                        uri: config.baseurl+data.data.image,
+                        uri: config.baseurl + data.data.image,
                     },
                     type: 'setImage'
                 }
@@ -71,7 +73,13 @@ const Login = (props) => {
                     type: 'setGender'
                 }
             )
-            APIkit.defaults.headers.common["Authorization"] = 'Bearer ' + token
+            // dispatch(
+            //     {
+            //         token: 'Bearer ' + data.data.token,
+            //         type: 'setToken'
+            //     }
+            // )
+            APIkit.defaults.headers.common["Authorization"] = 'Bearer ' + data.data.token
             navigate()
         }
 
