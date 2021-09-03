@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     View,
     Text,
@@ -16,58 +16,79 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { saveToken } from '../../actions/token';
 import { changCount } from '../../actions/count'
+import { dispatch, useGlobalState } from '../../store/state';
+import config from '../../config';
 
-const initialState = {
-    email: '',
-    password: '',
-    errors: {},
-    isAuthorized: false,
-    isLoading: false,
-    token: ""
-}
 
-class Login extends React.Component {
-    state = initialState
+const Login = (props) => {
+    const [loading, setLoading] = useState(false);
+    const [auth, setAuth] = useState(false)
+    const [token, setToken] = useState('');
+    const [errors, setError] = useState({ errors: null })
+    const [password, setPassword] = useState({ password: '' })
 
-    onUsernameChange = email => {
-        this.setState({ email })
+    const [user] = useGlobalState('user');
+    const { email, name, image, gender } = user;
+    const onUsernameChange = email => {
+        dispatch({
+            email: email,
+            type: 'setEmail'
+        })
     }
 
-    onPasswordChange = password => {
-        this.setState({ password })
+    const onPasswordChange = password => {
+        setPassword(password)
     }
 
-    navigate() {
-        const { navigate } = this.props.navigation
+    const navigate = () => {
+        const { navigate } = props.navigation
         navigate("Home")
     }
 
-    onPressLogin() {
-        const { email, password } = this.state
+    const onPressLogin = () => {
         const payload = { email, password };
         const onSuccess = ({ data }) => {
-            this.setState({ isLoading: false, isAuthorized: true })
-            let { token, actions } = this.props
-            token = data.data.token
-            this.setState({ token })
-            this.props.saveToken(token)
-            APIkit.defaults.headers.common["Authorization"] = 'Bearer '+token
-            this.navigate()
+            setLoading(false)
+            setAuth(true)
+            setToken(data.data.token)
+            dispatch(
+                {
+                    name: data.data.name,
+                    type: 'setName'
+                }
+            )
+            dispatch(
+                {
+                    image: {
+                        uri: config.baseurl+data.data.image,
+                    },
+                    type: 'setImage'
+                }
+            )
+            dispatch(
+                {
+                    gender: data.data.gender,
+                    type: 'setGender'
+                }
+            )
+            APIkit.defaults.headers.common["Authorization"] = 'Bearer ' + token
+            navigate()
         }
 
         const onFailue = error => {
             console.log(error.response.data)
-            this.setState({ errors: error.response.data, isLoading: false })
+            setLoading(false)
+            setAuth(false)
+            setError(error.response.data)
         }
 
-        this.setState({ isLoading: true })
+        setLoading(true)
 
         APIkit.post('login/', payload).then(onSuccess).catch(onFailue)
     }
 
-    getNonFieldErrorMessage() {
+    getNonFieldErrorMessage = () => {
         let message = null;
-        const { errors } = this.state;
         if (errors.non_field_errors) {
             message = (
                 <View style={styles.errorMessageContainerStyle}>
@@ -79,14 +100,14 @@ class Login extends React.Component {
         }
         return message
     }
-    getErrorMessageByField(field) {
+    getErrorMessageByField = (field) => {
         // Checks for error message in specified field
         // Shows error message from backend
         let message = null;
-        if (this.state.errors[field]) {
+        if (errors[field]) {
             message = (
                 <View style={styles.errorMessageContainerStyle}>
-                    {this.state.errors[field].map(item => (
+                    {errors[field].map(item => (
                         <Text style={styles.errorMessageTextStyle} key={item}>
                             {item}
                         </Text>
@@ -96,71 +117,70 @@ class Login extends React.Component {
         }
         return message;
     }
-
-    render() {
-        const { isLoading } = this.state;
-        return (
-            <View style={styles.containerStyle}>
-                <Spinner visible={isLoading} />
-
-                {!this.state.isAuthorized ? <View>
-                    <View style={styles.logotypeContainer}>
-                        <Image
-                            source={Images.check}
-                            style={styles.logotype}
-                        />
-                    </View>
-
-                    <TextInput
-                        style={styles.input}
-                        // value={this.state.email}
-                        maxLength={256}
-                        placeholder="Enter username..."
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                        returnKeyType="next"
-                        onSubmitEditing={event =>
-                            this.passwordInput.wrappedInstance.focus()
-                        }
-                        onChangeText={this.onUsernameChange}
-                        underlineColorAndroid="transparent"
-                        placeholderTextColor="#999"
+    useEffect(() => {
+        setAuth(false)
+        setLoading(false)
+    }, []);
+    return (
+        <View style={styles.containerStyle}>
+            <Spinner visible={loading} />
+            {!auth ? <View>
+                <View style={styles.logotypeContainer}>
+                    <Image
+                        source={Images.check}
+                        style={styles.logotype}
                     />
+                </View>
 
-                    {this.getErrorMessageByField('username')}
+                <TextInput
+                    style={styles.input}
+                    // value={state.email}
+                    maxLength={256}
+                    placeholder="Enter username..."
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    returnKeyType="next"
+                    // onSubmitEditing={event =>
+                    //     passwordInput.wrappedInstance.focus()
+                    // }
+                    onChangeText={onUsernameChange}
+                    underlineColorAndroid="transparent"
+                    placeholderTextColor="#999"
+                />
 
-                    <TextInput
-                        ref={node => {
-                            this.passwordInput = node;
-                        }}
-                        style={styles.input}
-                        // value={this.state.password}
-                        maxLength={40}
-                        placeholder="Enter password..."
-                        onChangeText={this.onPasswordChange}
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                        returnKeyType="done"
-                        blurOnSubmit
-                        onSubmitEditing={this.onPressLogin.bind(this)}
-                        secureTextEntry
-                        underlineColorAndroid="transparent"
-                        placeholderTextColor="#999"
-                    />
+                {getErrorMessageByField('username')}
 
-                    {this.getErrorMessageByField('password')}
+                <TextInput
+                    // ref={node => {
+                    //     passwordInput = node;
+                    // }}
+                    style={styles.input}
+                    // value={state.password}
+                    maxLength={40}
+                    placeholder="Enter password..."
+                    onChangeText={onPasswordChange}
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    returnKeyType="done"
+                    blurOnSubmit
+                    onSubmitEditing={onPressLogin.bind(this)}
+                    secureTextEntry
+                    underlineColorAndroid="transparent"
+                    placeholderTextColor="#999"
+                />
 
-                    {this.getNonFieldErrorMessage()}
+                {getErrorMessageByField('password')}
 
-                    <TouchableOpacity
-                        style={styles.loginButton}
-                        onPress={this.onPressLogin.bind(this)}>
-                        <Text style={styles.loginButtonText}>LOGIN</Text>
-                    </TouchableOpacity>
-                </View> : <View><Text>Successfully authorized!</Text></View>}
-            </View>
-        )
-    }
+                {getNonFieldErrorMessage()}
+
+                <TouchableOpacity
+                    style={styles.loginButton}
+                    onPress={onPressLogin.bind(this)}>
+                    <Text style={styles.loginButtonText}>LOGIN</Text>
+                </TouchableOpacity>
+            </View> : <View><Text>Successfully authorized!</Text></View>}
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({
@@ -222,13 +242,5 @@ const styles = StyleSheet.create({
     },
 })
 
-const mapStateToProps = state => ({
-    token: state.token,
-})
 
-const mapDispatchToProps = dispatch => {
-    return {
-        saveToken: (token) => dispatch(saveToken(token))
-    }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default Login;

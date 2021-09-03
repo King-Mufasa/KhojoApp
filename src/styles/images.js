@@ -1,4 +1,5 @@
 const Images = {
+    default_symbol:'https://drive.google.com/thumbnail?id=1RHt9vhUZdUlzEJwO6du8JJRwsfCXSr3I',
     Board1:require('../assets/image/onboard_1.png'),
     Board2:require('../assets/image/onboard_2.png'),
     Board3:require('../assets/image/onboard_3.png'),
