@@ -10,7 +10,7 @@ import Label from '../components/label'
 import Category from '../components/category'
 import Images from '../styles/images'
 import DoctorItem from '../components/doctoritem'
-import BundleItem from '../components/bundleitem'
+import BundleItem from '../components/items/bundleitem'
 import APIkit from '../api/apikit'
 import Keywords from '../styles/keywords'
 import KeywordItem from '../components/keyworditem'
@@ -23,26 +23,31 @@ const Home = (props) => {
     const [doctors, setDoctor] = useState({});
     const [bundles, setBundles] = useState({});
 
-    const navigate = () => {
+    const navigateToDoctor = () => {
         const { navigate } = props.navigation
-        navigate('SelectDoctor')
+        navigate("SelectDoctor")
+    }
+    const navigateToLab = () => {
+        const { navigate } = props.navigation
+        navigate("SelectLabs")
+    }
+    const navigateToPharmacy = () => {
+        const { navigate } = props.navigation
+        navigate("SelectPharmacy")
     }
     const getDoctors = () => {
         const onSuccess = (data) => {
             setDoctor(data.data)
         }
         const onFailue = () => {
-            console.log(data.data)
         }
         APIkit.post('customer.getDoctor/').then(onSuccess).catch(onFailue)
     }
     const getBundles = () => {
         const onSuccess = (data) => {
             setBundles(data.data)
-            console.log(bundles)
         }
         const onFailue = (data) => {
-            console.log(data.data)
         }
         APIkit.post('customer.getBundle').then(onSuccess).catch(onFailue)
     }
@@ -60,9 +65,9 @@ const Home = (props) => {
                 <UploadPrescripion />
                 <Label name="Select Category" />
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                    <Category name="Medicines" desc="5 Lakh + Medicines" icon={Images.cat_pharmacy} />
-                    <Category name="Ask Doctor" desc="7 Lakh + Doctors" icon={Images.cat_doctor} />
-                    <Category name="Lab Test" desc="7 Lakh + Labss" icon={Images.cat_lab} />
+                    <Category click={navigateToPharmacy} name="Medicines" desc="5 Lakh + Medicines" icon={Images.cat_pharmacy} />
+                    <Category click={navigateToDoctor} name="Ask Doctor" desc="7 Lakh + Doctors" icon={Images.cat_doctor} />
+                    <Category click={navigateToLab} name="Lab Test" desc="7 Lakh + Labss" icon={Images.cat_lab} />
                 </ScrollView>
                 <Label name="Explore by Health Concerns" />
                 <SectionList
@@ -88,7 +93,7 @@ const Home = (props) => {
                             title: 'Doctors', data: doctors
                         },
                     ]}
-                    renderItem={({ item }) => <DoctorItem click={navigate} info={item} />}
+                    renderItem={({ item }) => <DoctorItem  info={item} />}
                     keyExtractor={(item, index) => index}
                 />
                 <Label name="Live Test Bundles" />
@@ -101,7 +106,7 @@ const Home = (props) => {
                             title: 'Bundles', data: bundles
                         },
                     ]}
-                    renderItem={({ item }) => <BundleItem click={navigate} info={item} />}
+                    renderItem={({ item }) => <BundleItem  info={item} />}
                     keyExtractor={(item, index) => index}
                 />
                 {/* </ScrollView> */}

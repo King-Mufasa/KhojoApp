@@ -1,5 +1,11 @@
+import config from '../config'
 const Images = {
     default_symbol:'https://drive.google.com/thumbnail?id=1RHt9vhUZdUlzEJwO6du8JJRwsfCXSr3I',
+    ico_pathology:config.baseurl + "assets/images/icon/pathology.png",
+    ico_pharmacy:"https://drive.google.com/thumbnail?id=1RHt9vhUZdUlzEJwO6du8JJRwsfCXSr3I",
+    ico_doctor:config.baseurl + "assets/images/icon/doctor.png",
+    ico_seva_kendra:config.baseurl + "assets/images/icon/pathology.png",
+    ico_service:config.baseurl + "assets/images/icon/service.png",
     Board1:require('../assets/image/onboard_1.png'),
     Board2:require('../assets/image/onboard_2.png'),
     Board3:require('../assets/image/onboard_3.png'),

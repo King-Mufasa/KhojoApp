@@ -9,11 +9,12 @@ import React, { Fragment, useEffect } from 'react';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { View } from 'react-native';
+import { View, Image } from 'react-native';
 import Colors from './styles/color';
+import Images from './styles/images';
 import OnBoardingScreen from './pages/onboard';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
-
+import HomeButton from './components/home';
 import Home from './pages/home';
 import SendOtp from './pages/sendotp'
 import VerifyOtp from './pages/verifyotp';
@@ -28,6 +29,9 @@ import DoctorGallery from './pages/doctor/selectdoctor';
 import Login from './pages/auth/login';
 import ScheduleAppointment from './pages/doctor/bookappointment';
 
+import PathologyGallery from './pages/pathology/selectlabs';
+import PharmacyGallery from './pages/pharmacy/selectpharmacy';
+import PathologyDetail from './pages/pathology/pathology';
 
 const Onboard = createStackNavigator(
   {
@@ -78,14 +82,49 @@ const Profile = createStackNavigator(
 const Doctor = createStackNavigator(
   {
     SelectSpec: {
-      screen: SelectSpeciality
+      screen: SelectSpeciality,
+      navigationOptions: ({ navigation }) => ({
+        headerLeft: () =>
+          <HomeButton click={navigation} />
+      })
     },
     SelectDoctor: {
       screen: DoctorGallery
     },
     Schedule: {
       screen: ScheduleAppointment
+    },
+    // SelectLabs:{
+    //   screen:PathologyGallery
+    // }
+  }
+)
+
+const Pahology = createStackNavigator(
+  {
+    SelectLabs: {
+      screen: PathologyGallery,
+      navigationOptions: ({ navigation }) => ({
+        headerLeft: () =>
+          <HomeButton click={navigation} />
+      })
+    },
+    PathologyDetail:{
+      screen:PathologyDetail
     }
+  }
+)
+
+const Pharmacy = createStackNavigator(
+  {
+    SelectPharmacy: {
+      screen: PharmacyGallery,
+      navigationOptions: ({ navigation }) => ({
+        headerLeft: () =>
+          <HomeButton click={navigation} />,
+      })
+    },
+    
   }
 )
 
@@ -102,7 +141,7 @@ const BottomTabNav = createMaterialBottomTabNavigator(
       }
     },
     DoctorScreen: {
-      screen: DoctorGallery,
+      screen: Doctor,
       navigationOptions: {
         tabBarLabel: 'Ask Doctor',
         tabBarIcon: ({ tintColor }) => (
@@ -110,28 +149,28 @@ const BottomTabNav = createMaterialBottomTabNavigator(
             <Icon style={[{ color: tintColor }]} size={25} name={'user-md'} />
           </View>),
       }
-      },
-      CartScreen: {
-        screen: Onboard,
-        navigationOptions: {
-          tabBarLabel: 'Cart',
-          tabBarIcon: ({ tintColor }) => (
-            <View>
-              <Icon style={[{ color: tintColor }]} size={25} name={'shopping-cart'} />
-            </View>),
-        }
-      },
-      ProfileScreen: {
-        screen: Profile,
-        navigationOptions: {
-          tabBarLabel: 'Profile',
-          tabBarIcon: ({ tintColor }) => (
-            <View>
-              <Icon style={[{ color: tintColor }]} size={25} name={'user'} />
-            </View>),
-        }
+    },
+    CartScreen: {
+      screen: Onboard,
+      navigationOptions: {
+        tabBarLabel: 'Cart',
+        tabBarIcon: ({ tintColor }) => (
+          <View>
+            <Icon style={[{ color: tintColor }]} size={25} name={'shopping-cart'} />
+          </View>),
       }
     },
+    ProfileScreen: {
+      screen: Profile,
+      navigationOptions: {
+        tabBarLabel: 'Profile',
+        tabBarIcon: ({ tintColor }) => (
+          <View>
+            <Icon style={[{ color: tintColor }]} size={25} name={'user'} />
+          </View>),
+      }
+    }
+  },
   {
     initialRouteName: "HomeScreen",
     activeColor: Colors.primary,
@@ -144,9 +183,12 @@ const BottomTabNav = createMaterialBottomTabNavigator(
 const RootStack = createSwitchNavigator(
   {
     OnBoard: Onboard,
-    Login:Login,
+    Login: Login,
     Otp: OtpStack,
-    Home: BottomTabNav
+    Home: BottomTabNav,
+    Pahology: Pahology,
+    Pharmacy: Pharmacy
+
   },
   {
     initialRouteName: "OnBoard",

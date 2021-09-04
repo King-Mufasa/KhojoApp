@@ -8,7 +8,7 @@ type Props = {
 const ModalContent: React.FC<Props> = props => (
   <View style={styles.content}>
     <Text style={styles.contentTitle}>{props.message}</Text>
-    <RoundButton click={props.onPress} name="Close" />
+    <RoundButton click={props.onPress} name={props.button?props.button:"Close"} />
   </View>
 );
 
@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },
   contentTitle: {
+    textAlign:'center',
     fontSize: 20,
     marginBottom: 12,
   },

@@ -7,6 +7,7 @@ import { screenWidth } from '../../module/IntroSlider/src/themes'
 import { Divider, } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useGlobalState } from '../../store/state'
+import Images from '../../styles/images'
 class ProfileHeader extends React.Component {
     render() {
         const navigate = this.props.nav
@@ -29,7 +30,7 @@ const Profile = (props) => {
     const { navigate } = props.navigation
     const [user] = useGlobalState('user')
     const { image, name } = user
-    let avatar = { uri: 'https://drive.google.com/thumbnail?id=1RHt9vhUZdUlzEJwO6du8JJRwsfCXSr3I' };
+    let avatar = { uri: Images.default_symbol };
     return (
         <SafeAreaView style={styles.container}>
             <ProfileHeader url={{ uri: (image != null ? image.uri : avatar) }} nav={navigate} name={name}/>

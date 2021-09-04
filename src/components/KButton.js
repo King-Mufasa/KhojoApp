@@ -8,7 +8,7 @@ const KButton = (props) => {
         <TouchableHighlight
             style={[styles.button,props.style]}
             onPress={(props.click)}
-            underlayColor={Color.white}>
+            underlayColor={Color.primaryClick}>
             <Text style={[styles.submitText,Fontsize.small]}>{props.name}</Text>
         </TouchableHighlight>
     );
@@ -17,17 +17,17 @@ const KButton = (props) => {
 const styles = StyleSheet.create({
     button: {
         marginTop: 10,
+        backgroundColor: Color.primary,
+        borderRadius: 10,
+        paddingHorizontal:10
     },
     submitText: {
+        fontWeight:'bold',
         fontSize:20,
         paddingTop: 10,
         paddingBottom: 10,
         color: '#fff',
         textAlign: 'center',
-        backgroundColor: Color.primary,
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: '#fff'
     }
 })
 

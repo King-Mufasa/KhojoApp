@@ -1,5 +1,6 @@
 const Colors = {
 	primary: "#16D3DA",
+	primaryClick:"#16D3DF",
 	badge:" #13C554",
 	highlight: "#F7FF00",
 	review: "#388E3C",

@@ -11,7 +11,7 @@ class Rating extends React.Component {
 
     render() {
         return (
-            <View style={[ styles.container]}>
+            <View style={[ styles.container,{backgroundColor:this.props.rating>4?Color.success:this.props.rating>3?Color.warning:Color.danger}]}>
                 <Text style={[Fontsize.small, { color: Color.white }, styles.rating]}>{this.props.rating}</Text>
                 <Icon name="star" size={10} style={{ color: Color.white, marginStart: 5 }} />
             </View>
@@ -24,7 +24,6 @@ const styles = StyleSheet.create({
         padding: 0,
         paddingTop:0,
         paddingHorizontal:8,
-        backgroundColor: Color.success,
         borderRadius: 5,
         flexDirection: 'row',
         alignItems:'center',

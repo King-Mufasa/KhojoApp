@@ -6,7 +6,6 @@ import Fontsize from '../styles/fontsize'
 
 
 const KeywordItem = (props)=>{
-    console.log(props)
     return(
         <View style={[Commonstyle,styles.container]}>
             <Image source={props.info.image}/>
@@ -14,7 +13,6 @@ const KeywordItem = (props)=>{
         </View>
     )
 }
-
 
 const styles = StyleSheet.create({
     container:{

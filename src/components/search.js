@@ -4,19 +4,17 @@ import Colors from '../styles/color';
 import { screenHeight, screenWidth } from '../module/IntroSlider/src/themes'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-class SearchComponent extends React.Component {
-    render() {
-        const navigate = this.props.nav
+const SearchComponent = (props) => {
+        
         return (
             <View style={styles.searchview}>
                 <View style={styles.searchcontainer}>
                     <Icon name={'search'} size={25} style={styles.icon} />
-                    <TextInput onChangeText={this.props.callback} placeholder="Search Doctor, Specialities, Clinics, Hospitals" />
-                    <Image source={this.props.url} style={styles.avatar} />
+                    <TextInput onEndEditing={props.textend} onChangeText={props.textchange} placeholder={props.placeholder?props.placeholder:"Search Doctor, Specialities, Clinics, Hospitals"} />
+                    <Image source={props.url} style={styles.avatar} />
                 </View>
             </View>
         )
-    }
 }
 
 const styles=StyleSheet.create({

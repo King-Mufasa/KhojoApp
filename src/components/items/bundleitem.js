@@ -1,13 +1,13 @@
 import React from 'react'
 import { SafeAreaView, Image, Text, View, StyleSheet,ImageBackground} from 'react-native'
-import Colors from '../styles/color'
-import Fontsize from '../styles/fontsize'
-import { screenHeight, screenWidth } from '../module/IntroSlider/src/themes'
-import Rating from './rating'
+import Colors from '../../styles/color'
+import Fontsize from '../../styles/fontsize'
+import { screenHeight, screenWidth } from '../../module/IntroSlider/src/themes'
+import Rating from '../rating'
 import Icon from 'react-native-vector-icons/FontAwesome';
-import KButton from './KButton'
-import config from '../config'
-import Images from '../styles/images'
+import KButton from '../KButton'
+import config from '../../config'
+import Images from '../../styles/images'
 
 const BundleItem = (props) => {
     return (

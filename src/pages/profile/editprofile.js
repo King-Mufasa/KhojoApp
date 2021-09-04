@@ -153,19 +153,10 @@ const EditProfile = () => {
                 style={styles.view}>
                 <ModalContent onPress={() => setModalShow(false)} message={modalmessage}/>
             </Modal>
-            {/* <Modal
-                isVisible={modalshow}
-                onSwipeComplete={() => setModalVisible(false)}
-                swipeDirection="left"
-            >
-                <View style={{ flex: 1 }}>
-                    <Text>{modalmessage}</Text>
-                </View>
-            </Modal> */}
             <Text style={Fontsize.medium}>Edit Profile</Text>
             <SafeAreaView style={styles.subcontainer}>
                 <Image source={{ uri: (image != null ? image.uri : Images.default_symbol) }} style={styles.avatar} openPicker={cropImage} />
-                <BadgeButton name="edit" click={cropImage} />
+                <BadgeButton name="Edit Avatar" click={cropImage} style={{width:screenWidth * 0.4, alignSelf:"center"}}/>
                 <SafeAreaView style={styles.namearea}>
                     <EditView label="Name" style={styles.name} onChangeText={(value) => { setTempName(value) }} value={tempname} />
                 </SafeAreaView>
@@ -214,9 +205,10 @@ const styles = StyleSheet.create({
         marginTop: 20
     },
     avatar: {
-        width: screenWidth * 0.2,
-        height: screenWidth * 0.2,
-        borderRadius: 10
+        width: screenWidth * 0.4,
+        height: screenWidth * 0.4,
+        borderRadius: 10,
+        alignSelf:"center"
     },
     input: {
         width: "100%",
