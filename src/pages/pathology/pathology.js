@@ -20,7 +20,7 @@ const PathologyDetail = (props) => {
     const [modalshow, setModalShow] = useState(false)
     const [modalmessage, setModalMessage] = useState('')
     const [filter, setFilter] = useState('')
-    const [cart, addCart] = userState(new Map(): Map<string, boolean>)
+    const [cart, addCart] = useState({})
     const getDetails = () => {
         const payload = { type: 'pathology', id: vendorid, filter: filter };
         const onSuccess = (data) => {

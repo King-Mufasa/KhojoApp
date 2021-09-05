@@ -42,6 +42,13 @@ const PharmacyGallery = (props) => {
         setLoading(true)
         APIkit.post('customer.getVendor/', keyword).then(onSuccess).catch(onFailue)
     }
+
+    const viewDetail = id =>{
+        console.log(id)
+        const {navigate} = props.navigation
+        navigate('PharmacyDetail',{vendor_id:id})
+    }
+
     useEffect(()=>{
         getPathology()
     },[])
@@ -57,7 +64,7 @@ const PharmacyGallery = (props) => {
                         title: 'Pathologys', data: pharmacy
                     },
                 ]}
-                renderItem={({ item }) => <PharmacyItem info={item} />}
+                renderItem={({ item }) => <PharmacyItem info={item} click={()=>{viewDetail(item.id)}}/>}
                 keyExtractor={(item, index) => index}
             />
         </SafeAreaView>

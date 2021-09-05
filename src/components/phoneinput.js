@@ -1,9 +1,38 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Color from '../styles/color'
 import Images from '../styles/images';
 import { SafeAreaView, StyleSheet, TextInput, Image, Text } from "react-native";
 import { screenHeight, screenWidth } from '../module/IntroSlider/src/themes';
 import Fontsize from '../styles/fontsize';
+
+
+
+const InputPhone = (props) => {
+    const [valid, setValid] = useState('none')
+    const [phonenumber, setNumber] = useState('')
+
+    const inputNumber = (number) => {
+        setValid(number.length == 10 ? 'flex' : 'none')
+        if (props.textchange)
+            props.textchange(number)
+    }
+    return (
+        <SafeAreaView style={[styles.container, props.style]}>
+            <Image style={styles.flag} source={Images.flag} />
+            <Text style={[styles.baseText, Fontsize.small]}>+ 91</Text>
+            <TextInput
+                editable={props.editable}
+                onChangeText={inputNumber}
+                style={[styles.input, Fontsize.small]}
+                placeholder={props.placeholder ? props.placeholder : "Input your phone number"}
+                keyboardType="numeric"
+                maxLength={10}
+            />
+            <Image style={[styles.image, { display: valid }]} source={Images.check} />
+        </SafeAreaView>
+    )
+}
+
 const PhoneInput = (props) => {
     return (
         <SafeAreaView style={styles.base}>
@@ -11,18 +40,7 @@ const PhoneInput = (props) => {
                 <Text style={[styles.welcome, Fontsize.small, { textAlign: props.align }]}>Welcome to Medigo</Text>
                 <Text style={[styles.description, { textAlign: props.align }, Fontsize.mini]}>Enter your Mobile Number and Verify OTP sent to your Mobile</Text>
             </SafeAreaView>
-            <SafeAreaView style={styles.container}>
-                <Image style={styles.flag} source={Images.flag} />
-                <Text style={[styles.baseText, Fontsize.small]}>+ 91</Text>
-                <TextInput
-                    editable={props.editable}
-                    style={[styles.input, Fontsize.small]}
-                    placeholder="Input your phone number"
-                    keyboardType="numeric"
-                    maxLength={10}
-                />
-                <Image style={styles.image} source={Images.check} />
-            </SafeAreaView>
+            <InputPhone />
         </SafeAreaView>
     )
 }
@@ -32,7 +50,7 @@ const styles = StyleSheet.create({
     base: {
         height: screenHeight * 0.25,
         padding: 20,
-        backgroundColor:Color.white
+        backgroundColor: Color.white
     },
     title: {
         width: screenWidth * 0.85
@@ -79,4 +97,4 @@ const styles = StyleSheet.create({
     },
 
 })
-export default PhoneInput
+export { PhoneInput, InputPhone }

@@ -48,6 +48,9 @@ const Images = {
     key_tooth:require('../assets/image/tooth.png'),
     key_virus:require('../assets/image/virus.png'),
     key_vision:require('../assets/image/vision.png'),
+    ico_prescription:require('../assets/image/prescription.png'),
+    ico_camera:require('../assets/image/ico_camera.png'),
+    ico_gallery:require('../assets/image/ico_gallery.png'),
 }
 
 

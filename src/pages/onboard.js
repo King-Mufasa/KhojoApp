@@ -4,7 +4,7 @@ import Images from '../styles/images';
 import { KButton } from '../components/KButton';
 import { Platform, StatusBar } from 'react-native';
 import Color from '../styles/color';
-import PhoneInput from '../components/phoneinput';
+import {PhoneInput} from '../components/phoneinput';
 import GeneralStatusBarColor from '../styles/statusbar';
 import SkipButton from '../components/skipbutton';
 import SplashScreen from 'react-native-splash-screen';

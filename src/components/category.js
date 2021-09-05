@@ -9,9 +9,9 @@ const Category = (props) => {
         <TouchableHighlight onPress={props.click} underlayColor={Colors.primaryBack} >
             <View style={styles.container}>
                 <Image source={props.icon} style={styles.icon} />
-                <View>
+                <View style={{alignSelf:'center',justifyContent:'space-between'}}>
                     <Text style={[Fontsize.small, styles.name]}>{props.name}</Text>
-                    <Text style={styles.desc}>{props.desc}</Text>
+                    <Text style={[styles.desc,{display:props.desc?'flex':'none'}]}>{props.desc}</Text>
                 </View>
             </View>
         </TouchableHighlight>
@@ -33,12 +33,14 @@ const styles = StyleSheet.create({
         margin: 10
     },
     name: {
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        alignSelf:'center',
     },
     desc: {
         color: Colors.lightdark
     },
     icon: {
+        resizeMode:'contain',
         alignSelf: 'center',
         margin: 10,
         width: screenWidth * 0.06,

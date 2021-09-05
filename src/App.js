@@ -32,6 +32,10 @@ import ScheduleAppointment from './pages/doctor/bookappointment';
 import PathologyGallery from './pages/pathology/selectlabs';
 import PharmacyGallery from './pages/pharmacy/selectpharmacy';
 import PathologyDetail from './pages/pathology/pathology';
+import PharmacyDetail from './pages/pharmacy/pharmacy';
+import OrderMenu from './pages/order/ordermenu';
+import RequestList from './pages/order/request';
+import OrderList from './pages/order/orderlist';
 
 const Onboard = createStackNavigator(
   {
@@ -124,7 +128,24 @@ const Pharmacy = createStackNavigator(
           <HomeButton click={navigation} />,
       })
     },
+    PharmacyDetail:{
+      screen:PharmacyDetail
+    }
     
+  }
+)
+
+const Order = createStackNavigator(
+  {
+    OrderMenu:{
+      screen:OrderMenu
+    },
+    RequestList:{
+      screen:RequestList
+    },
+    OrderList:{
+      screen:OrderList
+    }
   }
 )
 
@@ -187,8 +208,8 @@ const RootStack = createSwitchNavigator(
     Otp: OtpStack,
     Home: BottomTabNav,
     Pahology: Pahology,
-    Pharmacy: Pharmacy
-
+    Pharmacy: Pharmacy,
+    Order:Order
   },
   {
     initialRouteName: "OnBoard",

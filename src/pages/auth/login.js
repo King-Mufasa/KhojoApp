@@ -126,6 +126,11 @@ const Login = (props) => {
         return message;
     }
     useEffect(() => {
+        dispatch({
+            email: "123456",
+            type: 'setEmail'
+        })
+        setPassword('123456')
         setAuth(false)
         setLoading(false)
     }, []);

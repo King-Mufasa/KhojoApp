@@ -5,7 +5,6 @@ import { screenWidth } from '../module/IntroSlider/src/themes'
 import Images from '../styles/images'
 
 const Avatar = (props) =>{
-    console.log(config.baseurl+props.image)
     return(
         <Image source = {{uri:(props.image?config.baseurl+props.image:Images.default_symbol)}} style={[props.style, styles.avatar]}/>
     )

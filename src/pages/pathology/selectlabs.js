@@ -54,10 +54,7 @@ const PathologyGallery = (props) => {
         const {navigate} = props.navigation
         navigate('PathologyDetail',{vendor_id:id})
     }
-    // navigate = () => {
-    //     const { navigate } = props.navigation
-    //     navigate('Schedule')
-    // }
+
 
     useEffect(()=>{
         getPathology()
