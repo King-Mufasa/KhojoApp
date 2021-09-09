@@ -9,9 +9,8 @@ const Label = (props) =>{
                 textAlign:'left',
                 fontWeight:'bold',
                 marginHorizontal:10
-
             },
-            Fontsize.medium
+            props.size=="medium"?Fontsize.medium:Fontsize.mini
         ]
         }>{props.name}</Text>
     )

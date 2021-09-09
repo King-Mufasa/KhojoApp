@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView, Image, StyleSheet, Text, TextInput, View } from 'react-native'
+import { SafeAreaView, Image, StyleSheet, Text, TextInput, View, ScrollView } from 'react-native'
 import Colors from '../../styles/color'
 import Fontsize from '../../styles/fontsize'
 import BadgeButton from '../../components/badgebtn'
@@ -15,6 +15,7 @@ import Images from '../../styles/images'
 import FormData from 'form-data'
 import Modal from "react-native-modal";
 import ModalContent from '../../components/modalcontent'
+import AwesomeLoading from 'react-native-awesome-loading';
 class EditView extends React.Component {
     render() {
         return (
@@ -54,6 +55,7 @@ const EditProfile = () => {
     const [tempgender, setTempGender] = useState(gender)
     const [modalshow, setModalShow] = useState(false)
     const [modalmessage, setModalmessage] = useState("")
+    const [loading, setLoading] = useState(false)
     const setName = name => {
         dispatch({
             type: "setName",
@@ -87,9 +89,8 @@ const EditProfile = () => {
         });
     }
     const PostProfile = () => {
-        
+        setLoading(true)
         const onSuccess = ({ data }) => {
-            console.log(data)
             dispatch({
                 type: 'setEmail',
                 email: tempemail
@@ -108,13 +109,12 @@ const EditProfile = () => {
             })
             setModalShow(true)
             setModalmessage(data.message)
-            console.log(data)
-
+            setLoading(false)
         }
         const onFailue = data => {
             setModalShow(true)
             setModalmessage(data.message)
-            console.log(data)
+            setLoading(false)
         }
 
         var data = new FormData()
@@ -127,8 +127,6 @@ const EditProfile = () => {
                 type: 'image/jpeg',
                 name: 'userprofile.jpeg'
             })
-
-        console.log(APIkit.defaults.headers)
         APIkit.post('customer.profile.update', data, {
             headers: {
                 'Content-Type': 'multipart/form-data'
@@ -136,57 +134,53 @@ const EditProfile = () => {
         }).then(onSuccess).catch(onFailue)
 
     }
-
-
-    useEffect(() => {
-        console.log(tempemail)
-    }, [tempemail]);
-    useEffect(() => {
-    }, []);
     return (
         <SafeAreaView style={styles.container}>
-            <Modal
-                testID={'modal'}
-                isVisible={modalshow}
-                onSwipeComplete={() => setModalShow(false)}
-                swipeDirection={['up', 'left', 'right', 'down']}
-                style={styles.view}>
-                <ModalContent onPress={() => setModalShow(false)} message={modalmessage}/>
-            </Modal>
-            <Text style={Fontsize.medium}>Edit Profile</Text>
-            <SafeAreaView style={styles.subcontainer}>
-                <Image source={{ uri: (image != null ? image.uri : Images.default_symbol) }} style={styles.avatar} openPicker={cropImage} />
-                <BadgeButton name="Edit Avatar" click={cropImage} style={{width:screenWidth * 0.4, alignSelf:"center"}}/>
-                <SafeAreaView style={styles.namearea}>
-                    <EditView label="Name" style={styles.name} onChangeText={(value) => { setTempName(value) }} value={tempname} />
-                </SafeAreaView>
-                <View style={styles.genderarea}>
-                    <View style={styles.gender}>
-                        <Text style={styles.label}>Male</Text>
-                        <RadioButton
-                            value="m"
-                            status={tempgender === 'm' ? 'checked' : 'unchecked'}
-                            onPress={() => setTempGender('m')}
-                            style={
-                                { width: 300 }
-                            }
-                        />
+            <AwesomeLoading indicatorId={17} size={100} isActive={loading} text="loading" />
+            <ScrollView showsVerticalScrollIndicator={false}>
+                <Modal
+                    testID={'modal'}
+                    isVisible={modalshow}
+                    onSwipeComplete={() => setModalShow(false)}
+                    swipeDirection={['up', 'left', 'right', 'down']}
+                    style={styles.view}>
+                    <ModalContent onPress={() => setModalShow(false)} message={modalmessage} />
+                </Modal>
+                <Text style={Fontsize.medium}>Edit Profile</Text>
+                <SafeAreaView style={styles.subcontainer}>
+                    <Image source={{ uri: (tempimage != null ? tempimage.uri : Images.default_symbol) }} style={styles.avatar} openPicker={cropImage} />
+                    <BadgeButton name="Edit Avatar" click={cropImage} style={{ width: screenWidth * 0.4, alignSelf: "center" }} />
+                    <SafeAreaView style={styles.namearea}>
+                        <EditView label="Name" style={styles.name} onChangeText={(value) => { setTempName(value) }} value={tempname} />
+                    </SafeAreaView>
+                    <View style={styles.genderarea}>
+                        <View style={styles.gender}>
+                            <Text style={styles.label}>Male</Text>
+                            <RadioButton
+                                value="m"
+                                status={tempgender === 'm' ? 'checked' : 'unchecked'}
+                                onPress={() => setTempGender('m')}
+                                style={
+                                    { width: 300 }
+                                }
+                            />
+                        </View>
+                        <View style={styles.gender}>
+                            <Text style={styles.label}>Female</Text>
+                            <RadioButton
+                                value="f"
+                                status={tempgender === 'f' ? 'checked' : 'unchecked'}
+                                onPress={() => setTempGender('f')}
+                                color={Colors.danger}
+                            />
+                        </View>
                     </View>
-                    <View style={styles.gender}>
-                        <Text style={styles.label}>Female</Text>
-                        <RadioButton
-                            value="f"
-                            status={tempgender === 'f' ? 'checked' : 'unchecked'}
-                            onPress={() => setTempGender('f')}
-                            color={Colors.danger}
-                        />
-                    </View>
-                </View>
 
-                <EditView label="Email" value={tempemail} onChangeText={(value) => { setTempEmail(value) }} />
-                {/* <EditView label="Mobile Number" /> */}
-                <KButton name="Save" style={{ width: "100%", marginTop: 40 }} click={PostProfile} />
-            </SafeAreaView>
+                    <EditView label="Email" value={tempemail} onChangeText={(value) => { setTempEmail(value) }} />
+                    {/* <EditView label="Mobile Number" /> */}
+                    <KButton name="Save" style={{ width: "100%", marginTop: 40 }} click={PostProfile} />
+                </SafeAreaView>
+            </ScrollView>
         </SafeAreaView >
     )
 }
@@ -208,7 +202,7 @@ const styles = StyleSheet.create({
         width: screenWidth * 0.4,
         height: screenWidth * 0.4,
         borderRadius: 10,
-        alignSelf:"center"
+        alignSelf: "center"
     },
     input: {
         width: "100%",

@@ -7,6 +7,7 @@ import {
     TextInput,
     StyleSheet
 } from 'react-native'
+import KButton from '../../components/KButton'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import APIkit from '../../api/apikit'
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -18,24 +19,26 @@ import { saveToken } from '../../actions/token';
 import { changCount } from '../../actions/count'
 import { dispatch, useGlobalState } from '../../store/state';
 import config from '../../config';
-
-
+import { PhoneInput } from '../../components/phoneinput';
+import { screenHeight, screenWidth } from '../../module/IntroSlider/src/themes';
+import Snackbar from 'react-native-snackbar'
 const Login = (props) => {
     const [loading, setLoading] = useState(false);
     const [auth, setAuth] = useState(false)
     const [token, setToken] = useState('');
     const [errors, setError] = useState({ errors: null })
     const [password, setPassword] = useState({ password: '' })
-
+    const [phone,setPhone] = useState()
     const [user] = useGlobalState('user');
     // const { token } = useGlobalState('token');
 
     const { email, name, image, gender } = user;
-    const onUsernameChange = email => {
+    const onUsernameChange = phone => {
         dispatch({
-            email: email,
-            type: 'setEmail'
+            phone: phone,
+            type: 'setPhone'
         })
+        setPhone(phone)
     }
 
     const onPasswordChange = password => {
@@ -47,52 +50,74 @@ const Login = (props) => {
         navigate("Home")
     }
 
+    const signup = () => {
+        const { navigate } = props.navigation
+        navigate("SendOtp",{phone:phone})
+    }
+
     const onPressLogin = () => {
-        const payload = { email, password };
-        const onSuccess = ({ data }) => {
-            setLoading(false)
-            setAuth(true)
-            setToken(data.data.token)
-            dispatch(
-                {
-                    name: data.data.name,
-                    type: 'setName'
-                }
-            )
-            dispatch(
-                {
-                    image: {
-                        uri: config.baseurl + data.data.image,
-                    },
-                    type: 'setImage'
-                }
-            )
-            dispatch(
-                {
-                    gender: data.data.gender,
-                    type: 'setGender'
-                }
-            )
-            // dispatch(
-            //     {
-            //         token: 'Bearer ' + data.data.token,
-            //         type: 'setToken'
-            //     }
-            // )
-            APIkit.defaults.headers.common["Authorization"] = 'Bearer ' + data.data.token
-            navigate()
+        if (email.length != 10 && password.length < 6) {
+            Snackbar.show({
+                text: 'Please input valid phone and password',
+                duration: Snackbar.LENGTH_SHORT,
+            });
+        }
+        else {
+            const payload = { phone, password };
+            const onSuccess = ({ data }) => {
+                console.log(data.data)
+                setLoading(false)
+                setAuth(true)
+                setToken(data.data.token)
+                dispatch(
+                    {
+                        name: data.data.name,
+                        type: 'setName'
+                    }
+                )
+                if(data.data.image!=null)
+                dispatch(
+                    {
+                        image: {
+                            uri: config.baseurl + data.data.image,
+                        },
+                        type: 'setImage'
+                    }
+                )
+                dispatch(
+                    {
+                        gender: data.data.gender,
+                        type: 'setGender'
+                    }
+                )
+                dispatch(
+                    {
+                        email: data.data.email,
+                        type: 'setEmail'
+                    }
+                )
+                // dispatch(
+                //     {
+                //         token: 'Bearer ' + data.data.token,
+                //         type: 'setToken'
+                //     }
+                // )
+                APIkit.defaults.headers.common["Authorization"] = 'Bearer ' + data.data.token
+                navigate()
+            }
+
+            const onFailue = error => {
+                console.log(error.response.data)
+                setLoading(false)
+                setAuth(false)
+                setError(error.response.data)
+            }
+
+            setLoading(true)
+
+            APIkit.post('login/', payload).then(onSuccess).catch(onFailue)
         }
 
-        const onFailue = error => {
-            console.log(error.response.data)
-            setLoading(false)
-            setAuth(false)
-            setError(error.response.data)
-        }
-
-        setLoading(true)
-
-        APIkit.post('login/', payload).then(onSuccess).catch(onFailue)
     }
 
     getNonFieldErrorMessage = () => {
@@ -126,10 +151,7 @@ const Login = (props) => {
         return message;
     }
     useEffect(() => {
-        dispatch({
-            email: "123456",
-            type: 'setEmail'
-        })
+        setPhone("1234567890")
         setPassword('123456')
         setAuth(false)
         setLoading(false)
@@ -137,15 +159,15 @@ const Login = (props) => {
     return (
         <View style={styles.containerStyle}>
             <Spinner visible={loading} />
-            {!auth ? <View>
+            {!auth ? <View style={styles.containerStyle}>
                 <View style={styles.logotypeContainer}>
                     <Image
-                        source={Images.check}
+                        source={Images.Board1}
                         style={styles.logotype}
                     />
                 </View>
-
-                <TextInput
+                <PhoneInput align="center" onChangeText={onUsernameChange} login={true} />
+                {/* <TextInput
                     style={styles.input}
                     // value={state.email}
                     maxLength={256}
@@ -159,9 +181,9 @@ const Login = (props) => {
                     onChangeText={onUsernameChange}
                     underlineColorAndroid="transparent"
                     placeholderTextColor="#999"
-                />
+                /> */}
 
-                {getErrorMessageByField('username')}
+                {getErrorMessageByField('email')}
 
                 <TextInput
                     // ref={node => {
@@ -185,12 +207,13 @@ const Login = (props) => {
                 {getErrorMessageByField('password')}
 
                 {getNonFieldErrorMessage()}
-
-                <TouchableOpacity
+                <KButton style={styles.send} name="LOGIN" click={onPressLogin} />
+                <KButton style={styles.send} name="SIGN UP" click={signup} />
+                {/* <TouchableOpacity
                     style={styles.loginButton}
                     onPress={onPressLogin.bind(this)}>
                     <Text style={styles.loginButtonText}>LOGIN</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View> : <View><Text>Successfully authorized!</Text></View>}
         </View>
     )
@@ -204,8 +227,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     logotype: {
-        maxWidth: 280,
-        maxHeight: 100,
+        maxWidth: screenWidth * 0.4,
+        maxHeight: screenHeight * 0.6,
         resizeMode: 'contain',
         alignItems: 'center',
     },
@@ -213,9 +236,10 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#f6f6f6',
+        backgroundColor: Colors.white,
     },
     input: {
+        width: screenWidth * 0.85,
         height: 50,
         padding: 12,
         backgroundColor: 'white',
@@ -228,6 +252,9 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.05,
         shadowRadius: 4,
         marginBottom: 20,
+        borderColor: Colors.lightgrey,
+        borderWidth: 1,
+        marginTop:20
     },
     loginButton: {
         borderColor: Colors.primary,
@@ -252,6 +279,10 @@ const styles = StyleSheet.create({
         color: '#db2828',
         textAlign: 'center',
         fontSize: 12,
+    },
+    send: {
+        width: screenWidth * 0.85,
+        marginBottom: 50
     },
 })
 

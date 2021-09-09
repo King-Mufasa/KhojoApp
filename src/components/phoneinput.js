@@ -13,15 +13,16 @@ const InputPhone = (props) => {
 
     const inputNumber = (number) => {
         setValid(number.length == 10 ? 'flex' : 'none')
-        if (props.textchange)
-            props.textchange(number)
+        if (props.onChangeText)
+            props.onChangeText(number)
     }
     return (
         <SafeAreaView style={[styles.container, props.style]}>
             <Image style={styles.flag} source={Images.flag} />
             <Text style={[styles.baseText, Fontsize.small]}>+ 91</Text>
             <TextInput
-                editable={props.editable}
+                value={props.value}
+                editable={true}
                 onChangeText={inputNumber}
                 style={[styles.input, Fontsize.small]}
                 placeholder={props.placeholder ? props.placeholder : "Input your phone number"}
@@ -37,10 +38,10 @@ const PhoneInput = (props) => {
     return (
         <SafeAreaView style={styles.base}>
             <SafeAreaView style={styles.title}>
-                <Text style={[styles.welcome, Fontsize.small, { textAlign: props.align }]}>Welcome to Medigo</Text>
-                <Text style={[styles.description, { textAlign: props.align }, Fontsize.mini]}>Enter your Mobile Number and Verify OTP sent to your Mobile</Text>
+                <Text style={[styles.welcome, Fontsize.small, { textAlign: props.align }]}>Welcome to KhojoDoctor</Text>
+                <Text style={[styles.description, { textAlign: props.align, display: props.login ? "none" : 'flex' }, Fontsize.mini]}>Enter your Mobile Number and Verify OTP sent to your Mobile</Text>
             </SafeAreaView>
-            <InputPhone />
+            <InputPhone onChangeText={props.onChangeText} value={props.value} />
         </SafeAreaView>
     )
 }
@@ -48,7 +49,7 @@ const PhoneInput = (props) => {
 
 const styles = StyleSheet.create({
     base: {
-        height: screenHeight * 0.25,
+        height: screenHeight * 0.15,
         padding: 20,
         backgroundColor: Color.white
     },

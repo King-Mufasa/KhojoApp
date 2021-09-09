@@ -8,20 +8,19 @@ import { Divider, } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useGlobalState } from '../../store/state'
 import Images from '../../styles/images'
-class ProfileHeader extends React.Component {
-    render() {
-        const navigate = this.props.nav
-        return (
-            <View style={styles.profilecontainer}>
-                <Image source={this.props.url} style={styles.avatar} />
-                <View style={styles.profileinfo}>
-                    <Text style={[styles.name, Fontsize.medium]}>{this.props.name}</Text>
-                    <Text style={Fontsize.small}>+91 8652499876</Text>
-                </View>
-                <BadgeButton style={styles.edit} name="Edit" click={() => navigate("EditProfile")} />
+const ProfileHeader = (props) => {
+    console.log(props.url)
+    return (
+        <View style={styles.profilecontainer}>
+            <Image source={props.url} style={styles.avatar} />
+            <View style={styles.profileinfo}>
+                <Text style={[styles.name, Fontsize.medium]}>{props.name}</Text>
+                <Text style={Fontsize.small}>+91 {props.user.phone}</Text>
             </View>
-        )
-    }
+            <BadgeButton style={styles.edit} name="Edit" click={() => props.nav("EditProfile")} />
+        </View>
+    )
+
 }
 
 
@@ -30,10 +29,9 @@ const Profile = (props) => {
     const { navigate } = props.navigation
     const [user] = useGlobalState('user')
     const { image, name } = user
-    let avatar = { uri: Images.default_symbol };
     return (
         <SafeAreaView style={styles.container}>
-            <ProfileHeader url={{ uri: (image != null ? image.uri : avatar) }} nav={navigate} name={name}/>
+            <ProfileHeader user={user} url={{ uri: (image != null ? image.uri : Images.default_symbol) }} nav={navigate} name={name} />
             <Divider orientation="horizontal" inset={true} insetType="middle" />
             <SectionList
                 style={styles.scrollView}

@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Images from '../styles/images';
-import { Platform, StatusBar, Image, StyleSheet } from 'react-native';
+import { Platform, StatusBar, Image, StyleSheet, View } from 'react-native';
 import Color from '../styles/color';
 import PhoneInput from '../components/phoneinput';
 import GeneralStatusBarColor from '../styles/statusbar';
@@ -10,7 +10,9 @@ import { screenHeight, screenWidth } from '../module/IntroSlider/src/themes';
 import CheckBox from '@react-native-community/checkbox';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import KButton from '../components/KButton';
-
+import auth from '@react-native-firebase/auth';
+import Snackbar from 'react-native-snackbar';
+import {dispatch, useGlobalState} from '../store/state'
 type Props = {};
 type State = {
     agree: boolean;
@@ -19,6 +21,8 @@ type State = {
 };
 
 const OtpInput = (props) => {
+    useEffect(() => {
+    }, [])
     return (
         <SafeAreaView style={styles.otp}>
             <TextInput
@@ -26,58 +30,115 @@ const OtpInput = (props) => {
                 style={styles.input}
                 keyboardType="numeric"
                 maxLength={1}
+                onSubmitEditing={props.submit}
+                onChangeText={props.onChangeText}
+                ref={props.reference}
             />
         </SafeAreaView>
     )
 }
 
-class VerifyOtp extends Component<Props, State>{
-    constructor(props: Props) {
-        super(props);
-        this.state = {
-            agree: false,
-            editable: false,
-            index: 0
-        };
+const VerifyOtp = (props) => {
+    const [confirm, setConfirm] = useState(props.navigation.state.params.confirm);
+    const [verified, setVerified] = useState(false)
+    const [code, setCode] = useState('')
+    const [code_1, set1] = useState('')
+    const [code_2, set2] = useState('')
+    const [code_3, set3] = useState('')
+    const [code_4, set4] = useState('')
+    const [code_5, set5] = useState('')
+    const [code_6, set6] = useState('')
+    const first = useRef();
+    const second = useRef();
+    const third = useRef();
+    const fourth = useRef();
+    const fifth = useRef();
+    const sixth = useRef();
+    const [user] = useGlobalState('user');
+    async function verfiy() {
+        let verifycode = code_1 + code_2 + code_3 + code_4 + code_5 + code_6;
+        console.log(confirm.confirm)
+        if (verifycode.length != 6) {
+            Snackbar.show({
+                text: 'Invalid OTP',
+                duration: Snackbar.LENGTH_SHORT,
+            });
+            return
+        }
+        setCode(verifycode)
+        try {
+            const result = await confirm.confirm(verifycode);
+            console.log(result)
+            setVerified(true)
+            dispatch(
+                {
+                    phone: props.navigation.state.params.phone,
+                    type: 'setPhone'
+                }
+            )
+            Snackbar.show({
+                text: 'OTP verified successfully',
+                duration: Snackbar.LENGTH_SHORT,
+            });
+            const {navigate} = props.navigation
+            navigate('Register')
+        } catch (error) {
+            Snackbar.show({
+                text: 'Failed Verify OTP',
+                duration: Snackbar.LENGTH_SHORT,
+            });
+        }
     }
-    render() {
-        const {navigate} = this.props.navigation;
-        return (
-            <SafeAreaView style={styles.container}>
-                <GeneralStatusBarColor />
-                <SkipButton show="none" />
-                <Image source={Images.otp2} style={styles.icon} />
-                <Text style={styles.title}>Verify OTP</Text>
-                <SafeAreaView style={styles.change}>
-                    <Text style={styles.label}>We will Auto Detect the OTP sent to your Mobile &nbsp;
-                        <Text style={{ color: Color.primary, marginStart: 10 }}>+91 7836499763</Text></Text>
-                </SafeAreaView>
-                <SafeAreaView style={styles.change}>
-                    <OtpInput focus={true} /><OtpInput /><OtpInput /><OtpInput />
-                </SafeAreaView>
+    const navigate = () => {
+        const { navigate } = props.navigation;
+    }
+    const register = () => {
+        const payload = { token };
+        const onSuccess = ({ data }) => {
 
-                <KButton style={styles.send} name="Verify OTP" click={()=>navigate("MyProfile")}/>
-                <SafeAreaView style={styles.change}>
-                    <Text style={styles.label}>Didnt's Receive a OTP?</Text>
-                    <Text style={{ color: Color.primary }} onPress={
-                        () => {
-                            this.setState({
-                                editable: true,
-                            })
-                        }
-                    }>Resend ?</Text>
-                </SafeAreaView>
-            </SafeAreaView>
-        )
+        }
+        const onFailue = error => {
+            console.log(error.response.data)
+        }
+        setLoading(true)
+        APIkit.post('register/', payload).then(onSuccess).catch(onFailue)
     }
+   
+    useEffect(() => {
+        console.log(props.navigation.state.params.phone)
+    }, [])
+    return (
+        <SafeAreaView style={styles.container}>
+            <GeneralStatusBarColor />
+            <Image source={Images.otp2} style={styles.icon} />
+            <Text style={styles.title}>Verify OTP</Text>
+            <SafeAreaView style={styles.change}>
+                <Text style={styles.label}>We will Auto Detect the OTP sent to your Mobile &nbsp;
+                    <Text style={{ color: Color.primary, marginStart: 10 }}>+91 {props.navigation.state.params.phone}</Text></Text>
+            </SafeAreaView>
+            <SafeAreaView style={[styles.change]}>
+                <OtpInput focus={true} onChangeText={(value) => { set1(value) }} submit={() => { second.current.focus() }} />
+                <OtpInput onChangeText={(value) => { set2(value) }} reference={second} submit={() => { third.current.focus() }} />
+                <OtpInput onChangeText={(value) => { set3(value) }} reference={third} submit={() => { fourth.current.focus() }} />
+                <OtpInput onChangeText={(value) => { set4(value) }} reference={fourth} submit={() => { fifth.current.focus() }} />
+                <OtpInput onChangeText={(value) => { set5(value) }} reference={fifth} submit={() => { sixth.current.focus() }} />
+                <OtpInput onChangeText={(value) => { set6(value) }} reference={sixth} />
+            </SafeAreaView>
+            <KButton style={styles.send} name="Verify OTP" click={() => verfiy()} />
+            <SafeAreaView style={styles.change}>
+                <Text style={styles.label}>Didnt's Receive a OTP?</Text>
+                <Text style={{ color: Color.primary }}>Resend ?</Text>
+            </SafeAreaView>
+        </SafeAreaView >
+    )
 }
 
 const styles = StyleSheet.create({
     container: {
         alignItems: "center",
         justifyContent: "center",
-        flex:1,
-        backgroundColor:Color.white
+        flex: 1,
+        backgroundColor: Color.white
     },
     icon: {
         resizeMode: "contain",
@@ -91,7 +152,7 @@ const styles = StyleSheet.create({
     },
     send: {
         width: screenWidth * 0.85,
-        marginBottom:50
+        marginBottom: 50
     },
     change: {
         flexDirection: "row",
@@ -112,8 +173,8 @@ const styles = StyleSheet.create({
     otp: {
         alignItems: 'center',
         justifyContent: "center",
-        width: screenWidth * 0.15,
-        height: screenWidth * 0.15,
+        width: screenWidth * 0.1,
+        height: screenWidth * 0.1,
         backgroundColor: Color.white,
         shadowColor: '#000',
         shadowOffset: { width: 1, height: 1 },
@@ -123,7 +184,8 @@ const styles = StyleSheet.create({
         margin: 10
     },
     input: {
-        fontSize: 30,
+        fontSize: 18,
+        textAlign: "center"
     }
 })
 

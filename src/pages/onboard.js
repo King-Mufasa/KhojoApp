@@ -1,26 +1,34 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { IntroSlider } from '../module/IntroSlider';
 import Images from '../styles/images';
 import { KButton } from '../components/KButton';
-import { Platform, StatusBar } from 'react-native';
+import { Platform, StatusBar, View } from 'react-native';
 import Color from '../styles/color';
 import {PhoneInput} from '../components/phoneinput';
 import GeneralStatusBarColor from '../styles/statusbar';
 import SkipButton from '../components/skipbutton';
 import SplashScreen from 'react-native-splash-screen';
+import { screenHeight } from '../module/IntroSlider/src/themes';
+import Colors from '../styles/color';
 
 
-class OnBoardingScreen extends React.Component {
-
-    componentDidMount(){
+const OnBoardingScreen =(props)=> {
+    useEffect(()=>{
         SplashScreen.hide();
+    },[])
+    const [phone,setPhone] = useState('')
+    
+    const navigate = () =>{
+        const { navigate } = props.navigation;
+        navigate("Login",{phone:phone})
     }
-    render() {
-        const { navigate } = this.props.navigation;
+    const changePhone = (number)=>{
+        setPhone(number)
+    }
         return (
             <Fragment>
                 <GeneralStatusBarColor />
-                <SkipButton click={()=> navigate('Login')}/>
+                <SkipButton click={navigate}/>
                 <IntroSlider
                     showPagination
                     buttonProps={{
@@ -60,12 +68,13 @@ class OnBoardingScreen extends React.Component {
                         }
                     />
                 </IntroSlider>
-                <PhoneInput />
+                {/* <View style={{height:screenHeight*0.25, backgroundColor:Colors.white}}><PhoneInput onChangeText = {changePhone}/></View> */}
+               
 
             </Fragment>
 
         )
-    }
+    
 }
 
 export default OnBoardingScreen;

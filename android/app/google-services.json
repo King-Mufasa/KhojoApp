@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1039712497741",
+    "project_id": "khojodoctor-a0c31",
+    "storage_bucket": "khojodoctor-a0c31.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1039712497741:android:ab669a6a1a76eec98f2c04",
+        "android_client_info": {
+          "package_name": "com.medigo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1039712497741-opaghq1qegnoelljd3pqavasereihata.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.medigo",
+            "certificate_hash": "6844c03766565208e144680b552f1ffdae7059f3"
+          }
+        },
+        {
+          "client_id": "1039712497741-ap7cg6q66tmsv8cabqtjt9m3oq31shoe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtWvfY3aaithSEFQiyZ9fgajXYbOUPOTw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1039712497741-ap7cg6q66tmsv8cabqtjt9m3oq31shoe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

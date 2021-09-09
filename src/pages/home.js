@@ -59,7 +59,7 @@ const Home = (props) => {
     return (
         <View style={styles.container}>
             <GeneralStatusBarColor />
-            <HomeHeader />
+            <HomeHeader nav={props.navigation}/>
             <SearchComponent />
             <ScrollView style={styles.scroll}>
                 <UploadPrescripion />

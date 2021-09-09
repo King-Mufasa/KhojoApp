@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import Images from '../styles/images';
 import { Platform, StatusBar, Image, StyleSheet } from 'react-native';
 import Color from '../styles/color';
-import PhoneInput from '../components/phoneinput';
+import { PhoneInput } from '../components/phoneinput';
 import GeneralStatusBarColor from '../styles/statusbar';
 import SkipButton from '../components/skipbutton';
 import { SafeAreaView, Text } from 'react-native';
@@ -11,64 +11,84 @@ import CheckBox from '@react-native-community/checkbox';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import KButton from '../components/KButton';
 import Fontsize from '../styles/fontsize';
-const setSelection = () => {
-    alert("CHCK");
-}
+import auth from '@react-native-firebase/auth';
+import Snackbar from 'react-native-snackbar';
+import AwesomeLoading from 'react-native-awesome-loading';
 
-type Props = {};
-type State = {
-    agree: boolean;
-    editable:boolean;
-};
 
-class SendOtp extends Component<Props, State>{
-    constructor(props: Props) {
-        super(props);
-        this.state = {
-            agree: false,
-            editable:false,
-        };
+const SendOtp = (props) => {
+    const [agree, setAgree] = useState(false)
+    const [editable, setEditable] = useState(false)
+    const [confirm, setConfirm] = useState(null);
+    const [code, setCode] = useState('');
+    const [phone, setPhone] = useState(props.navigation.state.params.phone)
+    const [loading,setLoading] = useState(false)
+    async function signInWithPhoneNumber(phoneNumber) {
+        setLoading(true)
+        console.log("confirmation")
+        const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+        setConfirm(confirmation);
+        const { navigate } = props.navigation;
+        navigate("VerifyOtp",{confirm:confirmation,phone:phone})
     }
-    render() {
-        const {navigate} = this.props.navigation;
-        return (
-            <SafeAreaView style={styles.container}>
-                <GeneralStatusBarColor />
-                <SkipButton show="none" />
-                <Image source={Images.otp1} style={styles.icon} />
-                <PhoneInput align="center" editable={this.state.editable}/>
-                <SafeAreaView style={styles.agree}>
-                    <CheckBox
-                        value={this.state.agree}
-                        onValueChange={(value) =>
-                            this.setState({
-                                agree: value,
-                            })
-                        }
-                        tintColors={{true: Color.primary}}
-                    /><Text style={styles.label}>I agree to Terms & Conditions.</Text>
-                </SafeAreaView>
-                <KButton  style={styles.send} name="Send OTP" click={()=>navigate("VerifyOtp")}/>
-                <SafeAreaView style={styles.change}>
-                    <Text style={[styles.label,Fontsize.mini]} onPress={
-                        ()=>{
-                            this.setState({
-                                editable:true,
-                            })
-                        }
-                    }>Change Number ?</Text>
-                </SafeAreaView>
+
+    async function confirmCode(props) {
+        try {
+            console.log(code)
+            const result = await confirm.confirm(code)
+            console.log(result)
+        } catch (error) {
+            console.log('Invalid code.');
+        }
+    }
+    const navigate = () => {
+        if (phone == null || phone.length != 10) {
+            Snackbar.show({
+                text: 'Phone numbe invalid',
+                duration: Snackbar.LENGTH_SHORT,
+            });
+            return
+        }
+        const result = signInWithPhoneNumber('+919608661965')
+        console.log(result)
+    }
+    useEffect(() => {
+        console.log(props.navigation.state.params)
+    }, [])
+    return (
+        <SafeAreaView style={styles.container}>
+            <AwesomeLoading indicatorId={17} size={100} isActive={loading} text="loading" />
+            <GeneralStatusBarColor />
+            <SkipButton show="none" />
+            <Image source={Images.otp1} style={styles.icon} />
+            <PhoneInput align="center" value={phone} onChangeText={setPhone} />
+            <SafeAreaView style={styles.agree}>
+                <CheckBox
+                    value={agree}
+                    onValueChange={(value) =>
+                        setAgree(value)
+                    }
+                    tintColors={{ true: Color.primary }}
+                /><Text style={styles.label}>I agree to Terms & Conditions.</Text>
             </SafeAreaView>
-        )
-    }
+            <KButton style={styles.send} name="Send OTP" click={navigate} />
+            <SafeAreaView style={styles.change}>
+                <Text style={[styles.label, Fontsize.mini]} onPress={
+                    () => {
+                        setEditable(true)
+                    }
+                }>Change Number ?</Text>
+            </SafeAreaView>
+        </SafeAreaView>
+    )
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex:1,
+        flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor:Color.white
+        backgroundColor: Color.white
     },
     icon: {
         resizeMode: "contain",
@@ -76,6 +96,7 @@ const styles = StyleSheet.create({
         height: screenWidth * 0.3,
     },
     agree: {
+        marginTop: 50,
         width: screenWidth * 0.85,
         flexDirection: "row",
         alignItems: "center",
@@ -83,14 +104,14 @@ const styles = StyleSheet.create({
     send: {
         width: screenWidth * 0.85,
     },
-    change:{
-        marginTop:10,
-        width:screenWidth *0.85,
-        alignItems:'flex-end',
-        justifyContent:"flex-end",
+    change: {
+        marginTop: 10,
+        width: screenWidth * 0.85,
+        alignItems: 'flex-end',
+        justifyContent: "flex-end",
     },
-    label:{
-        color:Color.lightdark
+    label: {
+        color: Color.lightdark
     }
 
 

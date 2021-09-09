@@ -6,6 +6,7 @@ const Images = {
     ico_doctor:config.baseurl + "assets/images/icon/doctor.png",
     ico_seva_kendra:config.baseurl + "assets/images/icon/pathology.png",
     ico_service:config.baseurl + "assets/images/icon/service.png",
+    ico_app:config.baseurl + "assets/images/bluelogo_7.png",
     Board1:require('../assets/image/onboard_1.png'),
     Board2:require('../assets/image/onboard_2.png'),
     Board3:require('../assets/image/onboard_3.png'),

@@ -36,6 +36,8 @@ import PharmacyDetail from './pages/pharmacy/pharmacy';
 import OrderMenu from './pages/order/ordermenu';
 import RequestList from './pages/order/request';
 import OrderList from './pages/order/orderlist';
+import Register from './pages/auth/register';
+import Notification from './pages/util/notification';
 
 const Onboard = createStackNavigator(
   {
@@ -52,7 +54,10 @@ const Onboard = createStackNavigator(
 const OtpStack = createStackNavigator(
   {
     Login: {
-      screen: Login
+      screen: Login,
+      navigationOptions: {
+        headerShown: false
+      }
     },
     SendOtp: {
       screen: SendOtp,
@@ -62,6 +67,12 @@ const OtpStack = createStackNavigator(
     },
     VerifyOtp: {
       screen: VerifyOtp,
+      navigationOptions: {
+        headerShown: false
+      }
+    },
+    Register:{
+      screen: Register,
       navigationOptions: {
         headerShown: false
       }
@@ -79,6 +90,9 @@ const Profile = createStackNavigator(
     },
     ManageAddress: {
       screen: ManageAddress
+    },
+    Notification:{
+      screen:Notification
     }
   }
 )
@@ -113,8 +127,8 @@ const Pahology = createStackNavigator(
           <HomeButton click={navigation} />
       })
     },
-    PathologyDetail:{
-      screen:PathologyDetail
+    PathologyDetail: {
+      screen: PathologyDetail
     }
   }
 )
@@ -128,23 +142,23 @@ const Pharmacy = createStackNavigator(
           <HomeButton click={navigation} />,
       })
     },
-    PharmacyDetail:{
-      screen:PharmacyDetail
+    PharmacyDetail: {
+      screen: PharmacyDetail
     }
-    
+
   }
 )
 
 const Order = createStackNavigator(
   {
-    OrderMenu:{
-      screen:OrderMenu
+    OrderMenu: {
+      screen: OrderMenu
     },
-    RequestList:{
-      screen:RequestList
+    RequestList: {
+      screen: RequestList
     },
-    OrderList:{
-      screen:OrderList
+    OrderList: {
+      screen: OrderList
     }
   }
 )
@@ -209,7 +223,7 @@ const RootStack = createSwitchNavigator(
     Home: BottomTabNav,
     Pahology: Pahology,
     Pharmacy: Pharmacy,
-    Order:Order
+    Order: Order
   },
   {
     initialRouteName: "OnBoard",
