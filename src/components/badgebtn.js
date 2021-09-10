@@ -1,15 +1,21 @@
 import React from 'react';
 import { TouchableHighlight, Text, StyleSheet } from 'react-native'
+import Colors from '../styles/color';
 import Color from '../styles/color'
 import Fontsize from '../styles/fontsize';
 
 const BadgeButton = (props) => {
     return (
         <TouchableHighlight
-            style={[styles.button,props.style]}
+            style={[styles.button,props.style,]}
             onPress={(props.click)}
-            underlayColor={Color.white}>
-            <Text style={[styles.submitText,Fontsize.mini]}>{props.name}</Text>
+            underlayColor={Color.primaryBack}>
+            <Text style={[styles.submitText,Fontsize.mini,
+            {
+                backgroundColor: props.type=="success"?
+                Colors.success:props.type=="danger"?
+                Color.danger:Color.lightblue
+            }]}>{props.name}</Text>
         </TouchableHighlight>
     );
 }

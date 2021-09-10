@@ -96,7 +96,7 @@ const RequestList = () => {
                     <Text style={{ color: Colors.lightdark }}>Request id</Text>
                     <Text>{section.request_id}</Text>
                 </View>
-                <Badge status={section.status} />
+                <Badge status={section.status} type="request"/>
             </View>
         );
     };

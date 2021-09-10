@@ -2,9 +2,9 @@ import config from '../config'
 const Images = {
     default_symbol:'https://drive.google.com/thumbnail?id=1RHt9vhUZdUlzEJwO6du8JJRwsfCXSr3I',
     ico_pathology:config.baseurl + "assets/images/icon/pathology.png",
-    ico_pharmacy:"https://drive.google.com/thumbnail?id=1RHt9vhUZdUlzEJwO6du8JJRwsfCXSr3I",
+    ico_pharmacy:config.baseurl + "assets/images/icon/pharmacy.png",
     ico_doctor:config.baseurl + "assets/images/icon/doctor.png",
-    ico_seva_kendra:config.baseurl + "assets/images/icon/pathology.png",
+    ico_seva_kendra:config.baseurl + "assets/images/icon/seva-kendra.png",
     ico_service:config.baseurl + "assets/images/icon/service.png",
     ico_app:config.baseurl + "assets/images/bluelogo_7.png",
     Board1:require('../assets/image/onboard_1.png'),
@@ -52,6 +52,10 @@ const Images = {
     ico_prescription:require('../assets/image/prescription.png'),
     ico_camera:require('../assets/image/ico_camera.png'),
     ico_gallery:require('../assets/image/ico_gallery.png'),
+    ico_order:require('../assets/image/ordermenu/ic_order.png'),
+    ico_request:require('../assets/image/ordermenu/ic_request.png'),
+    ico_service:require('../assets/image/ordermenu/ic_service.png'),
+    ico_appointment:require('../assets/image/ordermenu/ic_appointment.png')
 }
 
 

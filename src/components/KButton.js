@@ -6,7 +6,11 @@ import Fontsize from '../styles/fontsize';
 const KButton = (props) => {
     return (
         <TouchableHighlight
-            style={[styles.button,props.style]}
+            style={[styles.button,props.style,{
+                backgroundColor:props.type=="success"?
+                Color.success:props.type=="danger"?
+                Color.danger:Color.primary
+            }]}
             onPress={(props.click)}
             underlayColor={Color.primaryClick}>
             <Text style={[styles.submitText,Fontsize.small]}>{props.name}</Text>

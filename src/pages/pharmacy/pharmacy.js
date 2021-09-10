@@ -16,6 +16,7 @@ import PatientDetail from '../../components/patient/patientdetail'
 import Snackbar from 'react-native-snackbar';
 import FormData from 'form-data'
 import { screenHeight, screenWidth } from '../../module/IntroSlider/src/themes'
+import Colors from '../../styles/color'
 const PharmacyDetail = (props) => {
 
     const [pharmacy, setPharmacy] = useState({})
@@ -83,6 +84,10 @@ const PharmacyDetail = (props) => {
     }
     const validate = () => {
         if (patient_name === "" || patient_address === "" || patient_age === "" || patient_number === '') {
+            console.log(patient_name)
+            console.log(patient_address)
+            console.log(patient_age)
+            console.log(patient_number)
             Snackbar.show({
                 text: 'Please input Patient Information',
                 duration: Snackbar.LENGTH_SHORT,
@@ -133,7 +138,7 @@ const PharmacyDetail = (props) => {
         getDetails()
     }, [])
     return (
-        <ScrollView style={StandardStyles.container}>
+        <ScrollView style={styles.container}>
             <Spinner visible={loading} />
             <Modal
                 testID={'modal'}
@@ -152,6 +157,11 @@ const PharmacyDetail = (props) => {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: Colors.primaryBack,
+        paddingHorizontal: 10,
+    },
     modal: {
         justifyContent: 'flex-end',
         margin: 0,

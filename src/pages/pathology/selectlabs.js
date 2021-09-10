@@ -15,12 +15,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import PathologyItem from '../../components/pathologyitem'
 import Modal from "react-native-modal";
 import ModalContent from '../../components/modalcontent'
-const initialState = {
-    search_filter: '',
-    errors: {},
-    Pathologys: {},
-    isLoading: false,
-}
+
 
 const PathologyGallery = (props) => {
 

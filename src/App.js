@@ -38,6 +38,7 @@ import RequestList from './pages/order/request';
 import OrderList from './pages/order/orderlist';
 import Register from './pages/auth/register';
 import Notification from './pages/util/notification';
+import OrderDetail from './pages/order/detail';
 
 const Onboard = createStackNavigator(
   {
@@ -152,13 +153,20 @@ const Pharmacy = createStackNavigator(
 const Order = createStackNavigator(
   {
     OrderMenu: {
-      screen: OrderMenu
+      screen: OrderMenu,
+      navigationOptions: ({ navigation }) => ({
+        headerLeft: () =>
+          <HomeButton click={navigation} />
+      })
     },
     RequestList: {
       screen: RequestList
     },
     OrderList: {
       screen: OrderList
+    },
+    OrderDetail:{
+      screen: OrderDetail
     }
   }
 )

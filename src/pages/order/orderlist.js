@@ -21,18 +21,20 @@ const SECTIONS = [
         content: 'loading data...',
     },
 ];
-const OrderList = () => {
+const OrderList = (props) => {
     const [orders, setOrder] = useState(null)
     const [loading, setLoading] = useState(false)
     const [activeSections, setActiveSections] = useState([])
-
+    const navigate = (id) =>{
+        const {navigate} = props.navigation
+        navigate("OrderDetail",{id:id})
+    }
     const getMyRequest = () => {
         const payload = { type: config.usertype, };
         const onSuccess = (data) => {
             setLoading(false)
-            console.log(data.data)
-            data.data
             setOrder(data.data)
+            console.log(orders)
         }
         const onFailue = (data) => {
             setLoading(false)
@@ -53,33 +55,37 @@ const OrderList = () => {
             <View style={[StandardStyles.commonlightview, { flexDirection: 'column' }]}>
                 <View>
                     <Text style={{ color: Colors.lightdark }}>Pharmacy</Text>
-                    <View style={styles.pharmacy}>
-                        <Avatar image={section.pharmacy_image} />
+                    <View style={styles.receiver}>
+                        <Avatar image={section.receiver_image} />
                         <View style={{flexDirection:'column', alignSelf:'center'}}>
-                            <Text style={{ color: Colors.lightdark }}>Pharmacy Name</Text>
-                            <Text>{section.pharmacy_name}</Text>
+                            <Text style={{ color: Colors.lightdark }}>Receiver Name</Text>
+                            <Text>{section.receiver_name}</Text>
                             <Text style={{ color: Colors.lightdark }}>Contact Info</Text>
-                            <Text>{section.pharmacy_phone}</Text>
+                            <Text>{section.receiver_phone}</Text>
                         </View>
                     </View>
                 </View>
                 <View>
-                    <Text style={{ color: Colors.lightdark }}>Request id</Text>
-                    <Text>{section.request_id}</Text>
+                    <Text style={{ color: Colors.lightdark }}>Order Code</Text>
+                    <Text>{section.order_code}</Text>
                 </View>
                 <View>
                     <Text style={{ color: Colors.lightdark }}>Request Sent</Text>
                     <Text>{Moment(section.created_at).format('LL')}</Text>
                 </View>
+                <View>
+                    <BadgeButton name="Details" click={()=>{navigate(section.id)}}/>
+                </View>
             </View>
         );
     };
     const _renderHeader = (section) => {
+        console.log(section.order_code)
         return (
-            <View style={[styles.header,{display:section.pharmacy_name?"flex":"none"}]} >
+            <View style={[styles.header,{display:section.receiver_name?"flex":"none"}]} >
                 <View>
-                    <Text style={{ color: Colors.lightdark }}>Request id</Text>
-                    <Text>{section.request_id}</Text>
+                    <Text style={{ color: Colors.lightdark }}>Order Code</Text>
+                    <Text>{section.order_code}</Text>
                 </View>
                 <Badge status={section.status} />
             </View>
@@ -121,9 +127,9 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.8,
         shadowRadius: 45,
         elevation: 8,
-        margin: 10
+        margin: 10,
     },
-    pharmacy: {
+    receiver: {
         flexDirection: 'row'
     }
 })

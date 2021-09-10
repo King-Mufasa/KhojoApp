@@ -6,8 +6,6 @@ const StandardStyles = StyleSheet.create({
         flex: 1,
         backgroundColor: Colors.primaryBack,
         paddingHorizontal: 10,
-        alignItems:'center',
-        justifyContent:'center'
     },
     commonview:{
         padding: 10,

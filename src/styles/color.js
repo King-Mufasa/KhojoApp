@@ -14,7 +14,8 @@ const Colors = {
 	primaryBack:"#F8FFFF",
 	secondary:"#F9F9F9",
 	primaryShadow:"#E7FCFC",
-	dark:"#000000"
+	dark:"#000000",
+	lightgreen:"#71BA53"
 }
 
 export default Colors;
