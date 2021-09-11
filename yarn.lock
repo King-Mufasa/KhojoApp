@@ -1221,6 +1221,16 @@
     opencollective-postinstall "^2.0.1"
     superstruct "^0.6.2"
 
+"@react-native-firebase/auth@^12.7.5":
+  version "12.7.5"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/auth/-/auth-12.7.5.tgz#67b16ba9f244e0c6387f1498bb4a36e2759f17da"
+  integrity sha512-skpbmPJl2YvkS9eGuJ8mSnlr4sVjkMzPFi98kEAOuOTHmRB72/YXVqR72AS4HFBxvGJDIRtZJCeLm+Vc2Ngcrw==
+
+"@react-native-firebase/messaging@^12.7.5":
+  version "12.7.5"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-12.7.5.tgz#cfe61c5a2e9c562d9801d97825fafe3dd91044c8"
+  integrity sha512-HLsjmuI5ZcU0j6r1ttlcadeAS0+wIALzY1St5ITmJsQ/VzbGilzbr4oGTRZxAXBN8cHn4UyXl55MB62346OxFA==
+
 "@react-native/assets@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@react-native/assets/-/assets-1.0.0.tgz#c6f9bf63d274bafc8e970628de24986b30a55c8e"
@@ -3407,6 +3417,11 @@ has@^1.0.3:
   integrity sha512-f2dvO0VU6Oej7RkWJGrehjbzMAjFp5/VKPp5tTpWIV4JHHZK1/BxbFRtf/siA2SWTe09caDmVtYYzWEIbBS4zw==
   dependencies:
     function-bind "^1.1.1"
+
+hashids@^2.2.8:
+  version "2.2.8"
+  resolved "https://registry.yarnpkg.com/hashids/-/hashids-2.2.8.tgz#d1e4e1be48e711ad6e5f27b32c37c399d5eeb5b4"
+  integrity sha512-OI6rsk/OqyX60nBsqxnNl3R7CDv9eMOgxzipshZwXE6cUcBcEyHf8rNDlWVdQJZK3TEynILYybCsNUEQfJsdLA==
 
 hermes-engine@~0.8.1:
   version "0.8.1"
@@ -5665,6 +5680,11 @@ react-native-autofocus@0.0.7:
   resolved "https://registry.yarnpkg.com/react-native-autofocus/-/react-native-autofocus-0.0.7.tgz#d5c8ef10a35a2bfcdc28cb42df6a5c3917eb2fbd"
   integrity sha512-FcC9fdTLLEsY/toCEBSezix0664C1GP0Z+GxWaEAGmVPwmqaACMviQsW5iTvwGywhPjJsT+qaMuF0l+3wVrPvQ==
 
+react-native-awesome-loading@^1.0.15:
+  version "1.0.15"
+  resolved "https://registry.yarnpkg.com/react-native-awesome-loading/-/react-native-awesome-loading-1.0.15.tgz#9255ebe0be96af5268f6ad3490e5d866c91b9a2f"
+  integrity sha512-PkRtL3k/T2jqhiBsUl1Hls7HoNGpg5NS5Ro7RoBcbcR67KgJI7FxLeY+aOJzNZGTJvGTRznqtIsIG6dlGKXTHw==
+
 react-native-calendars@^1.1266.0:
   version "1.1266.0"
   resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.1266.0.tgz#f6426baf9774fb41ce296ace1c446b51148fc02b"
@@ -5707,6 +5727,11 @@ react-native-elements@^3.4.2:
     opencollective-postinstall "^2.0.3"
     react-native-ratings "8.0.4"
     react-native-size-matters "^0.3.1"
+
+react-native-fast-image@^8.3.7:
+  version "8.3.7"
+  resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-8.3.7.tgz#c4877de17903101f6d94b6736a4f7e5d7b019224"
+  integrity sha512-J++Ad04PTUe4YgjyGv63gfgV8Fz1gZKAgQHpblf8Z87D9dxfc8UfXHTPv9VLGdTJU4IzdTnQqzoFgDtWdsvBsQ==
 
 react-native-gesture-handler@^1.10.3:
   version "1.10.3"
@@ -5764,6 +5789,16 @@ react-native-paper@^4.9.2:
     "@callstack/react-theme-provider" "^3.0.6"
     color "^3.1.2"
     react-native-iphone-x-helper "^1.3.1"
+
+react-native-pg-react-native-sdk@^2.1.6:
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/react-native-pg-react-native-sdk/-/react-native-pg-react-native-sdk-2.1.6.tgz#71e9b0e146b10ed0f404b042f696825630e50dd2"
+  integrity sha512-nbrNYCiy8t1pp+yoJ/GdM5FgIpSWclbXtC+33MMZNtjO5T72rJs8kl18F9EIY7chkfAGWthgnuq12xnJYjuI4Q==
+
+react-native-push-notification@^8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-push-notification/-/react-native-push-notification-8.1.0.tgz#16bb3755287a005cd8341c48535d9c78856b58b8"
+  integrity sha512-ZgRM1rYm+nhnACval7k44T28PwwtFdzG3pv/rhrVHgrioAbxzQOVFJOny956w42s5av4PPcKsr8yJ940HJCKTA==
 
 react-native-ratings@8.0.4:
   version "8.0.4"

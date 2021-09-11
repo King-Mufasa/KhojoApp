@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         resizeMode:'contain',
         alignSelf: 'center',
         margin: 10,
-        width: screenWidth * 0.06,
+        width: screenWidth * 0.07,
         height: screenWidth * 0.07,
     }
 })

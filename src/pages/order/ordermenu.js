@@ -22,7 +22,7 @@ const OrderMenu = (props) => {
 
 const styles = StyleSheet.create({
     container:{
-        width:'90%',
+        width:'100%',
     }
 })
 export default OrderMenu

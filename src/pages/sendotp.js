@@ -25,7 +25,6 @@ const SendOtp = (props) => {
     const [loading,setLoading] = useState(false)
     async function signInWithPhoneNumber(phoneNumber) {
         setLoading(true)
-        console.log("confirmation")
         const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
         setConfirm(confirmation);
         const { navigate } = props.navigation;

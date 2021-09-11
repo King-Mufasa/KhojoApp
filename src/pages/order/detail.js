@@ -11,20 +11,22 @@ import Label from '../../components/label';
 import BadgeButton from '../../components/badgebtn';
 import Badge from '../../components/util/badge'
 import KButton from '../../components/KButton';
+import RNPgReactNativeSdk from 'react-native-pg-react-native-sdk';
+import { useGlobalState } from '../../store/state';
+import makePayment from '../../module/payment';
+import AwesomeLoading from 'react-native-awesome-loading';
 const OrderDetail = (props) => {
     const [loading, setLoading] = useState(false)
     const [order, setOrder] = useState([])
     const [items, setItems] = useState({})
     const [id, setId] = useState(props.navigation.state.params.id)
+    const [user] = useGlobalState('user')
     const getDetail = () => {
         const payload = { id }
-        console.log(payload)
         setLoading(true)
         const onSuccess = (data) => {
-            console.log(data.data)
             setOrder(data.data[0])
             setItems(data.data)
-            console.log(order)
             setLoading(false)
         }
         const onFailed = (data) => {
@@ -35,10 +37,8 @@ const OrderDetail = (props) => {
     }
     const getInvoice = () => {
         const payload = {  }
-        console.log(payload)
         setLoading(true)
         const onSuccess = (response) => {
-            console.log(response.data)
             const url = window.URL.createObjectURL(new Blob([response]));
             const link = document.createElement('a');
             link.href = url;
@@ -54,22 +54,35 @@ const OrderDetail = (props) => {
         // APIkit.get("customer.order.invoice/" + order.order_code).then(onSuccess).catch(onFailed)
     }
     const acceptOrder = () => {
-        const payload = {id}
         setLoading(true)
-        const onSuccess = (response) =>{
+        const responseHandler = (result) => {
+            setLoading(false)
+            const data = JSON.parse(result);
+            console.log(data.txStatus);
+            try {
+              let output = '';
+              JSON.parse(result, function (key, value) {
+                if (key !== '') {
+                  output = output + key + ' : ' + value + '\n';
+                }
+                // Do something with the result
+              });
 
-        }
-        const onFailed = (data) =>{
-
-        }
-        APIkit.post("customer.order.accept")
+            } catch (error) {
+                console.log(error)
+            }
+          };
+          
+        makePayment(order.total_price,order.order_code,user,responseHandler)
     }
     useEffect(() => {
+        console.log(user)
         getDetail()
     }, [])
     return (
         <View style={[StandardStyles.container, { paddingTop: 10 }]}>
-            <Spinner visible={loading} />
+            {/* <Spinner visible={loading} /> */}
+            <AwesomeLoading indicatorId={17} size={100} isActive={loading} text="loading" />
             <View style={[StandardStyles.commonlightview, styles.detail_header]}>
                 <View style={styles.info}>
                     <Label name="Order Code" size='medium' />
@@ -95,18 +108,19 @@ const OrderDetail = (props) => {
                 <View style={[styles.info, {
                     paddingHorizontal: 10, paddingTop: 20,
                 }]}>
-                    <KButton name='Accept' type="success" style={{
-                        display:
-                            order.status == 0 || order.status == 11 ? 'flex' : 'none'
-                    }} />
-                    {/* <KButton name='Invoice' style={{
-                        display:
-                            order.status == 0 || order.status == 11 ? 'flex' : 'none'
-                    }} click={getInvoice} /> */}
                     <KButton name='Reject' type="danger" style={{
                         display:
                             order.status == 0 || order.status == 11 ? 'flex' : 'none'
                     }} />
+                    <KButton name='Accept' type="success" style={{
+                        display:
+                            order.status == 0 || order.status == 11 ? 'flex' : 'none'
+                    }}  click={acceptOrder}/>
+                    {/* <KButton name='Invoice' style={{
+                        display:
+                            order.status == 0 || order.status == 11 ? 'flex' : 'none'
+                    }} click={getInvoice} /> */}
+                    
 
                 </View>
             </View>

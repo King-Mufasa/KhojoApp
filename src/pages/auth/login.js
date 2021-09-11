@@ -96,6 +96,12 @@ const Login = (props) => {
                         type: 'setEmail'
                     }
                 )
+                dispatch(
+                    {
+                        id: data.data.id,
+                        type: 'setId'
+                    }
+                )
                 // dispatch(
                 //     {
                 //         token: 'Bearer ' + data.data.token,
