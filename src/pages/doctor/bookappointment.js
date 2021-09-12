@@ -31,6 +31,8 @@ const ScheduleAppointment = (props) => {
     const [dailyevent, setDailyevent] = useState([])
     const [modalshow, setModalShow] = useState(false)
     const [eventdetail, setDetails] = useState()
+    const [patient, setPatient] = useState([])
+    const [selectedpatient, selectPatient] = useState()
     const [user] = useGlobalState('user')
     // const getEventDate = (month) => {
     //     console.log(month)
@@ -69,6 +71,7 @@ const ScheduleAppointment = (props) => {
 
         if (validate(date)) {
             getDateEvent(date)
+            setDate(date)
         }
         else {
             Snackbar.show({
@@ -120,6 +123,13 @@ const ScheduleAppointment = (props) => {
 
     const bookAppointment = (id,total_price) => {
 
+        if(patient.length==0){
+            Snackbar.show({
+                text: 'No patient data. create patient on your profile page.',
+                duration: Snackbar.LENGTH_SHORT,
+            });
+            return
+        }
         setModalShow(false)
         setLoading(true)
         const responseHandler = (result) => {
@@ -127,15 +137,50 @@ const ScheduleAppointment = (props) => {
             const data = JSON.parse(result);
             console.log(data.txStatus);
             if(data.txStatus == "SUCCESS"){
-                // updateOrder(12)
+                createAppointment(total_price)
             }
           };
         const note = "Book Appointment event:"+ id
         makePayment(total_price,note,user,responseHandler)
     }
 
+    const getAddress = () => {
+        const onSuccess = (response) => {
+            setPatient(response.data)
+            setLoading(false)
+            console.log(patient)
+        }
+        const onFailed = (response) => {
+            setLoading(false)
+        }
+        setLoading(true)
+        APIkit.post('customer.patient.get').then(onSuccess).catch(onFailed)
+    }
+
+    const createAppointment = (price) =>{
+        const payload = {  
+            "event_id":eventdetail.id,
+            'doctor_id':doctor.id,
+            'patient':selectedpatient,
+            'price':price,
+            'pure_price':eventdetail.price,
+            'date':date.dateString
+        }
+        const onSuccess = (response)=>{
+            setLoading(false)
+            console.log(response.data)
+        }
+        const onFailed = (response) =>{
+            setLoading(false)
+            console.log(response)
+        }
+        setLoading(true)
+        APIkit.post('customer.appointment.create',payload).then(onSuccess).catch(onFailed)
+    }
+
     useEffect(() => {
         getDoctorEvent()
+        getAddress()
     }, [])
     useEffect(() => {
         let buffer = []
@@ -153,7 +198,7 @@ const ScheduleAppointment = (props) => {
                     onSwipeComplete={() => setModalShow(false)}
                     swipeDirection={['up', 'left', 'right', 'down']}
                     style={styles.modal}>
-                    <Appointment event = {eventdetail} action={bookAppointment}/>
+                    <Appointment event = {eventdetail} action={bookAppointment} type={selectPatient} patient={patient}/>
             </Modal>
             <Calendar
                 // Initially visible month. Default = Date()

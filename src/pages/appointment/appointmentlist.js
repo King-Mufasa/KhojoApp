@@ -22,7 +22,7 @@ const SECTIONS = [
     },
 ];
 const AppointmentList = (props) => {
-    const [appointments, setOrder] = useState(null)
+    const [appointments, setAppointment] = useState(null)
     const [loading, setLoading] = useState(false)
     const [activeSections, setActiveSections] = useState([])
     const navigate = (id) =>{
@@ -33,7 +33,7 @@ const AppointmentList = (props) => {
         const payload = { type: config.usertype, };
         const onSuccess = (data) => {
             setLoading(false)
-            setOrder(data.data)
+            setAppointment(data.data)
             console.log(appointments)
         }
         const onFailue = (data) => {
@@ -54,20 +54,19 @@ const AppointmentList = (props) => {
         return (
             <View style={[StandardStyles.commonlightview, { flexDirection: 'column' }]}>
                 <View>
-                    <Text style={{ color: Colors.lightdark }}>Pharmacy</Text>
+                    <Text style={{ color: Colors.lightdark }}>Doctor</Text>
                     <View style={styles.receiver}>
-                        <Avatar image={section.receiver_image} />
+                        <Avatar image={section.doctor_image} />
                         <View style={{flexDirection:'column', alignSelf:'center'}}>
-                            <Text style={{ color: Colors.lightdark }}>Receiver Name</Text>
-                            <Text>{section.receiver_name}</Text>
-                            <Text style={{ color: Colors.lightdark }}>Contact Info</Text>
-                            <Text>{section.receiver_phone}</Text>
+                            <Text style={{ color: Colors.lightdark }}>Doctor Name</Text>
+                            <Text>{section.doctor_name}</Text>
+
                         </View>
                     </View>
                 </View>
                 <View>
-                    <Text style={{ color: Colors.lightdark }}>Order Code</Text>
-                    <Text>{section.order_code}</Text>
+                    <Text style={{ color: Colors.lightdark }}>Type</Text>
+                    <Text>{section.book_code}</Text>
                 </View>
                 <View>
                     <Text style={{ color: Colors.lightdark }}>Request Sent</Text>
@@ -82,12 +81,12 @@ const AppointmentList = (props) => {
     const _renderHeader = (section) => {
         console.log(section.order_code)
         return (
-            <View style={[styles.header,{display:section.receiver_name?"flex":"none"}]} >
+            <View style={[styles.header,{display:section.book_code?"flex":"none"}]} >
                 <View>
-                    <Text style={{ color: Colors.lightdark }}>Order Code</Text>
-                    <Text>{section.order_code}</Text>
+                    <Text style={{ color: Colors.lightdark }}>Appointment Code</Text>
+                    <Text>{section.book_code}</Text>
                 </View>
-                <Badge status={section.status} />
+                <Badge status={section.status} type="request"/>
             </View>
         );
     };
