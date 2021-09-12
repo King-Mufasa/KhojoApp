@@ -8,8 +8,11 @@ import KButton from '../../components/KButton'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import BottomSheet from '../../components/bottomsheet'
 import SelectDropdown from 'react-native-select-dropdown'
-
-
+import Modal from "react-native-modal";
+import Address from '../../components/modalcontent/address'
+import APIkit from '../../api/apikit'
+import AwesomeLoading from 'react-native-awesome-loading'
+import { useEffect } from 'react'
 const addresstype = ["Home", "Work", "Custom"]
 
 class EditView extends React.Component {
@@ -29,73 +32,102 @@ class EditView extends React.Component {
 }
 
 
-class ManageAddress extends React.Component {
-    state = {
-        updatemodal: false
+const ManageAddress = (props) => {
+    const [modalshow, setModalShow] = useState(false)
+    const [name, setName] = useState()
+    const [address, setAddress] = useState()
+    const [type, setType] = useState(1)
+    const [loading, setLoading] = useState()
+    const [addresslist, setAddressList] = useState([])
+
+    const addAddress = () => {
+        console.log(address)
+        setModalShow(false)
+        const payload = {
+            "name": name,
+            'address': address,
+            'type': type
+        }
+        const onSuccess = (response) => {
+            console.log(response)
+            setLoading(false)
+            getAddress()
+        }
+        const onFailed = (response) => {
+            setLoading(false)
+            console.log(response)
+        }
+        setLoading(true)
+        APIkit.post('customer.address.create', payload).then(onSuccess).catch(onFailed);
     }
-    updateState = () => {
-        const { updatemodal } = this.state;
-        this.setState({ updatemodal: !updatemodal })
+
+    const getAddress = () => {
+        const onSuccess = (response) => {
+            console.log(response.data)
+            setAddressList(response.data)
+            console.log(addresslist)
+            setLoading(false)
+        }
+        const onFailed = (response) => {
+            setLoading(false)
+        }
+        setLoading(true)
+        APIkit.post('customer.address.get').then(onSuccess).catch(onFailed)
     }
-    render() {
-        let avatarLink = { uri: 'https://drive.google.com/thumbnail?id=1RHt9vhUZdUlzEJwO6du8JJRwsfCXSr3I' };
-        return (
-            <SafeAreaView style={styles.container}>
+    const removeAddress = (id) => {
+        const onSuccess = (response) => {
+            getAddress()
+        }
+        const onFailed = (response) => {
+            setLoading(false)
+            console.log(response)
+        }
+        setLoading(true)
+        APIkit.post('customer.address.delete', { id, id }).then(onSuccess).catch(onFailed)
+    }
+    useEffect(() => {
+        getAddress()
+    }, [])
+    return (
+        <SafeAreaView style={styles.container}>
+            <AwesomeLoading indicatorId={10} size={100} isActive={loading} text="loading" />
+            <View style={{ padding: 20 }}>
+                <Modal
+                    testID={'modal'}
+                    isVisible={modalshow}
+                    onSwipeComplete={() => setModalShow(false)}
+                    swipeDirection={['up', 'left', 'right', 'down']}
+                    style={styles.modal}>
+                    <Address name={setName} type={setType} address={setAddress} action={addAddress} />
+                </Modal>
                 <SectionList
                     style={styles.scrollView}
                     sections={[
                         {
-                            title: 'My Address', data: [
-                                { icon: "home", label: 'My Order', key: "order", address: "Ghost district denver" }
-                                , { icon: "building", label: 'Manage Address', key: "ManageAddress", address: "Ghost district denver" }
-                                , { icon: "handshake-o", label: 'Wishlist', address: "Ghost district denver" }
-                            ]
+                            title: '', data: addresslist
                         },
                     ]}
-                    renderItem={({ item }) => <TouchableHighlight style={styles.listbutton} activeOpacity={0.6} underlayColor="#DDDDDD" onPress={() => navigate(item.key)}>
-                        <SafeAreaView style={styles.listitem}>
-                            <Icon name={item.icon} size={25} style={styles.icon} />
-                            <View>
-                                <Text style={styles.item}>{item.label}</Text>
-                                <Text style={Fontsize.mini}>{item.address}</Text>
-                            </View>
-                        </SafeAreaView>
-                    </TouchableHighlight>}
+                    renderItem={({ item }) =>
+                        <TouchableHighlight style={styles.listbutton} activeOpacity={0.6} underlayColor="#DDDDDD" >
+                            <SafeAreaView style={styles.listitem}>
+                                <View style={{flexDirection:"row",alignItems:'center'}}>
+                                    <Icon name={item.type == 1 ? 'home' : item.type == 2 ? 'building' : 'handshake-o'} size={25} style={styles.icon} />
+                                    <View>
+                                        <Text style={styles.item}>{item.name}</Text>
+                                        <Text style={Fontsize.mini}>{item.address}</Text>
+                                    </View>
+                                </View>
+                                <Icon name="trash-o" size={20} color={Colors.danger} onPress={() => {removeAddress(item.id) }} />
+                            </SafeAreaView>
+                        </TouchableHighlight>}
                     renderSectionHeader={({ section }) => <Text style={[styles.sectionHeader, Fontsize.small]}>{section.title}</Text>}
                     keyExtractor={(item, index) => index}
                 />
-                <KButton name="Add New Address" click={this.updateState} />
-                <BottomSheet visible={this.state.updatemodal} children={
-                    <SafeAreaView style={styles.modal}>
-                        <View style={styles.address}>
-                        <Text style={Fontsize.small}>Select Address Type: </Text>
-                        <SelectDropdown
-                            buttonStyle={styles.typeselector}
-                            data={addresstype}
-                            onSelect={(selectedItem, index) => {
-                                console.log(selectedItem, index)
-                            }}
-                            buttonTextAfterSelection={(selectedItem, index) => {
-                                // text represented after item is selected
-                                // if data array is an array of objects then return selectedItem.property to render after item is selected
-                                return selectedItem
-                            }}
-                            rowTextForSelection={(item, index) => {
-                                // text represented for each item in dropdown
-                                // if data array is an array of objects then return item.property to represent item in dropdown
-                                return item
-                            }}
-                        />
-                        </View>
-                        <EditView label="Name" />
-                        <EditView label="Address" />
-                        <KButton name="Add" click={this.updateState} />
-                    </SafeAreaView>
+                <KButton name="Add New Address" click={() => { setModalShow(true) }} />
+            </View>
+        </SafeAreaView>
+    )
 
-                } />
-            </SafeAreaView>
-        )
-    }
 }
 
 
@@ -103,8 +135,7 @@ const styles = StyleSheet.create({
 
     container: {
         flex: 1,
-        padding: 20,
-        backgroundColor: Colors.primaryBack
+        backgroundColor: Colors.primaryBack,
     },
     input: {
         width: "100%",
@@ -114,10 +145,6 @@ const styles = StyleSheet.create({
         borderColor: Colors.lightdark,
         paddingHorizontal: 20
     },
-    modal: {
-        flex: 1,
-        padding:10
-    },
     item: {
         padding: 10,
         fontSize: 18,
@@ -126,7 +153,8 @@ const styles = StyleSheet.create({
     listitem: {
         flexDirection: "row",
         alignItems: "center",
-
+        justifyContent: 'space-between',
+        paddingHorizontal:10
     },
     listbutton: {
         padding: 10,
@@ -134,23 +162,19 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.white,
         borderColor: Colors.lightblue,
         borderWidth: 1,
-        marginTop: 10
+        marginTop: 10,
     },
     scrollView: {
-        paddingHorizontal: 20,
         marginBottom: 20
     },
     icon: {
         color: Colors.primary,
         width: screenWidth * 0.1
     },
-    address:{
-        flexDirection:"row",
-        alignItems:"center"
+    modal: {
+        justifyContent: 'flex-end',
+        margin: 0,
     },
-    typeselector:{
-        borderRadius:10
-    }
 
 })
 

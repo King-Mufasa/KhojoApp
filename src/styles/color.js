@@ -5,7 +5,7 @@ const Colors = {
 	highlight: "#F7FF00",
 	review: "#388E3C",
 	success: "#2BB673",
-	warning:"#FFB825",
+	warning:"#FBCF33",
 	danger: "#FB4659",
 	white:"#FFFFFF",
 	lightdark:"#8F8F8F",
@@ -15,7 +15,8 @@ const Colors = {
 	secondary:"#F9F9F9",
 	primaryShadow:"#E7FCFC",
 	dark:"#000000",
-	lightgreen:"#71BA53"
+	lightgreen:"#71BA53",
+	purple:"#CB0C9F",
 }
 
 export default Colors;

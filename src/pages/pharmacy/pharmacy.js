@@ -10,7 +10,7 @@ import VendorDetails from '../../components/vendordetail';
 import Label from '../../components/label';
 import SearchComponent from '../../components/search';
 import SetPrescription from '../../components/setprescription'
-import SelectPrescription from '../../components/prescription/select'
+import SelectPrescription from '../../components/modalcontent/select'
 import ImagePicker from 'react-native-image-crop-picker';
 import PatientDetail from '../../components/patient/patientdetail'
 import Snackbar from 'react-native-snackbar';
@@ -98,7 +98,6 @@ const PharmacyDetail = (props) => {
 
     }
     const request = () => {
-        console.log("Yahoo!")
         const onSuccess = ({ data }) => {
             console.log(data)
             setLoading(false)

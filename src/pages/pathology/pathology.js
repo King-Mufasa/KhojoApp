@@ -10,6 +10,7 @@ import StandardStyles from '../../styles/standardstyles';
 import VendorDetails from '../../components/vendordetail';
 import Label from '../../components/label';
 import SearchComponent from '../../components/search';
+import CartView from '../../components/cartview'
 const PathologyDetail = (props) => {
 
     const [pathology, setPathology] = useState({})
@@ -20,7 +21,7 @@ const PathologyDetail = (props) => {
     const [modalshow, setModalShow] = useState(false)
     const [modalmessage, setModalMessage] = useState('')
     const [filter, setFilter] = useState('')
-    const [cart, addCart] = useState({})
+    const [cart, addCart] = useState([])
     const getDetails = () => {
         const payload = { type: 'pathology', id: vendorid, filter: filter };
         const onSuccess = (data) => {
@@ -47,7 +48,7 @@ const PathologyDetail = (props) => {
     const renderHeader = () => {
         return (
             <View>
-                <VendorDetails vendor={pathology} />
+                <CartView cart={pathology} />
                 <Label name="Available Bundles" />
                 <SectionList
                     horizontal={true}
@@ -65,6 +66,7 @@ const PathologyDetail = (props) => {
             </View>
         )
     }
+    
     useEffect(() => {
         getDetails()
     }, [])

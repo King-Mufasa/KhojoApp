@@ -39,6 +39,7 @@ import OrderList from './pages/order/orderlist';
 import Register from './pages/auth/register';
 import Notification from './pages/util/notification';
 import OrderDetail from './pages/order/detail';
+import AppointmentList from './pages/appointment/appointmentlist';
 
 const Onboard = createStackNavigator(
   {
@@ -167,6 +168,9 @@ const Order = createStackNavigator(
     },
     OrderDetail:{
       screen: OrderDetail
+    },
+    AppointmentList:{
+      screen:AppointmentList
     }
   }
 )
@@ -194,7 +198,7 @@ const BottomTabNav = createMaterialBottomTabNavigator(
       }
     },
     CartScreen: {
-      screen: Onboard,
+      screen: Order,
       navigationOptions: {
         tabBarLabel: 'Cart',
         tabBarIcon: ({ tintColor }) => (

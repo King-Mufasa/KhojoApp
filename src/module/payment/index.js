@@ -14,8 +14,7 @@ const hashids = new Hashids()
 
 
 
-const makePayment = (amount, order_code, user, responseHandler) => {
-
+const makePayment = (amount, note,user, responseHandler) => {
 
   async function _createOrderWithToken(orderId, amount) {
     let tokenUrl;
@@ -86,7 +85,7 @@ const makePayment = (amount, order_code, user, responseHandler) => {
       'appId': apiKey,
       'tokenData': map.tokenData,
       'orderCurrency': "INR",
-      'orderNote': 'Order accept:' + order_code,
+      'orderNote': note,
       'customerName': user.name,
       'customerPhone': user.phone,
       'customerEmail': user.email,
@@ -94,7 +93,7 @@ const makePayment = (amount, order_code, user, responseHandler) => {
       'color1': Colors.primary,
       'color2': Colors.white,
       'appName': 'appId',
-      'notifyUrl':'http://192.168.114.29:8080/customer.acceptorder'
+      'notifyUrl':'https://khojodoctor.in/customer.acceptorder'
     }
     RNPgReactNativeSdk.startPaymentWEB(checkout, env, responseHandler);
   }

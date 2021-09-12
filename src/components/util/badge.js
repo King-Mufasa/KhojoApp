@@ -4,6 +4,7 @@ import Colors from '../../styles/color';
 import Fontsize from '../../styles/fontsize';
 
 const Badge = (props) => {
+    console.log(props.status)
     return (
         <TouchableHighlight
             style={[styles.button,
@@ -12,7 +13,9 @@ const Badge = (props) => {
                     props.status==0?Colors.lightdark:
                     props.status==-1?Colors.danger:
                     props.status==2?Colors.success:Colors.lightblue:
-                    props.status==11?Colors.lightdark:Colors.success
+                    props.status==11?Colors.lightdark:
+                    props.status==-1?Colors.danger:
+                    Colors.success
                 }]}
             onPress={(props.click)}
             underlayColor={Colors.white}>
@@ -22,13 +25,15 @@ const Badge = (props) => {
                 props.status==0?Colors.white:
                 props.status==-1?Colors.white:
                 props.status==2?Colors.white:Colors.primary:
-                props.status==11?Colors.white:Colors.primary
+                props.status==11?Colors.white:Colors.white
                 }]}>{props.name==null?
                     props.type=='request'?
                     props.status==0?"Pending":
                     props.status==-1?"Rejected":
                     props.status==1?"Accepted":"Completed":
-                    props.status==11?"Pending":"Completed":props.name}</Text>
+                    props.status==11?"Pending":
+                    props.status==-1?"Rejected":
+                    "Completed":props.name}</Text>
         </TouchableHighlight>
     );
 }

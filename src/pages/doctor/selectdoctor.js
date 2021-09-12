@@ -13,61 +13,60 @@ import APIkit from '../../api/apikit'
 import { connect } from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
 import DoctorItem from '../../components/doctoritem'
+import { useState } from 'react'
+import { useEffect } from 'react'
 
-const initialState = {
-    search_filter: '',
-    errors: {},
-    doctors: {},
-    isLoading: false,
-    token: ""
-}
 
-class DoctorGallery extends React.Component {
-    state = initialState
-    changeSearchFilter = search_filter => {
-        this.setState({ search_filter })
-        this.getDoctor()
+const DoctorGallery = (props) => {
+    const [search_filter, setSearch] = useState()
+    const [doctors, setDoctor] = useState([])
+    const [isloaing, setloading] = useState(false)
+
+    const changeSearchFilter = search_filter => {
+        setSearch(search_filter)
     }
 
-    getDoctor() {
-        const { search_filter } = this.state
-        console.log(this.state)
+
+    const getDoctor = () => {
+        
         const keyword = { filter_name: search_filter };
         const onSuccess = ({ data }) => {
-            this.setState({ doctors: data, isLoading: false  })
-
+            setloading(false)            
+            setDoctor(data)
+            console.log(doctors)
         }
         const onFailue = error => {
+            setloading(false)
             console.log(error.response.data)
-            this.setState({ errors: error.response.data, isLoading: false })
         }
-        this.setState({ isLoading: true })
+        setloading(true)
         APIkit.post('customer.getDoctor/', keyword).then(onSuccess).catch(onFailue)
     }
-    navigate = () =>{
-        const {navigate} = this.props.navigation
-        navigate('Schedule')
+    const navigate = (doctor) => {
+        const { navigate } = props.navigation
+        navigate('Schedule',{doctor:doctor})
     }
-    render() {
-        const { isLoading } = this.state;
-        return (
-            <SafeAreaView style={{ backgroundColor: Colors.primaryBack, flex: 1 }}>
-                <Spinner visible={isLoading} />
-                <SearchComponent callback={this.changeSearchFilter} />
-                <Text style={[Fontsize.medium, { margin: 20 }]}>Select Doctor</Text>
-                <SectionList
-                    style={styles.scrollView}
-                    sections={[
-                        {
-                            title: 'Doctors', data: this.state.doctors
-                        },
-                    ]}
-                    renderItem={({ item }) => <DoctorItem click={this.navigate} info={item} />}
-                    keyExtractor={(item, index) => index}
-                />
-            </SafeAreaView>
-        )
-    }
+    useEffect(()=>{
+        getDoctor()
+    },[])
+    return (
+        <SafeAreaView style={{ backgroundColor: Colors.primaryBack, flex: 1 }}>
+            <Spinner visible={isloaing} />
+            <SearchComponent callback={getDoctor} textchange={changeSearchFilter}/>
+            <Text style={[Fontsize.medium, { margin: 20 }]}>Select Doctor</Text>
+            <SectionList
+                style={styles.scrollView}
+                sections={[
+                    {
+                        title: 'Doctors', data: doctors
+                    },
+                ]}
+                renderItem={({ item }) => <DoctorItem click={()=>{navigate(item)}} info={item} />}
+                keyExtractor={(item, index) => index}
+            />
+        </SafeAreaView>
+    )
+
 }
 
 
