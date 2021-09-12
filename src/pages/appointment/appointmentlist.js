@@ -22,7 +22,7 @@ const SECTIONS = [
     },
 ];
 const AppointmentList = (props) => {
-    const [orders, setOrder] = useState(null)
+    const [appointments, setOrder] = useState(null)
     const [loading, setLoading] = useState(false)
     const [activeSections, setActiveSections] = useState([])
     const navigate = (id) =>{
@@ -34,14 +34,14 @@ const AppointmentList = (props) => {
         const onSuccess = (data) => {
             setLoading(false)
             setOrder(data.data)
-            console.log(orders)
+            console.log(appointments)
         }
         const onFailue = (data) => {
             setLoading(false)
             console.log(data.data)
         }
         setLoading(true)
-        APIkit.post('customer.getOrder/', payload).then(onSuccess).catch(onFailue)
+        APIkit.post('customer.appointment.history', payload).then(onSuccess).catch(onFailue)
     }
     const _renderSectionTitle = (section) => {
         return (
@@ -98,9 +98,9 @@ const AppointmentList = (props) => {
         <View style={StandardStyles.container}>
             <Spinner visible={loading} />
             <SearchComponent placeholder="Search with Order Code"/>
-            <Label name="My Orders" />
+            <Label name="My Appointments" />
             <Accordion
-                sections={orders != null ? orders : SECTIONS}
+                sections={appointments != null ? appointments : SECTIONS}
                 activeSections={activeSections}
                 renderSectionTitle={_renderSectionTitle}
                 renderHeader={_renderHeader}

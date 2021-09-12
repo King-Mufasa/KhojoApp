@@ -13,7 +13,7 @@ const OrderMenu = (props) => {
                 <Category name="My Orders" click={()=>{navigate("OrderList")}} icon={Images.ico_order}/>
                 <Category name="Request Sent" click={()=>{navigate("RequestList")}} icon={Images.ico_request}/>
                 <Category name="Booked Service"  icon={Images.ico_service}/>
-                <Category name="Appointment"  icon={Images.ico_appointment}/>
+                <Category name="Appointment"  click={()=>{navigate("AppointmentList")}}  icon={Images.ico_appointment}/>
             </ScrollView>
         </SafeAreaView>
     )

@@ -40,6 +40,7 @@ import Register from './pages/auth/register';
 import Notification from './pages/util/notification';
 import OrderDetail from './pages/order/detail';
 import AppointmentList from './pages/appointment/appointmentlist';
+import ManagePatient from './pages/profile/managepatient';
 
 const Onboard = createStackNavigator(
   {
@@ -92,6 +93,9 @@ const Profile = createStackNavigator(
     },
     ManageAddress: {
       screen: ManageAddress
+    },
+    ManagePatient:{
+      screen: ManagePatient
     },
     Notification:{
       screen:Notification
