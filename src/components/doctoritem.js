@@ -6,14 +6,15 @@ import { screenHeight, screenWidth } from '../module/IntroSlider/src/themes'
 import Rating from './rating'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import KButton from './KButton'
+import config from '../config'
 const DoctorItem = (props) => {
     const avatar = props.info.image
     return (
         <SafeAreaView style={styles.doctor}>
             <View style={{flexDirection:"row"}}>
             {(avatar != null) ?
-                <Image style={styles.avatar} source={{ uri: 'http://192.168.114.29:8080/' + avatar }} /> :
-                <Image style={styles.fakeavatar} source={{ uri: 'http://192.168.114.29:8080/assets/images/symbol.png' }} />}
+                <Image style={styles.avatar} source={{ uri: config.baseurl + avatar }} /> :
+                <Image style={styles.fakeavatar} source={{ uri: config.baseurl+'assets/images/symbol.png' }} />}
             <SafeAreaView style={styles.doctorinfo}>
                 <View style={styles.name}>
                     <Text style={[Fontsize.medium]}>{props.info.name}</Text>
@@ -29,7 +30,7 @@ const DoctorItem = (props) => {
                 
             </SafeAreaView>
             </View>
-            <KButton name="Book Consultation" style={{ }} click={props.click} />
+            <KButton name="Book Consultation" style={{ }} click={()=>{props.action(props.info.id)}} />
         </SafeAreaView>
     )
 }

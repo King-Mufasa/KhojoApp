@@ -25,7 +25,7 @@ const Home = (props) => {
 
     const navigateToDoctor = () => {
         const { navigate } = props.navigation
-        navigate("SelectDoctor")
+        navigate("SelectDoctor",{label:"",id:null})
     }
     const navigateToLab = () => {
         const { navigate } = props.navigation
@@ -34,6 +34,10 @@ const Home = (props) => {
     const navigateToPharmacy = () => {
         const { navigate } = props.navigation
         navigate("SelectPharmacy")
+    }
+    const selectDoctor = (id) => {
+        const { navigate } = props.navigation
+        navigate('Schedule',{doctor:id})
     }
     const getDoctors = () => {
         const onSuccess = (data) => {
@@ -51,6 +55,7 @@ const Home = (props) => {
         }
         APIkit.post('customer.getBundle').then(onSuccess).catch(onFailue)
     }
+
     useEffect(() => {
         getDoctors()
         getBundles()
@@ -93,7 +98,7 @@ const Home = (props) => {
                             title: 'Doctors', data: doctors
                         },
                     ]}
-                    renderItem={({ item }) => <DoctorItem  info={item} />}
+                    renderItem={({ item }) => <DoctorItem  info={item} action={selectDoctor}/>}
                     keyExtractor={(item, index) => index}
                 />
                 <Label name="Live Test Bundles" />

@@ -164,7 +164,8 @@ const ScheduleAppointment = (props) => {
             'patient':selectedpatient,
             'price':price,
             'pure_price':eventdetail.price,
-            'date':date.dateString
+            'date':date.dateString,
+            'type':eventdetail.type
         }
         const onSuccess = (response)=>{
             setLoading(false)
@@ -174,8 +175,9 @@ const ScheduleAppointment = (props) => {
             setLoading(false)
             console.log(response)
         }
+        console.log(payload)
         setLoading(true)
-        APIkit.post('customer.appointment.create',payload).then(onSuccess).catch(onFailed)
+        APIkit.post('customer.appointment.book',payload).then(onSuccess).catch(onFailed)
     }
 
     useEffect(() => {

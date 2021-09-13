@@ -1,5 +1,5 @@
-import React from 'react'
-import { SafeAreaView, Image, StyleSheet, Text, View, SectionList, TouchableHighlight, TextInput,FlatList, ImageStore } from 'react-native'
+import React ,{useState}from 'react'
+import { SafeAreaView, Image, StyleSheet, Text, View, SectionList, TouchableHighlight, TextInput, FlatList, ImageStore } from 'react-native'
 import Colors from '../../styles/color'
 import Fontsize from '../../styles/fontsize'
 import BadgeButton from '../../components/badgebtn'
@@ -8,40 +8,40 @@ import { Divider, } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Images from '../../styles/images'
 import SearchComponent from '../../components/search'
+import Specialization from '../../assets/array/spec'
 
-
-
-
-class SelectSpeciality extends React.Component {
-
-    render() {
-        const { navigate } = this.props.navigation
-        return (
-            <SafeAreaView style={styles.container}>
-                <SearchComponent />
-                <SectionList
-                    style={styles.scrollView}
-                    sections={[
-                        {
-                            title: 'Select Speciality', data: [
-                                { icon: "first-order", label: 'My Order', key: "order" }
-                                , { icon: "address-book", label: 'Manage Address', key: "ManageAddress" }
-                            ]
-                        },
-                    ]}
-                    renderItem={({ item }) =>
-                        <TouchableHighlight style={styles.listbutton} activeOpacity={0.6} underlayColor="#DDDDDD" onPress={() => navigate(item.key)}>
-                            <SafeAreaView style={styles.listitem}>
-                                <Icon name={Images.icon} size={25} style={styles.icon} />
-                                <Text style={styles.item}>{item.label}</Text>
-                            </SafeAreaView>
-                        </TouchableHighlight>}
-                    renderSectionHeader={({ section }) => <Text style={[styles.sectionHeader, Fontsize.small]}>{section.title}</Text>}
-                    keyExtractor={(item, index) => index}
-                />
-            </SafeAreaView>
-        )
+const SelectSpeciality = (props) => {
+    const [sepc, setSpec] = useState(Specialization)
+    const [filter, setFilter] = useState("")
+    const navigate = (label, id) => {
+        const { navigate } = props.navigation
+        navigate('SelectDoctor', { label: label, id: id })
     }
+    const Filter = (filter) =>{
+        setSpec(sepc.filter((item)=> item.label.includes(filter)))
+    }
+    return (
+        <SafeAreaView style={styles.container}>
+            <SearchComponent callback = {()=>{Filter(filter)}} textchange = {setFilter}/>
+            <SectionList
+                style={styles.scrollView}
+                sections={[
+                    {
+                        title: 'Select Speciality', data: sepc
+                    },
+                ]}
+                renderItem={({ item, index }) =>
+                    <TouchableHighlight style={styles.listbutton} activeOpacity={0.6} underlayColor="#DDDDDD" onPress={() => { navigate(item.label, index) }}>
+                        <SafeAreaView style={styles.listitem}>
+                            <Icon name={Images.icon} size={25} style={styles.icon} />
+                            <Text style={styles.item}>{item.label}</Text>
+                        </SafeAreaView>
+                    </TouchableHighlight>}
+                renderSectionHeader={({ section }) => <Text style={[styles.sectionHeader, Fontsize.small]}>{section.title}</Text>}
+                keyExtractor={(item, index) => index}
+            />
+        </SafeAreaView>
+    )
 }
 
 
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
         height: 30
     },
 
-    
+
     sectionHeader: {
         paddingTop: 2,
         paddingLeft: 10,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View, Text, ScrollView } from 'react-native'
 import Collapsible from 'react-native-collapsible';
 import APIkit from '../../api/apikit'
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -66,7 +66,7 @@ const AppointmentList = (props) => {
                 </View>
                 <View>
                     <Text style={{ color: Colors.lightdark }}>Type</Text>
-                    <Text>{section.book_code}</Text>
+                    <Text>{section.type==0?"Clinic Visit":section.type==1?"Home Visit":"Video Consultation"}</Text>
                 </View>
                 <View>
                     <Text style={{ color: Colors.lightdark }}>Request Sent</Text>
@@ -98,6 +98,7 @@ const AppointmentList = (props) => {
             <Spinner visible={loading} />
             <SearchComponent placeholder="Search with Order Code"/>
             <Label name="My Appointments" />
+            <ScrollView showsVerticalScrollIndicator={false}>
             <Accordion
                 sections={appointments != null ? appointments : SECTIONS}
                 activeSections={activeSections}
@@ -107,6 +108,7 @@ const AppointmentList = (props) => {
                 onChange={setActiveSections}
                 underlayColor={Colors.primaryBack}
             />
+            </ScrollView>
         </View>
     )
 }

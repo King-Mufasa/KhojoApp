@@ -21,14 +21,12 @@ const DoctorGallery = (props) => {
     const [search_filter, setSearch] = useState()
     const [doctors, setDoctor] = useState([])
     const [isloaing, setloading] = useState(false)
-
+    const [spec_id, setSpecId] = useState(props.navigation.state.params.id)
+    const [spec_label, setSpecLabel] = useState(props.navigation.state.params.label)
     const changeSearchFilter = search_filter => {
         setSearch(search_filter)
     }
-
-
-    const getDoctor = () => {
-        
+    const getDoctor = () => {   
         const keyword = { filter_name: search_filter };
         const onSuccess = ({ data }) => {
             setloading(false)            
@@ -53,7 +51,7 @@ const DoctorGallery = (props) => {
         <SafeAreaView style={{ backgroundColor: Colors.primaryBack, flex: 1 }}>
             <Spinner visible={isloaing} />
             <SearchComponent callback={getDoctor} textchange={changeSearchFilter}/>
-            <Text style={[Fontsize.medium, { margin: 20 }]}>Select Doctor</Text>
+            <Text style={[Fontsize.medium, { margin: 20 }]}>{spec_label} Doctors</Text>
             <SectionList
                 style={styles.scrollView}
                 sections={[
@@ -61,12 +59,11 @@ const DoctorGallery = (props) => {
                         title: 'Doctors', data: doctors
                     },
                 ]}
-                renderItem={({ item }) => <DoctorItem click={()=>{navigate(item)}} info={item} />}
+                renderItem={({ item }) => <DoctorItem action={()=>{navigate(item)}} info={item} />}
                 keyExtractor={(item, index) => index}
             />
         </SafeAreaView>
     )
-
 }
 
 

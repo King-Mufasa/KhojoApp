@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View, Text,ScrollView } from 'react-native'
 import Collapsible from 'react-native-collapsible';
 import APIkit from '../../api/apikit'
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -99,6 +99,7 @@ const OrderList = (props) => {
             <Spinner visible={loading} />
             <SearchComponent placeholder="Search with Order Code"/>
             <Label name="My Orders" />
+            <ScrollView showsVerticalScrollIndicator={false}>
             <Accordion
                 sections={orders != null ? orders : SECTIONS}
                 activeSections={activeSections}
@@ -108,6 +109,7 @@ const OrderList = (props) => {
                 onChange={setActiveSections}
                 underlayColor={Colors.primaryBack}
             />
+            </ScrollView>
         </View>
     )
 }

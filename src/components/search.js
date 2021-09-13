@@ -1,4 +1,4 @@
-import React from 'react'
+import React ,{useState}from 'react'
 import {StyleSheet, Text, View, TextInput, Image} from 'react-native'
 import Colors from '../styles/color';
 import { screenHeight, screenWidth } from '../module/IntroSlider/src/themes'
