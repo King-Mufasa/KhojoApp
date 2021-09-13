@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import ToggleCart from '../button/togglecart'
 import RoundButton from '../roundbutton'
@@ -8,6 +8,7 @@ import Colors from '../../styles/color'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const TestItem = (props) => {
+    console.log(props.toggle)
     return (
         <View style={[styles.container,Commonstyle]}>
             <View style={{alignSelf:'center'}}>
@@ -15,7 +16,7 @@ const TestItem = (props) => {
                 <Text style={Fontsize.mini,{color:Colors.lightdark}}>{props.info.type}</Text>
                 <Text style={Fontsize.small,{color:Colors.success,fontWeight:"bold"}}><Icon name="inr" /> {props.info.rate}</Text>
             </View>
-            <ToggleCart  click={()=>{alert("add to cart")}}/>
+            <ToggleCart toggle={props.toggle} click={()=>{props.change("test",props.info.id)}}/>
         </View>
     )
 }

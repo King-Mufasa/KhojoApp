@@ -17,23 +17,12 @@ const type = [
     { title: "Custom", image: 'user' },
 ]
 
-const Appointment = (props) => {
-    const fee = parseFloat(props.event.price * 0.03).toFixed(2)
-    const final_price = parseFloat(parseFloat(props.event.price) + parseFloat(fee)).toFixed(2)
+const BookTest = (props) => {
+    const fee = parseFloat(props.price * 0.03).toFixed(2)
+    const final_price = parseFloat(parseFloat(props.price) + parseFloat(fee)).toFixed(2)
     return (
         <View>
             <View style={styles.modal}>
-                <View style={[StandardStyles.commonview, { flexDirection: 'row', alignItems: 'center' }]}>
-                    <View style={[styles.header, { backgroundColor: props.event.type == 0 ? Colors.primary : props.event.type == 1 ? Colors.warning : Colors.purple }]}>
-                        <Icon name={props.event.type == 0 ? "home" : props.event.type == 1 ? "hospital-o" : "video-camera"} color={Colors.white} size={18} style={{ alignSelf: 'center' }} />
-                    </View>
-                    <View>
-                        {/* <Text >Price : <Text style={styles.price}><Icon name='inr' />{props.event.productprice}</Text> </Text> */}
-                        <Text>Type : {props.event.type == 0 ? "Clinic Visit" : props.event.type == 1 ? "Home Visit" : "Video Consultation"}</Text>
-                        <Text>From : {props.event.from.substring(0, 5)}    To : {props.event.to.substring(0, 5)}</Text>
-                        {/* <Text>Created :{moment(props.event.created_at).format("LL")}</Text> */}
-                    </View>
-                </View>
                 <SelectDropdown
                         defaultValueByIndex={0}
                         buttonStyle={styles.typeselector}
@@ -80,7 +69,7 @@ const Appointment = (props) => {
 
                 <View style={styles.inputlayer}>
                     <Text>Price</Text>
-                    <Text>{props.event.price}</Text>
+                    <Text>{props.price}</Text>
                 </View>
                 <View style={styles.inputlayer}>
                     <Text>Commission Fee (3%)</Text>
@@ -91,7 +80,7 @@ const Appointment = (props) => {
                     <Text>Total</Text>
                     <Text>{final_price}</Text>
                 </View>
-                <KButton name="Book Appointment" click={() => { props.action(props.event.id, final_price) }} />
+                <KButton name="Book Appointment" click={() => { props.action(final_price) }} />
             </View>
         </View>
     )
@@ -151,5 +140,5 @@ const styles = StyleSheet.create({
 )
 
 
-export default Appointment
+export default BookTest
 

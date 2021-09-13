@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { SafeAreaView, Image, Text, View, StyleSheet,ImageBackground} from 'react-native'
 import Colors from '../../styles/color'
 import Fontsize from '../../styles/fontsize'
@@ -8,8 +8,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import KButton from '../KButton'
 import config from '../../config'
 import Images from '../../styles/images'
+import BadgeButton from '../badgebtn'
 
 const BundleItem = (props) => {
+    const [toggle, setToggle] =  useState(props.toggle)
     return (
         <ImageBackground source={{ uri: (props.info.image? config.baseurl + props.info.image: config.baseurl + 'assets/images/default_bundle.jpg' )}}  imageStyle={{ borderRadius: 10}} style={styles.bundle}>
             <ImageBackground style={styles.bundleinfo} >
@@ -24,6 +26,10 @@ const BundleItem = (props) => {
                     <Text style={styles.text}><Icon name="inr" /> {props.info.rate}</Text>
                 </View>
             </ImageBackground>
+            <KButton name={toggle?"Remove":"Add to Cart"} type={toggle?"danger":"primary"} click={()=>{
+                setToggle(!toggle),
+                props.change("bundle",props.info.id)
+            }}/>
         </ImageBackground >
     )
 }
@@ -75,6 +81,7 @@ const styles = StyleSheet.create({
         marginTop: 5,
         color: Colors.white
     },
+    
 })
 
 export default BundleItem

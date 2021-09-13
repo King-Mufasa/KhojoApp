@@ -5837,6 +5837,11 @@ react-native-screens@^3.6.0:
   dependencies:
     warn-once "^0.1.0"
 
+react-native-sectioned-multi-select@^0.8.1:
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/react-native-sectioned-multi-select/-/react-native-sectioned-multi-select-0.8.1.tgz#5ec8e4fe4136c36dc5df1222b288896760e43c86"
+  integrity sha512-iH/5PHBo64yFhKzjd+6sCG0aEvgDnUwpn3I7R0ohcGo/+gJdw47mYmJMTwJTmR9JqBFXHx+2bkQi4ij2ghfqRQ==
+
 react-native-select-dropdown@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/react-native-select-dropdown/-/react-native-select-dropdown-1.1.0.tgz#e640a02738c8569c4a1df57ea5a2f1607982000b"

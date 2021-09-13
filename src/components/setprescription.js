@@ -26,14 +26,13 @@ const styles = StyleSheet.create({
         alignItems:"center",
         justifyContent:'center',
         padding:20,
-        
         borderRadius:5,
         shadowColor: Colors.primary,
         shadowOffset: { width: 1, height: 1 },
         shadowOpacity: 0.8,
         shadowRadius: 45,
         elevation: 8,
-        margin: 10
+        marginTop:10
     },
     button:{
         alignSelf:'flex-end',

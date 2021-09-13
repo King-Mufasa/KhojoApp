@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, ScrollView, SectionList, View, Image, Text } from 'react-native'
+import { StyleSheet, ScrollView, SectionList, View, Image, Text, TextInput } from 'react-native'
 import BundleItem from '../../components/items/bundleitem'
 import TestItem from '../../components/items/testitem'
 import APIkit from '../../api/apikit'
@@ -19,9 +19,11 @@ import { screenHeight, screenWidth } from '../../module/IntroSlider/src/themes'
 import Colors from '../../styles/color'
 import SelectDropdown from 'react-native-select-dropdown'
 import Icon from 'react-native-vector-icons/FontAwesome';
-const PharmacyDetail = (props) => {
+import AwesomeLoading from 'react-native-awesome-loading'
 
-    const [pharmacy, setPharmacy] = useState({})
+const PrescriptionRequest = (props) => {
+    const [type, setType] = useState(props.navigation.state.params.type)
+    const [vendor, setVendor] = useState({})
     const [loading, setLoading] = useState(true)
     const [vendorid, setVendorid] = useState(props.navigation.state.params.vendor_id)
     const [modalshow, setModalShow] = useState(false)
@@ -30,11 +32,14 @@ const PharmacyDetail = (props) => {
     const [patient, setPatient] = useState([])
     const [selectedpatient, selectPatient] = useState(null)
     const [isready, setReady] = useState(false)
+    const [description, setDescription] = useState()
     const getDetails = () => {
-        const payload = { type: 'pharmacy', id: vendorid };
+
+        const payload = { type: type, id: vendorid };
+
         const onSuccess = (data) => {
             setLoading(false)
-            setPharmacy(data.data.vendor[0])
+            setVendor(data.data.vendor[0])
         }
         const onFailue = (data) => {
             setModalMessage(data.message)
@@ -80,7 +85,7 @@ const PharmacyDetail = (props) => {
         });
     }
     const validate = () => {
-        if (selectedpatient==null) {
+        if (selectedpatient == null) {
 
             Snackbar.show({
                 text: 'Please input Patient Information',
@@ -106,13 +111,15 @@ const PharmacyDetail = (props) => {
             setLoading(false)
         }
         var data = new FormData()
-        data.append('type', 'product')
-        data.append('pharmacy-id', vendorid)
-        data.append('name', patient_name)
-        data.append('gender', patient_gender)
-        data.append('address', patient_address)
-        data.append('phone', patient_number)
-        data.append('age', patient_age)
+        if (type == "pharmacy") {
+            data.append('type', 'product')
+        }
+        else {
+            data.append('type', 'test')
+        }
+        data.append('vendor-id', vendorid)
+        data.append('patient', selectedpatient)
+        data.append('description',description)
         data.append("prescrition-file",
             {
                 uri: prescription.uri,
@@ -145,7 +152,7 @@ const PharmacyDetail = (props) => {
     }, [])
     return (
         <ScrollView style={styles.container}>
-            <Spinner visible={loading} />
+            <AwesomeLoading indicatorId={17} size={100} isActive={loading} />
             <Modal
                 testID={'modal'}
                 isVisible={modalshow}
@@ -154,52 +161,55 @@ const PharmacyDetail = (props) => {
                 style={styles.modal}>
                 <SelectPrescription camera={() => { fromCamera() }} gallery={fromGallery} message={modalmessage} button={"Close"} />
             </Modal>
-            <VendorDetails vendor={pharmacy} />
+            <VendorDetails vendor={vendor} />
             <SelectDropdown
-                        defaultValueByIndex={0}
-                        buttonStyle={styles.typeselector}
-                        data={patient}
-                        onSelect={(selectedItem, index) => {
-                            selectPatient(selectedItem.id);
-                        }}
-                        renderCustomizedButtonChild={(selectedItem, index) => {
-                            // props.type(selectedItem)
-                            // text represented after item is selected
-                            // if data array is an array of objects then return selectedItem.property to render after item is selected
-                            return (
-                                <View style={styles.addressselect}>
-                                    <View style={{flexDirection:'row'}}> 
-                                    {selectedItem ? (
-                                        <Icon
-                                            name={selectedItem.type==0?'user':selectedItem.type==1?"home":selectedItem.type==2?"handshake-o":"user"}
-                                            size={25}
-                                            style={styles.icon}
-                                        />
-                                    ) : (
-                                        <Icon name="user" color={Colors.primary} size={32} />
-                                    )}
-                                    <Text style={styles.dropdown3BtnTxt}>
-                                        {selectedItem ? selectedItem.name : "Select Patient"}
-                                    </Text>
-                                    </View>
-                                    
-                                    <Icon style={{alignSelf:'center'}} name="chevron-down" color={Colors.primary} size={18} />
-                                </View>
-                            )
-                        }}
-                        renderCustomizedRowChild={(item, index) => {
-                            // text represented for each item in dropdown
-                            // if data array is an array of objects then return item.property to represent item in dropdown
-                            return (
-                                <View style={styles.addresstype}>
-                                    <Icon name={item.type==0?'user':item.type==1?"home":item.type==2?"handshake-o":"user"} size={25} style={styles.icon} />
-                                    <Text >{item.name}</Text>
-                                </View>
-                            )
-                        }}
-                    />
-            {/* <PatientDetail number={setNumber} name={setName} address={setAddress} age={setAge} gender={patient_gender} setgender={setGender} /> */}
-            <Image source={{uri:prescription.uri}} style={[{display:prescription.uri?"flex":'none'},styles.prescription]}/>
+                defaultValueByIndex={0}
+                buttonStyle={styles.typeselector}
+                data={patient}
+                onSelect={(selectedItem, index) => {
+                    selectPatient(selectedItem.id);
+                }}
+                renderCustomizedButtonChild={(selectedItem, index) => {
+                    return (
+                        <View style={styles.addressselect}>
+                            <View style={{ flexDirection: 'row' }}>
+                                {selectedItem ? (
+                                    <Icon
+                                        name={selectedItem.type == 0 ? 'user' : selectedItem.type == 1 ? "home" : selectedItem.type == 2 ? "handshake-o" : "user"}
+                                        size={25}
+                                        style={styles.icon}
+                                    />
+                                ) : (
+                                    <Icon name="user" color={Colors.primary} size={32} />
+                                )}
+                                <Text style={styles.dropdown3BtnTxt}>
+                                    {selectedItem ? selectedItem.name : "Select Patient"}
+                                </Text>
+                            </View>
+
+                            <Icon style={{ alignSelf: 'center' }} name="chevron-down" color={Colors.primary} size={18} />
+                        </View>
+                    )
+                }}
+                renderCustomizedRowChild={(item, index) => {
+                    return (
+                        <View style={styles.addresstype}>
+                            <Icon name={item.type == 0 ? 'user' : item.type == 1 ? "home" : item.type == 2 ? "handshake-o" : "user"} size={25} style={styles.icon} />
+                            <Text >{item.name}</Text>
+                        </View>
+                    )
+                }}
+            />
+            <View style={[styles.selectedprescription, { display: prescription.uri ? "flex" : 'none' }]}>
+                <Image source={{ uri: prescription.uri }} style={[styles.prescription]} />
+                <TextInput
+                    style={styles.description}
+                    maxLength={220}
+                    onChangeText={(text) => setDescription(text)}
+                    multiline={true}
+                    numberOfLines={3} 
+                    placeholder="Description"/>
+            </View>
             <SetPrescription request={request} click={validate} isready={isready} />
         </ScrollView>
     )
@@ -215,38 +225,47 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         margin: 0,
     },
-    prescription:{
-        width:"100%",
-        height:screenHeight*0.8,
-        alignSelf:'center',
-        borderRadius:10
+    prescription: {
+        width: 100,
+        height: 120,
+        alignSelf: 'center',
+        borderRadius: 10
+    },
+    selectedprescription: {
+        flexDirection: 'row',
+        justifyContent: 'space-around'
     },
     typeselector: {
         width: '100%',
         borderRadius: 10,
-        marginBottom:20
+        marginBottom: 20
     },
-    addressselect:{
-        flexDirection:'row',
-        justifyContent:'space-between',
-        paddingHorizontal:20,
+    addressselect: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: 20,
 
     },
-    addresstype:{
-        flexDirection:'row',
-        paddingHorizontal:20
+    addresstype: {
+        flexDirection: 'row',
+        paddingHorizontal: 20
     },
-    dropdown3BtnTxt:{
-        alignSelf:'center',
-        marginStart:10
+    dropdown3BtnTxt: {
+        alignSelf: 'center',
+        marginStart: 10
     },
     icon: {
         color: Colors.primary,
         width: screenWidth * 0.1
     },
+    description: {
+        backgroundColor: Colors.lightblue,
+        width: "60%",
+        textAlignVertical: 'top', 
+    }
 })
 
 
-export default PharmacyDetail
+export default PrescriptionRequest
 
 

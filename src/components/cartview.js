@@ -10,8 +10,8 @@ const CartView = (props) => {
     return (
         <View style={styles.container}>
             <View style={{flexDirection:'column',alignSelf:'center'}}>
-                <Text><Text style={[Fontsize.medium, {color:Colors.white}]}>{props.count}  </Text>Item Selected</Text>
-                <Text style={{marginTop:20}}>Total   <Text style={[{color:Colors.white}, Fontsize.small]}><Icon name="inr" /> {props.price}</Text></Text>
+                <Text><Text style={[Fontsize.medium, {color:Colors.primary}]}>{props.count}  </Text>Item Selected</Text>
+                <Text style={{marginTop:20}}>Total   <Text style={[{color:Colors.success, fontWeight:'bold'}, Fontsize.small]}><Icon name="inr" /> {props.price}</Text></Text>
             </View>
 
             <TouchableHighlight onPress={props.click} style={styles.btncreate}>
@@ -23,12 +23,15 @@ const CartView = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.lightblue,
         paddingHorizontal: 20,
         paddingVertical: 10,
         borderRadius: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
+        marginBottom:10,
+        borderColor:Colors.primary,
+        borderWidth:1
     },
     btncreate: {
         borderRadius: 500,

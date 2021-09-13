@@ -41,9 +41,9 @@ const Profile = (props) => {
                             { icon: "first-order", label: 'My Order', key: "OrderMenu" }
                             , { icon: "address-book", label: 'Manage Address', key: "ManageAddress" }
                             , { icon: "user", label: 'Manage Patient', key: "ManagePatient" }
-                            , { icon: "heart", label: 'Wishlist' }
-                            , { icon: "flask", label: 'My Lab Tests' }
-                            , { icon: "credit-card-alt", label: 'Payment Methods' }
+                            // , { icon: "heart", label: 'Wishlist' }
+                            // , { icon: "flask", label: 'My Lab Tests' }
+                            // , { icon: "credit-card-alt", label: 'Payment Methods' }
                         ]
                     },
                     {

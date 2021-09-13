@@ -18,7 +18,8 @@ const SelectSpeciality = (props) => {
         navigate('SelectDoctor', { label: label, id: id })
     }
     const Filter = (filter) =>{
-        setSpec(sepc.filter((item)=> item.label.includes(filter)))
+        console.log(filter)
+        setSpec(Specialization.filter((item)=> item.label.includes(filter)))
     }
     return (
         <SafeAreaView style={styles.container}>

@@ -41,6 +41,7 @@ import Notification from './pages/util/notification';
 import OrderDetail from './pages/order/detail';
 import AppointmentList from './pages/appointment/appointmentlist';
 import ManagePatient from './pages/profile/managepatient';
+import PrescriptionRequest from './pages/order/prescription';
 
 const Onboard = createStackNavigator(
   {
@@ -135,7 +136,8 @@ const Pahology = createStackNavigator(
     },
     PathologyDetail: {
       screen: PathologyDetail
-    }
+    },
+    
   }
 )
 
@@ -175,6 +177,9 @@ const Order = createStackNavigator(
     },
     AppointmentList:{
       screen:AppointmentList
+    },
+    RequestOrder:{
+      screen:PrescriptionRequest
     }
   }
 )
