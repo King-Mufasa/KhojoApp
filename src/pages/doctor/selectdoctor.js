@@ -1,11 +1,11 @@
 import React from 'react'
-import { View, Image, Text } from 'react-native-animatable'
+import { View, Image } from 'react-native-animatable'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { StyleSheet, SectionList } from 'react-native'
+import { StyleSheet, SectionList, Text } from 'react-native'
 import Rating from '../../components/rating'
 import KButton from '../../components/KButton'
-
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialIcons'
+import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import Colors from '../../styles/color'
 import SearchComponent from '../../components/search'
 import Fontsize from '../../styles/fontsize'
@@ -15,21 +15,72 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import DoctorItem from '../../components/doctoritem'
 import { useState } from 'react'
 import { useEffect } from 'react'
-
-
+import Languages from '../../assets/array/language'
+import Accordion from 'react-native-collapsible/Accordion';
+import * as Animatable from 'react-native-animatable';
+import Specialization from '../../assets/array/spec'
+import { Divider } from 'react-native-paper'
 const DoctorGallery = (props) => {
-    const [search_filter, setSearch] = useState()
+    
+
+    const [search_filter, setSearch] = useState("")
     const [doctors, setDoctor] = useState([])
     const [isloaing, setloading] = useState(false)
     const [spec_id, setSpecId] = useState(props.navigation.state.params.id)
     const [spec_label, setSpecLabel] = useState(props.navigation.state.params.label)
+    const [selectedlanguage, setLanguage] = useState([])
+    const [selectedspec, setSpec] = useState([])
+    const [showfilter, showFilter] = useState(true)
+    const [activeFilter, setActiveFilter] = useState([])
+    
+    const changeLanguage = (selectedItems) => {
+        setLanguage(selectedItems)
+    }
+    const changeSpec = (selectedItems) => {
+        setSpec(selectedItems)
+    }
+    const LanguageFilter = [
+        {
+            name: 'Language',
+            id: -1,
+            children: Languages
+        }
+    ]
+    const SpecializationFilter = [
+        {
+            name:'Specialization',
+            id:-2,
+            children: Specialization
+
+        }
+    ]
+    const SECTIONS = [
+        {
+            title: 'Language Filter',
+            content: 'Select Language',
+            filter:LanguageFilter,
+            selected:selectedlanguage,
+            change:changeLanguage
+        },
+        {
+            title: 'Spec Filter',
+            content: 'Select Specialization',
+            filter:SpecializationFilter,
+            selected:selectedspec,
+            change:changeSpec
+        },
+    ];
     const changeSearchFilter = search_filter => {
         setSearch(search_filter)
     }
-    const getDoctor = () => {   
-        const keyword = { filter_name: search_filter };
+    const getDoctor = () => {
+        let refilter = [];
+        selectedspec.forEach(element => {
+            refilter.push(element%1000)
+        });
+        const keyword = { filter_name: search_filter,filter_lang:selectedlanguage,filter_spec:refilter };
         const onSuccess = ({ data }) => {
-            setloading(false)            
+            setloading(false)
             setDoctor(data)
             console.log(doctors)
         }
@@ -42,27 +93,77 @@ const DoctorGallery = (props) => {
     }
     const navigate = (doctor) => {
         const { navigate } = props.navigation
-        navigate('Schedule',{doctor:doctor})
+        navigate('Schedule', { doctor: doctor })
     }
-    useEffect(()=>{
+ 
+    const _renderSectionTitle = (section) => {
+        return (
+            <View style={styles.content}>
+            </View>
+        );
+    };
+    const _renderHeader = (section, index, isActive, sections) => {
+        return (
+            <Animatable.View
+                duration={300}
+                transition="backgroundColor"
+                style={[{ backgroundColor: (isActive ? Colors.lightblue : Colors.primaryBack) }, styles.filterheader]}>
+                <Text style={[styles.headerText,Fontsize.medium]}>{section.title}</Text>
+            </Animatable.View>
+        );
+    }
+
+    const _renderContent = (section) => {
+        console.log(section)
+        return (
+            <View style={styles.content}>
+                <SectionedMultiSelect
+                    items={section.filter}
+                    IconRenderer={Icon}
+                    uniqueKey="id"
+                    subKey="children"
+                    selectText={section.content}
+                    showDropDowns={true}
+                    readOnlyHeadings={true}
+                    onSelectedItemsChange={section.change}
+                    selectedItems={section.selected}
+                />
+            </View>
+        );
+    };
+
+    const _updateSections = (activeSections) => {
+        setActiveFilter(activeSections);
+    };
+    useEffect(() => {
         getDoctor()
-    },[])
+    }, [selectedspec,selectedlanguage])
     return (
-        <SafeAreaView style={{ backgroundColor: Colors.primaryBack, flex: 1 }}>
+        <View style={{ backgroundColor: Colors.primaryBack, flex: 1 }}>
             <Spinner visible={isloaing} />
-            <SearchComponent callback={getDoctor} textchange={changeSearchFilter}/>
-            <Text style={[Fontsize.medium, { margin: 20 }]}>{spec_label} Doctors</Text>
+            <SearchComponent callback={getDoctor} textchange={changeSearchFilter} />
+            <Accordion
+                sections={SECTIONS}
+                activeSections={activeFilter}
+                renderSectionTitle={_renderSectionTitle}
+                renderHeader={_renderHeader}
+                renderContent={_renderContent}
+                onChange={_updateSections}
+            />
+            <Divider orientation="horizontal"  insetType="middle" />
+            <Text style={[Fontsize.small, { margin: 20 }]}>{spec_label} Doctors</Text>
             <SectionList
+                showsVerticalScrollIndicator={false}
                 style={styles.scrollView}
                 sections={[
                     {
                         title: 'Doctors', data: doctors
                     },
                 ]}
-                renderItem={({ item }) => <DoctorItem action={()=>{navigate(item)}} info={item} />}
+                renderItem={({ item }) => <DoctorItem action={() => { navigate(item) }} info={item} />}
                 keyExtractor={(item, index) => index}
             />
-        </SafeAreaView>
+        </View>
     )
 }
 
@@ -72,6 +173,17 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         marginBottom: 20
     },
+    filterheader:{
+        paddingHorizontal:20,
+        paddingVertical:10
+    },
+    content:{
+        paddingHorizontal:20,
+        backgroundColor:Colors.lightblue
+    },
+    headerText:{
+        color:Colors.primary
+    }
 })
 
 export default DoctorGallery

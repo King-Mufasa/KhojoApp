@@ -39,6 +39,7 @@ const PathologyDetail = (props) => {
     const [patient, setPatient] = useState()
     const [selectedpatient, selectPatient] = useState()
     const [user] = useGlobalState("user")
+    
     const getDetails = () => {
         const payload = { type: 'pathology', id: vendorid, filter: filter };
         const onSuccess = (data) => {

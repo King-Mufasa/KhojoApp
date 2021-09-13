@@ -24,7 +24,7 @@ const styles=StyleSheet.create({
         backgroundColor: Colors.white,
         borderBottomStartRadius: 10,
         borderBottomEndRadius: 10,
-        padding: 20
+        padding: 10,
     },
     searchcontainer: {
         backgroundColor: Colors.secondary,

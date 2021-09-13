@@ -15,14 +15,10 @@ import APIkit from '../api/apikit'
 import Keywords from '../styles/keywords'
 import KeywordItem from '../components/keyworditem'
 
-
-
 const Home = (props) => {
-
-
+    
     const [doctors, setDoctor] = useState({});
     const [bundles, setBundles] = useState({});
-
     const navigateToDoctor = () => {
         const { navigate } = props.navigation
         navigate("SelectDoctor",{label:"",id:null})
@@ -67,7 +63,7 @@ const Home = (props) => {
             <HomeHeader nav={props.navigation}/>
             <SearchComponent />
             <ScrollView style={styles.scroll}>
-                <UploadPrescripion />
+                {/* <UploadPrescripion /> */}
                 <Label name="Select Category" />
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                     <Category click={navigateToPharmacy} name="Medicines" desc="5 Lakh + Medicines" icon={Images.cat_pharmacy} />

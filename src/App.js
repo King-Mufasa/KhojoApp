@@ -106,15 +106,12 @@ const Profile = createStackNavigator(
 
 const Doctor = createStackNavigator(
   {
-    SelectSpec: {
-      screen: SelectSpeciality,
+    SelectDoctor: {
+      screen: DoctorGallery,
       navigationOptions: ({ navigation }) => ({
         headerLeft: () =>
           <HomeButton click={navigation} />
       })
-    },
-    SelectDoctor: {
-      screen: DoctorGallery
     },
     Schedule: {
       screen: ScheduleAppointment

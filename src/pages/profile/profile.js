@@ -9,7 +9,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { useGlobalState } from '../../store/state'
 import Images from '../../styles/images'
 const ProfileHeader = (props) => {
-    console.log(props.url)
     return (
         <View style={styles.profilecontainer}>
             <Image source={props.url} style={styles.avatar} />
@@ -51,7 +50,7 @@ const Profile = (props) => {
                             { icon: "wechat", label: 'Help' }
                             , { icon: "gratipay", label: 'Rate Us' }
                             , { icon: "question-circle", label: 'FAQs' }
-                            , { icon: "sign-out", label: 'Log Out' }
+                            // , { icon: "sign-out", label: 'Log Out' }
                         ]
                     },
                 ]}
