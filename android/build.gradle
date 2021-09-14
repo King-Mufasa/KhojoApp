@@ -7,9 +7,9 @@ buildscript {
         compileSdkVersion = 30
         targetSdkVersion = 30
         ndkVersion = "20.1.5948944"
-        googlePlayServicesVersion = "11.8.0"
+        playServicesVersion = "17.0.0"
         firebaseMessagingVersion = '+'
-        // androidMapsUtilsVersion = "0.5+"
+        androidMapsUtilsVersion = "2.2.5"
     }
     repositories {
         google()

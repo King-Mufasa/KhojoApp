@@ -8,6 +8,7 @@ import { Divider, } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useGlobalState } from '../../store/state'
 import Images from '../../styles/images'
+
 const ProfileHeader = (props) => {
     return (
         <View style={styles.profilecontainer}>
@@ -32,6 +33,7 @@ const Profile = (props) => {
         <SafeAreaView style={styles.container}>
             <ProfileHeader user={user} url={{ uri: (image != null ? image.uri : Images.default_symbol) }} nav={navigate} name={name} />
             <Divider orientation="horizontal" inset={true} insetType="middle" />
+            
             <SectionList
                 style={styles.scrollView}
                 sections={[
@@ -40,7 +42,7 @@ const Profile = (props) => {
                             { icon: "first-order", label: 'My Order', key: "OrderMenu" }
                             , { icon: "address-book", label: 'Manage Address', key: "ManageAddress" }
                             , { icon: "user", label: 'Manage Patient', key: "ManagePatient" }
-                            // , { icon: "heart", label: 'Wishlist' }
+                            , { icon: "map", label: 'My Location', key:"MyPlace" }
                             // , { icon: "flask", label: 'My Lab Tests' }
                             // , { icon: "credit-card-alt", label: 'Payment Methods' }
                         ]
@@ -58,6 +60,7 @@ const Profile = (props) => {
                 renderSectionHeader={({ section }) => <Text style={[styles.sectionHeader, Fontsize.small]}>{section.title}</Text>}
                 keyExtractor={(item, index) => index}
             />
+            
         </SafeAreaView>
     )
 }

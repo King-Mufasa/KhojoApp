@@ -42,6 +42,7 @@ import OrderDetail from './pages/order/detail';
 import AppointmentList from './pages/appointment/appointmentlist';
 import ManagePatient from './pages/profile/managepatient';
 import PrescriptionRequest from './pages/order/prescription';
+import MyPlace from './pages/profile/myplace';
 
 const Onboard = createStackNavigator(
   {
@@ -97,6 +98,9 @@ const Profile = createStackNavigator(
     },
     ManagePatient:{
       screen: ManagePatient
+    },
+    MyPlace:{
+      screen:MyPlace
     },
     Notification:{
       screen:Notification
