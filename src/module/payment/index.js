@@ -76,9 +76,7 @@ const makePayment = (amount, note,user, responseHandler) => {
   }
   async function dopayment() {
     const orderId = hashids.encode(user.id) + "ORDER-" + Date.now()
-    console.log(orderId)
     const map = await _createOrderWithToken(orderId, amount);
-    console.log(map)
     let checkout = {
       'orderId': orderId,
       'orderAmount': map.orderAmount,
@@ -95,6 +93,7 @@ const makePayment = (amount, note,user, responseHandler) => {
       'appName': 'appId',
       'notifyUrl':'https://khojodoctor.in/customer.acceptorder'
     }
+    console.log(checkout)
     RNPgReactNativeSdk.startPaymentWEB(checkout, env, responseHandler);
   }
   dopayment()

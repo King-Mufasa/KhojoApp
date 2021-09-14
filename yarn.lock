@@ -1223,11 +1223,6 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/eslint-plugin/-/eslint-plugin-1.1.0.tgz#e42b1bef12d2415411519fd528e64b593b1363dc"
   integrity sha512-W/J0fNYVO01tioHjvYWQ9m6RgndVtbElzYozBq1ZPrHO/iCzlqoySHl4gO/fpCl9QEFjvJfjPgtPMTMlsoq5DQ==
 
-"@react-native-community/geolocation@^2.0.2":
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@react-native-community/geolocation/-/geolocation-2.0.2.tgz#ba8b40f560ead8d014740d1cdea970b33f19312e"
-  integrity sha512-tTNXRCgnhJBu79mulQwzabXRpDqfh/uaDqfHVpvF0nX4NTpolpy6mvTRiFg7eWFPGRArsnZz1EYp6rHfJWGgEA==
-
 "@react-native-community/masked-view@^0.1.11":
   version "0.1.11"
   resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.11.tgz#2f4c6e10bee0786abff4604e39a37ded6f3980ce"
@@ -5824,6 +5819,11 @@ react-native-fast-image@^8.3.7:
   version "8.3.7"
   resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-8.3.7.tgz#c4877de17903101f6d94b6736a4f7e5d7b019224"
   integrity sha512-J++Ad04PTUe4YgjyGv63gfgV8Fz1gZKAgQHpblf8Z87D9dxfc8UfXHTPv9VLGdTJU4IzdTnQqzoFgDtWdsvBsQ==
+
+react-native-geolocation-service@^5.3.0-beta.2:
+  version "5.3.0-beta.2"
+  resolved "https://registry.yarnpkg.com/react-native-geolocation-service/-/react-native-geolocation-service-5.3.0-beta.2.tgz#78faeb06315c975e64774199a2e0cf3ab9f3242f"
+  integrity sha512-mK040gw0g/ZinWQmJ7uS5N9XlC3mG7+oMifR6MKZ0U7tQjrYiXe/oFF8DmujuNle+KRaqFMK67ZXesg7RmZZ/A==
 
 react-native-gesture-handler@^1.10.3:
   version "1.10.3"

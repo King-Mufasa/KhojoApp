@@ -46,7 +46,8 @@ const PharmacyGallery = (props) => {
     const viewDetail = id =>{
         console.log(id)
         const {navigate} = props.navigation
-        navigate('PharmacyDetail',{vendor_id:id})
+        navigate('RequestOrder', { type: 'pharmacy',vendor_id: id })
+        // navigate('PharmacyDetail',{vendor_id:id})
     }
 
     useEffect(()=>{

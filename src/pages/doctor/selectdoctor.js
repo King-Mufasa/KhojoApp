@@ -20,14 +20,11 @@ import Accordion from 'react-native-collapsible/Accordion';
 import * as Animatable from 'react-native-animatable';
 import Specialization from '../../assets/array/spec'
 import { Divider } from 'react-native-paper'
-const DoctorGallery = (props) => {
+const DoctorGallery = ({route, navigation}) => {
     
-
     const [search_filter, setSearch] = useState("")
     const [doctors, setDoctor] = useState([])
     const [isloaing, setloading] = useState(false)
-    const [spec_id, setSpecId] = useState(props.navigation.state.params.id)
-    const [spec_label, setSpecLabel] = useState(props.navigation.state.params.label)
     const [selectedlanguage, setLanguage] = useState([])
     const [selectedspec, setSpec] = useState([])
     const [showfilter, showFilter] = useState(true)
@@ -92,7 +89,7 @@ const DoctorGallery = (props) => {
         APIkit.post('customer.getDoctor/', keyword).then(onSuccess).catch(onFailue)
     }
     const navigate = (doctor) => {
-        const { navigate } = props.navigation
+        const { navigate } = navigation
         navigate('Schedule', { doctor: doctor })
     }
  
@@ -151,7 +148,6 @@ const DoctorGallery = (props) => {
                 onChange={_updateSections}
             />
             <Divider orientation="horizontal"  insetType="middle" />
-            <Text style={[Fontsize.small, { margin: 20 }]}>{spec_label} Doctors</Text>
             <SectionList
                 showsVerticalScrollIndicator={false}
                 style={styles.scrollView}

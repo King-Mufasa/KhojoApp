@@ -34,6 +34,7 @@ const Images = {
     cat_pharmacy:require('../assets/image/cat_pharmacy.png'),
     cat_doctor:require('../assets/image/cat_doctor.png'),
     cat_lab:require('../assets/image/cat_lab.png'),
+    cat_service:require('../assets/image/cat_service.png'),
     key_bone:require('../assets/image/bone.png'),
     key_brain:require('../assets/image/brain.png'),
     key_ear:require('../assets/image/ear.png'),
@@ -55,7 +56,11 @@ const Images = {
     ico_order:require('../assets/image/ordermenu/ic_order.png'),
     ico_request:require('../assets/image/ordermenu/ic_request.png'),
     ico_service:require('../assets/image/ordermenu/ic_service.png'),
-    ico_appointment:require('../assets/image/ordermenu/ic_appointment.png')
+    ico_appointment:require('../assets/image/ordermenu/ic_appointment.png'),
+    mark_custom:require('../assets/image/map/mark_custom.png'),
+    mark_office:require('../assets/image/map/mark_office.png'),
+    mark_home:require('../assets/image/map/mark_home.png'),
+    mark_default:require('../assets/image/map/mark_default.png')
 }
 
 

@@ -11,7 +11,7 @@ const Address = (props) => {
     const addresstype = [
         { title: "Home", image: 'home' },
         { title: "Work", image: 'building' },
-        { title: "Custom", image: 'handshake-o' },
+        { title: "Friend", image: 'handshake-o' },
     ]
     return (
         <View>
@@ -32,6 +32,7 @@ const Address = (props) => {
                             // if data array is an array of objects then return selectedItem.property to render after item is selected
                             return (
                                 <View style={styles.addressselect}>
+                                    <View style={{flexDirection:'row'}}> 
                                     {selectedItem ? (
                                         <Icon
                                             name={selectedItem.image}
@@ -41,10 +42,11 @@ const Address = (props) => {
                                     ) : (
                                         <Icon name="home" color={"#444"} size={32} />
                                     )}
-                                    <Text style={styles.dropdown3BtnTxt}>
+                                    <Text style={[styles.dropdown3BtnTxt,Fontsize.medium]}>
                                         {selectedItem ? selectedItem.title : "Select Address Type"}
                                     </Text>
-                                    <Icon name="chevron-down" color={"#444"} size={18} />
+                                    </View>
+                                    <Icon name="chevron-down" color={Colors.primary} size={18} />
                                 </View>
                             )
                         }}
