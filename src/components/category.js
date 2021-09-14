@@ -6,8 +6,8 @@ import Fontsize from '../styles/fontsize'
 
 const Category = (props) => {
     return (
-        <TouchableHighlight onPress={props.click} underlayColor={Colors.primaryBack} >
-            <View style={styles.container}>
+        <TouchableHighlight onPress={props.click} underlayColor={Colors.primaryBack} style={{alignContent:'center',alignItems:'center'}}>
+            <View style={[styles.container,props.style]}>
                 <Image source={props.icon} style={styles.icon} />
                 <View style={{alignSelf:'center',justifyContent:'space-between'}}>
                     <Text style={[Fontsize.small, styles.name]}>{props.name}</Text>
@@ -21,6 +21,7 @@ const Category = (props) => {
 
 const styles = StyleSheet.create({
     container: {
+        width:screenWidth*0.5,
         padding: 10,
         backgroundColor: Colors.white,
         borderRadius: 10,

@@ -10,10 +10,10 @@ const OrderMenu = (props) => {
     return (
         <SafeAreaView style={StandardStyles.container}>
             <ScrollView style={styles.container}>
-                <Category name="My Orders" click={()=>{navigate("OrderList")}} icon={Images.ico_order}/>
-                <Category name="Request Sent" click={()=>{navigate("RequestList")}} icon={Images.ico_request}/>
-                <Category name="Booked Service"  icon={Images.ico_service}/>
-                <Category name="Appointment"  click={()=>{navigate("AppointmentList")}}  icon={Images.ico_appointment}/>
+                <Category style={{width:'90%'}} name="My Orders" click={()=>{navigate("OrderList")}} icon={Images.ico_order}/>
+                <Category style={{width:'90%'}} name="Request Sent" click={()=>{navigate("RequestList")}} icon={Images.ico_request}/>
+                <Category style={{width:'90%'}} name="Booked Service" click={()=>{navigate("ServiceList")}} icon={Images.ico_service}/>
+                <Category style={{width:'90%'}} name="Appointment"  click={()=>{navigate("AppointmentList")}}  icon={Images.ico_appointment}/>
             </ScrollView>
         </SafeAreaView>
     )
@@ -23,6 +23,7 @@ const OrderMenu = (props) => {
 const styles = StyleSheet.create({
     container:{
         width:'100%',
+        padding:10
     }
 })
 export default OrderMenu

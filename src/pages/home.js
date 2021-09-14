@@ -15,25 +15,29 @@ import APIkit from '../api/apikit'
 import Keywords from '../styles/keywords'
 import KeywordItem from '../components/keyworditem'
 
-const Home = (props) => {
+const Home = ({navigation}) => {
     
     const [doctors, setDoctor] = useState({});
     const [bundles, setBundles] = useState({});
     const navigateToDoctor = () => {
-        const { navigate } = props.navigation
+        const { navigate } = navigation
         navigate("SelectDoctor",{label:"",id:null})
     }
     const navigateToLab = () => {
-        const { navigate } = props.navigation
+        const { navigate } = navigation
         navigate("SelectLabs")
     }
     const navigateToPharmacy = () => {
-        const { navigate } = props.navigation
+        const { navigate } = navigation
         navigate("SelectPharmacy")
     }
     const selectDoctor = (id) => {
-        const { navigate } = props.navigation
+        const { navigate } = navigation
         navigate('Schedule',{doctor:id})
+    }
+    const navigateToService = () =>{
+        const { navigate } = navigation
+        navigate("SelectService")
     }
     const getDoctors = () => {
         const onSuccess = (data) => {
@@ -60,7 +64,7 @@ const Home = (props) => {
     return (
         <View style={styles.container}>
             <GeneralStatusBarColor />
-            <HomeHeader nav={props.navigation}/>
+            <HomeHeader nav={navigation}/>
             <SearchComponent />
             <ScrollView style={styles.scroll}>
                 {/* <UploadPrescripion /> */}
@@ -69,6 +73,7 @@ const Home = (props) => {
                     <Category click={navigateToPharmacy} name="Medicines" desc="5 Lakh + Medicines" icon={Images.cat_pharmacy} />
                     <Category click={navigateToDoctor} name="Ask Doctor" desc="7 Lakh + Doctors" icon={Images.cat_doctor} />
                     <Category click={navigateToLab} name="Lab Test" desc="7 Lakh + Labss" icon={Images.cat_lab} />
+                    <Category click={navigateToService} name="Service" desc="7+ Services" icon={Images.cat_service} />
                 </ScrollView>
                 <Label name="Explore by Health Concerns" />
                 <SectionList

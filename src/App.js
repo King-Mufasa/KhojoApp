@@ -43,6 +43,8 @@ import AppointmentList from './pages/appointment/appointmentlist';
 import ManagePatient from './pages/profile/managepatient';
 import PrescriptionRequest from './pages/order/prescription';
 import MyPlace from './pages/profile/myplace';
+import ServiceGallery from './pages/service/service';
+import ServiceList from './pages/service/servicelist';
 
 const Onboard = createStackNavigator(
   {
@@ -158,6 +160,18 @@ const Pharmacy = createStackNavigator(
   }
 )
 
+const Service = createStackNavigator(
+  {
+    SelectService:{
+      screen: ServiceGallery,
+      navigationOptions: ({ navigation }) => ({
+        headerLeft: () =>
+          <HomeButton click={navigation} />,
+      })
+    }
+  }
+)
+
 const Order = createStackNavigator(
   {
     OrderMenu: {
@@ -178,6 +192,9 @@ const Order = createStackNavigator(
     },
     AppointmentList:{
       screen:AppointmentList
+    },
+    ServiceList:{
+      screen:ServiceList
     },
     RequestOrder:{
       screen:PrescriptionRequest
@@ -245,6 +262,7 @@ const RootStack = createSwitchNavigator(
     Home: BottomTabNav,
     Pahology: Pahology,
     Pharmacy: Pharmacy,
+    Service:Service,
     Order: Order
   },
   {
