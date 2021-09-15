@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View, Text, ScrollView } from 'react-native'
 import Collapsible from 'react-native-collapsible';
 import APIkit from '../../api/apikit'
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -34,6 +34,7 @@ const SECTIONS = [
     {
         name: 'Loading',
         content: 'loading data...',
+        status:0
     },
 ];
 const RequestList = () => {
@@ -42,7 +43,6 @@ const RequestList = () => {
     const [activeSections, setActiveSections] = useState([])
 
     const getMyRequest = () => {
-        const payload = { type: config.usertype, };
         const onSuccess = (data) => {
             setLoading(false)
             console.log(data.data)
@@ -54,7 +54,7 @@ const RequestList = () => {
             console.log(data.data)
         }
         setLoading(true)
-        APIkit.post('customer.getRequest/', payload).then(onSuccess).catch(onFailue)
+        APIkit.post('customer.getRequest/').then(onSuccess).catch(onFailue)
     }
     const _renderSectionTitle = (section) => {
         return (
@@ -67,14 +67,14 @@ const RequestList = () => {
         return (
             <View style={[StandardStyles.commonlightview, { flexDirection: 'column' }]}>
                 <View>
-                    <Text style={{ color: Colors.lightdark }}>Pharmacy</Text>
+                    <Text style={{ color: Colors.lightdark }}>{section.vendor_type}</Text>
                     <View style={styles.pharmacy}>
-                        <Avatar image={section.pharmacy_image} />
+                        <Avatar image={section.vendor_image} />
                         <View style={{flexDirection:'column', alignSelf:'center'}}>
                             <Text style={{ color: Colors.lightdark }}>Pharmacy Name</Text>
-                            <Text>{section.pharmacy_name}</Text>
+                            <Text>{section.vendor_name}</Text>
                             <Text style={{ color: Colors.lightdark }}>Contact Info</Text>
-                            <Text>{section.pharmacy_phone}</Text>
+                            <Text>{section.vendor_phone}</Text>
                         </View>
                     </View>
                 </View>
@@ -83,15 +83,23 @@ const RequestList = () => {
                     <Text>{section.request_id}</Text>
                 </View>
                 <View>
+                    <Text style={{ color: Colors.lightdark }}>Patient Name</Text>
+                    <Text>{section.name}</Text>
+                </View>
+                <View>
+                    <Text style={{ color: Colors.lightdark }}>Customer Note</Text>
+                    <Text>{section.description}</Text>
+                </View>
+                <View>
                     <Text style={{ color: Colors.lightdark }}>Request Sent</Text>
-                    <Text>{Moment(section.created_at).format('LL')}</Text>
+                    <Text>{Moment(section.created_at).format("LL")}</Text>
                 </View>
             </View>
         );
     };
     const _renderHeader = (section) => {
         return (
-            <View style={[styles.header,{display:section.pharmacy_name?"flex":"none"}]} >
+            <View style={[styles.header,{display:section.vendor_name?"flex":"none"}]} >
                 <View>
                     <Text style={{ color: Colors.lightdark }}>Request id</Text>
                     <Text>{section.request_id}</Text>
@@ -105,11 +113,12 @@ const RequestList = () => {
     }, [])
     return (
         <View style={StandardStyles.container}>
+            <ScrollView showsVerticalScrollIndicator={false}>
             <Spinner visible={loading} />
             <SearchComponent placeholder="Search with Request Id"/>
             <Label name="My Requests" />
             <Accordion
-                sections={requests != null ? requests : SECTIONS}
+                sections={requests != null ? requests : []}
                 activeSections={activeSections}
                 renderSectionTitle={_renderSectionTitle}
                 renderHeader={_renderHeader}
@@ -117,6 +126,7 @@ const RequestList = () => {
                 onChange={setActiveSections}
                 underlayColor={Colors.primaryBack}
             />
+            </ScrollView>
         </View>
     )
 }

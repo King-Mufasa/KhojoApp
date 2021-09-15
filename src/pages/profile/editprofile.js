@@ -207,9 +207,9 @@ const styles = StyleSheet.create({
     input: {
         width: "100%",
         marginTop: 5,
-        borderRadius: 5,
+        borderRadius: 10,
         borderWidth: 2,
-        borderColor: Colors.lightdark,
+        borderColor: Colors.lightgrey,
         paddingHorizontal: 20
     },
     namearea: {

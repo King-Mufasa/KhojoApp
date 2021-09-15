@@ -14,17 +14,17 @@ const OrderItem = (props) => {
     return (
         <View style={[StandardStyles.commonview, { flexDirection: 'column' }]}>
             <View style={styles.header}>
-                <Image source={{ uri: props.info.productimage == null ? Images.ico_pharmacy : config.baseurl + props.info.productimage }} style={styles.icon} />
+                <Image source={{ uri: props.info.productimage == null ? props.type==1?Images.ico_pathology:Images.ico_pharmacy : config.baseurl + props.info.productimage }} style={styles.icon} />
                 <View>
-                    <Text style={Fontsize.medium}>{props.info.productname}</Text>
-                    <Text>{props.info.producttype}</Text>
+                    <Text style={[Fontsize.small,{marginHorizontal:10, marginBottom:10, width:"90%"}]} lineBreakMode={true} numberOfLines={2}>{props.info.name}</Text>
+                    <Text>{props.info.type}</Text>
                 </View>
             </View>
             
-            <Text >Price : <Text style={styles.price}><Icon name='inr' />{props.info.productprice}</Text> </Text>
-            <Text>Quantity : {props.info.productquantity}</Text>
-            <Text>Expirity : {props.info.productexpiry}</Text>
-            <Text>Created :{moment(props.info.created_at).format("LL")}</Text>
+            <Text >Price : <Text style={styles.price}><Icon name='inr' />{props.info.price}</Text> </Text>
+            {props.info.quantity?<Text>Quantity : {props.info.quantity}</Text>:<></>}
+            {props.info.productexpiry?<Text>Expirity : {props.info.productexpiry}</Text>:<></>}
+            {/* <Text>Created :{moment(props.info.created_at).format("LL")}</Text> */}
         </View>
     )
 

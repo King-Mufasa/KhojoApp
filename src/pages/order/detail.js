@@ -20,9 +20,10 @@ import { screenWidth } from '../../module/IntroSlider/src/themes';
 import Snackbar from 'react-native-snackbar';
 import Modal from "react-native-modal";
 import ModalContent from '../../components/modalcontent';
+import OrderStatus from '../../assets/array/orderstatus';
 const OrderDetail = (props) => {
     const [loading, setLoading] = useState(false)
-    const [order, setOrder] = useState([])
+    const [order, setOrder] = useState(null)
     const [items, setItems] = useState({})
     const [id, setId] = useState(props.navigation.state.params.id)
     const [user] = useGlobalState('user')
@@ -32,10 +33,12 @@ const OrderDetail = (props) => {
     const [modalmessage, setModalmessage] = useState("")
     const getDetail = () => {
         const payload = { id }
+        console.log(id)
         setLoading(true)
         const onSuccess = (data) => {
-            setOrder(data.data[0])
-            setItems(data.data)
+            let response = data.data
+            setOrder(response.order)
+            setItems(response.items)
             setLoading(false)
         }
         const onFailed = (data) => {
@@ -88,7 +91,7 @@ const OrderDetail = (props) => {
             const data = JSON.parse(result);
             console.log(data.txStatus);
             if(data.txStatus == "SUCCESS"){
-                updateOrder(12)
+                updateOrder(order.type==1?2:12)
             }
           };
         const note = 'Order accept:' + order.order_code
@@ -121,10 +124,13 @@ const OrderDetail = (props) => {
         getDetail()
         getAddress()
     }, [])
+    useEffect(()=>{
+        console.log(OrderStatus)
+    },[items])
     return (
         <View style={[StandardStyles.container, { paddingTop: 10 }]}>
             {/* <Spinner visible={loading} /> */}
-            <AwesomeLoading indicatorId={17} size={100} isActive={loading} text="loading" />
+            
             <Modal
                     testID={'modal'}
                     isVisible={modalshow}
@@ -140,17 +146,17 @@ const OrderDetail = (props) => {
                 </View>
                 <View style={styles.info}>
                     <Label name="Status" size='medium' />
-                    <Text>{order.status == 11 ? "Pending" :order.status == -1?"Rejected":"Accepted"}
+                    <Text>{order!=null&&OrderStatus!=null?OrderStatus[(order.status)+1].description:""}
                     </Text>
                 </View>
                 <View style={styles.info}>
                     <Label name="Price" size='medium' />
                     <Text style={{ color: Colors.success }} ><Icon name='inr' /> {order != null ? order.total_price : "0"}</Text>
                 </View>
-                <View style={[styles.offer, { display: order == null ? "none" : order.actived_offer != null ? "flex" : "none" }]}>
+                <View style={[styles.offer, { display: order == null || order.type==1 ? "none" : order.actived_offer != null ? "flex" : "none" }]}>
                     <View style={{ flexDirection: 'row', marginStart: 10 }}>
                         <OfferBadge
-                            name={order != null ? order.name : ""} />
+                            name={order != null ? order.offername : ""} />
                         <Text>  -{order != null ? order.discount : ""}%</Text>
                     </View>
                     <Text style={styles.old_price} ><Icon name='inr' /> {order != null ? order.old_price : "0"}</Text>
@@ -158,7 +164,7 @@ const OrderDetail = (props) => {
                 <View style={[styles.info, {
                     paddingHorizontal: 10, paddingTop: 20,
                     display:
-                            order.status == 0 || order.status == 11 ? 'flex' : 'none',
+                            order != null&&(order.status == 0 || order.status == 11) ? 'flex' : 'none',
                             flexDirection:'column'
                 }]}>
                     <SelectDropdown
@@ -174,7 +180,7 @@ const OrderDetail = (props) => {
                             // if data array is an array of objects then return selectedItem.property to render after item is selected
                             return (
                                 <View style={styles.addressselect}>
-                                    <View style={{flexDirection:'row'}}>
+                                    <View style={{flexDirection:'row', alignItems:'center'}}>
                                     {selectedItem ? (
                                         <Icon
                                             name={selectedItem.type == 1 ? 'home' : selectedItem.type == 2 ? 'building' : 'handshake-o'}
@@ -228,9 +234,10 @@ const OrderDetail = (props) => {
                         title: 'Items', data: items
                     },
                 ]}
-                renderItem={({ item }) => <OrderItem info={item} />}
+                renderItem={({ item }) => <OrderItem info={item} type={order.type}/>}
                 keyExtractor={(item, index) => index}
             />
+            <AwesomeLoading indicatorId={17} size={100} isActive={loading} text="loading" />
         </View>
     )
 }
@@ -270,7 +277,7 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         justifyContent:'space-between',
         paddingHorizontal:20,
-        alignContent:'center'
+        alignItems:'center'
     },
     addresstype:{
         flexDirection:'row',

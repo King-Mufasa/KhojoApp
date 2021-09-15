@@ -39,6 +39,10 @@ const Home = ({navigation}) => {
         const { navigate } = navigation
         navigate("SelectService")
     }
+    const navigate = (spec) =>{
+        const { navigate } = navigation
+        navigate("SelectDoctor",{spec:spec})
+    }
     const getDoctors = () => {
         const onSuccess = (data) => {
             setDoctor(data.data)
@@ -85,7 +89,7 @@ const Home = ({navigation}) => {
                             title: 'Bundles', data: Keywords
                         },
                     ]}
-                    renderItem={({ item }) => <KeywordItem info={item} />}
+                    renderItem={({ item }) => <KeywordItem info={item} action={navigate}/>}
                     keyExtractor={(item, index) => index}
                 />
                 <Label name="Doctors Near You" />

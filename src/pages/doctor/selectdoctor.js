@@ -79,11 +79,9 @@ const DoctorGallery = ({route, navigation}) => {
         const onSuccess = ({ data }) => {
             setloading(false)
             setDoctor(data)
-            console.log(doctors)
         }
         const onFailue = error => {
             setloading(false)
-            console.log(error.response.data)
         }
         setloading(true)
         APIkit.post('customer.getDoctor/', keyword).then(onSuccess).catch(onFailue)
@@ -111,7 +109,6 @@ const DoctorGallery = ({route, navigation}) => {
     }
 
     const _renderContent = (section) => {
-        console.log(section)
         return (
             <View style={styles.content}>
                 <SectionedMultiSelect
@@ -133,8 +130,15 @@ const DoctorGallery = ({route, navigation}) => {
         setActiveFilter(activeSections);
     };
     useEffect(() => {
-        getDoctor()
+        console.log("hoo")
+        console.log(selectedspec)
+        // getDoctor()
     }, [selectedspec,selectedlanguage])
+    useEffect(()=>{
+        // setSpec(navigation.state.params.spec)
+        console.log(navigation.state.params.spec);
+    },[])
+    
     return (
         <View style={{ backgroundColor: Colors.primaryBack, flex: 1 }}>
             <Spinner visible={isloaing} />

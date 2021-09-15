@@ -415,6 +415,70 @@ const Specialization = [
         name: "Critical Care",
         id: 1103
     },
+    {
+        name: "Oral Surgery",
+        id: 1104
+    },
+    {
+        name: "Oral & Cranio - Maxillofacial Surgery",
+        id: 1105
+    },
+    {
+        name: "Otolaryngology surgeon",
+        id: 1106
+    },
+    {
+        name: "Immunologist",
+        id: 1107
+    },
+    {
+        name: "Infectious Disease Specialist",
+        id: 1108
+    },
+    {
+        name: "Hematologist",
+        id: 1109
+    },
+    {
+        name: "Audiologist",
+        id: 1110
+    },
+    {
+        name: "Vascular surgeon",
+        id: 1111
+    },
+    {
+        name: "Andrologist",
+        id: 1112
+    },
+    {
+        name: "Oral and maxillofacial surgeon",
+        id: 1113
+    },
+    {
+        name: "Obstetrician",
+        id: 1114
+    },
+    {
+        name: "Obstetric and gynecological surgeon",
+        id: 1115
+    },
+    {
+        name: "Gynaecologist",
+        id: 1116
+    },
+    {
+        name: "Oculoplastic surgeon",
+        id: 1117
+    },
+    {
+        name: "Neurologist",
+        id: 1118
+    },
+    {
+        name: "Neurosurgeon",
+        id: 1119
+    },
 ]
 
 export default Specialization
