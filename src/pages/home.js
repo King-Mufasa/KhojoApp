@@ -21,7 +21,7 @@ const Home = ({navigation}) => {
     const [bundles, setBundles] = useState({});
     const navigateToDoctor = () => {
         const { navigate } = navigation
-        navigate("SelectDoctor",{label:"",id:null})
+        navigate("SelectDoctor",{label:"",id:null,sepc:null})
     }
     const navigateToLab = () => {
         const { navigate } = navigation

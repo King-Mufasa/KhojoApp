@@ -15,7 +15,7 @@ const SelectSpeciality = (props) => {
     const [filter, setFilter] = useState("")
     const navigate = (label, id) => {
         const { navigate } = props.navigation
-        navigate('SelectDoctor', { label: label, id: id })
+        navigate('SelectDoctor', { label: label, id: id,  })
     }
     const Filter = (filter) =>{
         console.log(filter)

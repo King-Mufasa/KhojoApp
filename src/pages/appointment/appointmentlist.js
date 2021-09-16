@@ -19,6 +19,7 @@ const SECTIONS = [
     {
         name: 'Loading',
         content: 'loading data...',
+        status:0
     },
 ];
 const AppointmentList = (props) => {
@@ -86,7 +87,7 @@ const AppointmentList = (props) => {
                     <Text style={{ color: Colors.lightdark }}>Appointment Code</Text>
                     <Text>{section.book_code}</Text>
                 </View>
-                <Badge status={section.status} type="request"/>
+                <Badge status={section.status===undefined?0:section.status} type="request"/>
             </View>
         );
     };

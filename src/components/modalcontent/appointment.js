@@ -83,7 +83,7 @@ const Appointment = (props) => {
                     <Text>{props.event.price}</Text>
                 </View>
                 <View style={styles.inputlayer}>
-                    <Text>Commission Fee (3%)</Text>
+                    <Text>Processing Fee (3%)</Text>
                     <Text>{fee}</Text>
                 </View>
                 <Divider orientation="horizontal" inset={true} insetType="middle" />

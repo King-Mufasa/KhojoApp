@@ -86,7 +86,7 @@ const ServiceList = ({navigation}) => {
                     <Text style={{ color: Colors.lightdark }}>Request Code</Text>
                     <Text>{section.request_code}</Text>
                 </View>
-                <Badge status={section.status} type="request"/>
+                <Badge status={section.status===undefined?0:section.status} type="request"/>
             </View>
         );
     };

@@ -58,6 +58,15 @@ const Onboard = createStackNavigator(
 
   }
 )
+
+
+const ModeSelect = createStackNavigator(
+  {
+    ModeSelector:{
+      screen:
+    }
+  }
+)
 const OtpStack = createStackNavigator(
   {
     Login: {
@@ -115,6 +124,7 @@ const Doctor = createStackNavigator(
     SelectDoctor: {
       screen: DoctorGallery,
       navigationOptions: ({ navigation }) => ({
+        color:Colors.primary,
         headerLeft: () =>
           <HomeButton click={navigation} />
       })
@@ -257,6 +267,7 @@ const BottomTabNav = createMaterialBottomTabNavigator(
 const RootStack = createSwitchNavigator(
   {
     OnBoard: Onboard,
+    ModeSelect: ModeSelect,
     Login: Login,
     Otp: OtpStack,
     Home: BottomTabNav,

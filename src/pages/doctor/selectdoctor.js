@@ -26,7 +26,7 @@ const DoctorGallery = ({route, navigation}) => {
     const [doctors, setDoctor] = useState([])
     const [isloaing, setloading] = useState(false)
     const [selectedlanguage, setLanguage] = useState([])
-    const [selectedspec, setSpec] = useState([])
+    const [selectedspec, setSpec] = useState()
     const [showfilter, showFilter] = useState(true)
     const [activeFilter, setActiveFilter] = useState([])
     
@@ -72,6 +72,7 @@ const DoctorGallery = ({route, navigation}) => {
     }
     const getDoctor = () => {
         let refilter = [];
+        if(selectedspec !== undefined && selectedspec !== null )
         selectedspec.forEach(element => {
             refilter.push(element%1000)
         });
@@ -117,9 +118,10 @@ const DoctorGallery = ({route, navigation}) => {
                     uniqueKey="id"
                     subKey="children"
                     selectText={section.content}
-                    showDropDowns={true}
+                    showDropDowns={false}
                     readOnlyHeadings={true}
                     onSelectedItemsChange={section.change}
+                    onConfirm={getDoctor}
                     selectedItems={section.selected}
                 />
             </View>
@@ -130,15 +132,18 @@ const DoctorGallery = ({route, navigation}) => {
         setActiveFilter(activeSections);
     };
     useEffect(() => {
-        console.log("hoo")
-        console.log(selectedspec)
-        // getDoctor()
+        getDoctor()
     }, [selectedspec,selectedlanguage])
     useEffect(()=>{
-        // setSpec(navigation.state.params.spec)
-        console.log(navigation.state.params.spec);
-    },[])
-    
+        let params = navigation.state.params
+        if(params && params.spec !== undefined)
+            setSpec(params.spec)
+        else{
+            setSpec([])
+        }
+    },[navigation.state])
+
+    // console.log(navigation.state.params.spec != undefined)
     return (
         <View style={{ backgroundColor: Colors.primaryBack, flex: 1 }}>
             <Spinner visible={isloaing} />

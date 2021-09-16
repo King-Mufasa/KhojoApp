@@ -7,12 +7,18 @@ type Action =
     | { type: 'setImage'; image: object }
     | { type: 'setPhone'; phone: number }
     | { type: 'setId'; id:number}
-    | { type: 'setToken'; token: string };
+    | { type: 'setToken'; token: string }
+    | { type: 'setMode' ; mode: string};
 
 
 export const { dispatch, useGlobalState } = createStore(
     (state, action: Action) => {
         switch (action.type) {
+            case 'setMode':
+                return {
+                    ...state,
+                    mode:action.mode
+                }
             case 'setId':
                 return{
                     ...state,
@@ -84,5 +90,6 @@ export const { dispatch, useGlobalState } = createStore(
             id:null,
         },
         token:'',
+        mode:''
     }
 )

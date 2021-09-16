@@ -104,7 +104,7 @@ const RequestList = () => {
                     <Text style={{ color: Colors.lightdark }}>Request id</Text>
                     <Text>{section.request_id}</Text>
                 </View>
-                <Badge status={section.status} type="request"/>
+                <Badge status={section.status===undefined?0:section.status} type="request"/>
             </View>
         );
     };

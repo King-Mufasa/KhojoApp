@@ -87,7 +87,7 @@ const OrderList = (props) => {
                     <Text style={{ color: Colors.lightdark }}>Order Code</Text>
                     <Text>{section.order_code}</Text>
                 </View>
-                <Badge status={section.status} />
+                <Badge status={section.status===undefined?0:section.status} />
             </View>
         );
     };

@@ -5,6 +5,7 @@ import Fontsize from '../../styles/fontsize';
 import OrderStatus from '../../assets/array/orderstatus';
 const Badge = (props) => {
     console.log(props.status)
+    
     return (
         <TouchableHighlight
             style={[styles.button,

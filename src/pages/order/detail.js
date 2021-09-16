@@ -21,6 +21,7 @@ import Snackbar from 'react-native-snackbar';
 import Modal from "react-native-modal";
 import ModalContent from '../../components/modalcontent';
 import OrderStatus from '../../assets/array/orderstatus';
+import Fontsize from '../../styles/fontsize';
 const OrderDetail = (props) => {
     const [loading, setLoading] = useState(false)
     const [order, setOrder] = useState(null)
@@ -204,7 +205,10 @@ const OrderDetail = (props) => {
                             return (
                                 <View style={styles.addresstype}>
                                     <Icon name={item.type == 1 ? 'home' : item.type == 2 ? 'building' : 'handshake-o'} size={25} style={styles.icon} />
+                                    <View style={{flexDirection:'column'}}>
                                     <Text >{item.name}</Text>
+                                    <Text style={[Fontsize.mini,{color:Colors.lightdark}]}>{item.address}</Text>
+                                    </View>
                                 </View>
                             )
                         }}
@@ -259,7 +263,7 @@ const styles = StyleSheet.create({
     info: {
         justifyContent: 'space-between',
         flexDirection: 'row',
-        paddingVertical: 10
+        alignItems:'center'
     },
     address: {
         flexDirection: "row",
@@ -281,7 +285,8 @@ const styles = StyleSheet.create({
     },
     addresstype:{
         flexDirection:'row',
-        paddingHorizontal:20
+        paddingHorizontal:20,
+        alignItems:'center',
     }
 })
 export default OrderDetail
