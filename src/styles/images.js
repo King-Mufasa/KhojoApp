@@ -60,7 +60,9 @@ const Images = {
     mark_custom:require('../assets/image/map/mark_custom.png'),
     mark_office:require('../assets/image/map/mark_office.png'),
     mark_home:require('../assets/image/map/mark_home.png'),
-    mark_default:require('../assets/image/map/mark_default.png')
+    mark_default:require('../assets/image/map/mark_default.png'),
+    mode_doctor:require('../assets/image/mode/doctor_mode.png'),
+    mode_patient:require('../assets/image/mode/patient_mode.png')
 }
 
 

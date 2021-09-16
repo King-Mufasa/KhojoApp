@@ -12,39 +12,50 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { View, Image } from 'react-native';
 import Colors from './styles/color';
 import Images from './styles/images';
-import OnBoardingScreen from './pages/mode_patient/onboard';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import HomeButton from './components/home';
-import Home from './pages/mode_patient/home';
-import SendOtp from './pages/mode_patient/sendotp'
-import VerifyOtp from './pages/mode_patient/verifyotp';
-
-import MyProfile from './pages/mode_patient/profile/profile';
-import EditProfile from './pages/mode_patient/profile/editprofile';
-import ManageAddress from './pages/mode_patient/profile/manageaddress';
-
-import SelectSpeciality from './pages/mode_patient/doctor/selectspeciality';
-import DoctorGallery from './pages/mode_patient/doctor/selectdoctor';
-
-import Login from './pages/mode_patient/auth/login';
-import ScheduleAppointment from './pages/mode_patient/doctor/bookappointment';
-
-import PathologyGallery from './pages/mode_patient/pathology/selectlabs';
-import PharmacyGallery from './pages/mode_patient/pharmacy/selectpharmacy';
-import PathologyDetail from './pages/mode_patient/pathology/pathology';
-import PharmacyDetail from './pages/mode_patient/pharmacy/pharmacy';
-import OrderMenu from './pages/mode_patient/order/ordermenu';
-import RequestList from './pages/mode_patient/order/request';
-import OrderList from './pages/mode_patient/order/orderlist';
-import Register from './pages/mode_patient/auth/register';
 import Notification from './pages/util/notification';
-import OrderDetail from './pages/mode_patient/order/detail';
-import AppointmentList from './pages/mode_patient/appointment/appointmentlist';
-import ManagePatient from './pages/mode_patient/profile/managepatient';
-import PrescriptionRequest from './pages/mode_patient/order/prescription';
-import MyPlace from './pages/mode_patient/profile/myplace';
-import ServiceGallery from './pages/mode_patient/service/service';
-import ServiceList from './pages/mode_patient/service/servicelist';
+import ModeSelect from './pages/modeselect';
+/** Patient Mode */
+  // #Auth
+  import Register from './pages/mode_patient/auth/register';
+  import Login from './pages/mode_patient/auth/login';
+  import OnBoardingScreen from './pages/mode_patient/onboard';
+  import Home from './pages/mode_patient/home';
+  import SendOtp from './pages/mode_patient/sendotp'
+  import VerifyOtp from './pages/mode_patient/verifyotp';
+  // #Profile
+  import MyProfile from './pages/mode_patient/profile/profile';
+  import EditProfile from './pages/mode_patient/profile/editprofile';
+  import ManageAddress from './pages/mode_patient/profile/manageaddress';
+  import ManagePatient from './pages/mode_patient/profile/managepatient';
+  import MyPlace from './pages/mode_patient/profile/myplace';
+  // #Doctor
+  import SelectSpeciality from './pages/mode_patient/doctor/selectspeciality';
+  import DoctorGallery from './pages/mode_patient/doctor/selectdoctor';
+  import ScheduleAppointment from './pages/mode_patient/doctor/bookappointment';
+  // #Pathology
+  import PathologyGallery from './pages/mode_patient/pathology/selectlabs';
+  import PathologyDetail from './pages/mode_patient/pathology/pathology';
+  // #Pharmacy
+  import PharmacyGallery from './pages/mode_patient/pharmacy/selectpharmacy';
+  import PharmacyDetail from './pages/mode_patient/pharmacy/pharmacy';
+  // #Order
+  import OrderMenu from './pages/mode_patient/order/ordermenu';
+  import RequestList from './pages/mode_patient/order/request';
+  import OrderList from './pages/mode_patient/order/orderlist';
+  import OrderDetail from './pages/mode_patient/order/detail';
+  import PrescriptionRequest from './pages/mode_patient/order/prescription';
+  // #Service
+  import ServiceGallery from './pages/mode_patient/service/service';
+  import ServiceList from './pages/mode_patient/service/servicelist';
+  import AppointmentList from './pages/mode_patient/appointment/appointmentlist';
+
+  
+/** Doctor Mode */
+  // #Auth
+  import DoctorLogin from './pages/mode_doctor/auth/login';
+  import DoctorRegister from './pages/mode_doctor/auth/register';
 
 const Onboard = createStackNavigator(
   {
@@ -60,10 +71,10 @@ const Onboard = createStackNavigator(
 )
 
 
-const ModeSelect = createStackNavigator(
+const ModeSelector = createStackNavigator(
   {
-    ModeSelector:{
-      screen:OnBoardingScreen,
+    ModeSelect:{
+      screen:ModeSelect,
       navigationOptions: {
         headerMode: 'none',
         headerShown: false
@@ -271,7 +282,7 @@ const BottomTabNav = createMaterialBottomTabNavigator(
 const RootStack = createSwitchNavigator(
   {
     OnBoard: Onboard,
-    ModeSelect: ModeSelect,
+    ModeSelect: ModeSelector,
     Login: Login,
     Otp: OtpStack,
     Home: BottomTabNav,

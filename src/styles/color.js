@@ -17,6 +17,20 @@ const Colors = {
 	dark:"#000000",
 	lightgreen:"#71BA53",
 	purple:"#CB0C9F",
+
+	other_1:'#62CEF9',
+	other_2:'#4A8EEC',
+	other_3:'#A28EEC',
+	other_4:'#FF7070',
+	other_5:'#ECAC4A',
+	other_6:'#FB80BA',
+
+	doctor_primary:"#585CE5",
+	doctor_secondary:"#63CEFA",
+	doctor_basicDark:'#162358',
+	doctor_basic:"#5C5F8A",
+	doctor_basicLight:'#B1B3D9',
 }
+
 
 export default Colors;

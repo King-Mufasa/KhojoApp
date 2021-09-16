@@ -48,6 +48,7 @@
     "react-native-select-dropdown": "^1.1.0",
     "react-native-snackbar": "^2.4.0",
     "react-native-splash-screen": "^3.2.0",
+    "react-native-toggle-element": "^1.0.1",
     "react-native-unique-id": "^2.0.0",
     "react-native-vector-icons": "^8.1.0",
     "react-navigation": "^4.4.4",

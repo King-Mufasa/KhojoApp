@@ -111,11 +111,13 @@ const styles = StyleSheet.create({
   bottomContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent:'center',
+    // justifyContent: "space-between",
     // position: "absolute",
     alignSelf: "center",
     width: "95%",
     minHeight: 20,
+    paddingVertical:20,
   },
   nextButtonStyle: {
     borderRadius: 32,

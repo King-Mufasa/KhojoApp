@@ -20,7 +20,7 @@ const OnBoardingScreen =(props)=> {
     
     const navigate = () =>{
         const { navigate } = props.navigation;
-        navigate("Login",{phone:phone})
+        navigate("ModeSelect",{phone:phone})
     }
     const changePhone = (number)=>{
         setPhone(number)
