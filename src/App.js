@@ -12,39 +12,39 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { View, Image } from 'react-native';
 import Colors from './styles/color';
 import Images from './styles/images';
-import OnBoardingScreen from './pages/onboard';
+import OnBoardingScreen from './pages/mode_patient/onboard';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import HomeButton from './components/home';
-import Home from './pages/home';
-import SendOtp from './pages/sendotp'
-import VerifyOtp from './pages/verifyotp';
+import Home from './pages/mode_patient/home';
+import SendOtp from './pages/mode_patient/sendotp'
+import VerifyOtp from './pages/mode_patient/verifyotp';
 
-import MyProfile from './pages/profile/profile';
-import EditProfile from './pages/profile/editprofile';
-import ManageAddress from './pages/profile/manageaddress';
+import MyProfile from './pages/mode_patient/profile/profile';
+import EditProfile from './pages/mode_patient/profile/editprofile';
+import ManageAddress from './pages/mode_patient/profile/manageaddress';
 
-import SelectSpeciality from './pages/doctor/selectspeciality';
-import DoctorGallery from './pages/doctor/selectdoctor';
+import SelectSpeciality from './pages/mode_patient/doctor/selectspeciality';
+import DoctorGallery from './pages/mode_patient/doctor/selectdoctor';
 
-import Login from './pages/auth/login';
-import ScheduleAppointment from './pages/doctor/bookappointment';
+import Login from './pages/mode_patient/auth/login';
+import ScheduleAppointment from './pages/mode_patient/doctor/bookappointment';
 
-import PathologyGallery from './pages/pathology/selectlabs';
-import PharmacyGallery from './pages/pharmacy/selectpharmacy';
-import PathologyDetail from './pages/pathology/pathology';
-import PharmacyDetail from './pages/pharmacy/pharmacy';
-import OrderMenu from './pages/order/ordermenu';
-import RequestList from './pages/order/request';
-import OrderList from './pages/order/orderlist';
-import Register from './pages/auth/register';
+import PathologyGallery from './pages/mode_patient/pathology/selectlabs';
+import PharmacyGallery from './pages/mode_patient/pharmacy/selectpharmacy';
+import PathologyDetail from './pages/mode_patient/pathology/pathology';
+import PharmacyDetail from './pages/mode_patient/pharmacy/pharmacy';
+import OrderMenu from './pages/mode_patient/order/ordermenu';
+import RequestList from './pages/mode_patient/order/request';
+import OrderList from './pages/mode_patient/order/orderlist';
+import Register from './pages/mode_patient/auth/register';
 import Notification from './pages/util/notification';
-import OrderDetail from './pages/order/detail';
-import AppointmentList from './pages/appointment/appointmentlist';
-import ManagePatient from './pages/profile/managepatient';
-import PrescriptionRequest from './pages/order/prescription';
-import MyPlace from './pages/profile/myplace';
-import ServiceGallery from './pages/service/service';
-import ServiceList from './pages/service/servicelist';
+import OrderDetail from './pages/mode_patient/order/detail';
+import AppointmentList from './pages/mode_patient/appointment/appointmentlist';
+import ManagePatient from './pages/mode_patient/profile/managepatient';
+import PrescriptionRequest from './pages/mode_patient/order/prescription';
+import MyPlace from './pages/mode_patient/profile/myplace';
+import ServiceGallery from './pages/mode_patient/service/service';
+import ServiceList from './pages/mode_patient/service/servicelist';
 
 const Onboard = createStackNavigator(
   {
@@ -63,8 +63,12 @@ const Onboard = createStackNavigator(
 const ModeSelect = createStackNavigator(
   {
     ModeSelector:{
-      screen:
-    }
+      screen:OnBoardingScreen,
+      navigationOptions: {
+        headerMode: 'none',
+        headerShown: false
+      }
+    },
   }
 )
 const OtpStack = createStackNavigator(
