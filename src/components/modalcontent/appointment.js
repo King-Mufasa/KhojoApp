@@ -8,7 +8,7 @@ import Colors from '../../styles/color'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { screenWidth } from '../../module/IntroSlider/src/themes'
 import { Divider, } from 'react-native-elements';
-import StandardStyles from '../../styles/standardstyles'
+import {StandardStyles} from '../../styles/standardstyles'
 
 const type = [
     { title: "Me", image: 'user' },

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, TextInput, View, Image } from 'react-native'
 import messaging from '@react-native-firebase/messaging'
-import StandardStyles from '../../../styles/standardstyles'
+import {StandardStyles} from '../../../styles/standardstyles'
 import Label from '../../../components/label'
 import KButton from '../../../components/KButton'
 import Images from '../../../styles/images'
@@ -12,7 +12,9 @@ import Spinner from 'react-native-loading-spinner-overlay'
 import AwesomeLoading from 'react-native-awesome-loading';
 import { dispatch, useGlobalState } from '../../../store/state'
 import Snackbar from 'react-native-snackbar'
+import config from '../../../config'
 const Register = (props) => {
+    const [doctormode] = useGlobalState('doctormode')
     const [token, setToken] = useState("")
     const [email, setEmail] = useState('')
     const [name, setName] = useState('')
@@ -60,9 +62,9 @@ const Register = (props) => {
     }
 
     const register = () => {
-        const payload = { email: email, name: name, password: password, token: token, phone: user.phone }
-        console.log(payload)
+        const payload = { email: email, name: name, password: password, token: token, phone: user.phone, type: doctormode ? config.doctor : config.user }
         const onSuccess = (data) => {
+            console.log(data.data)
             setLoading(false)
             const { navigate } = props.navigation
             dispatch(
@@ -79,12 +81,12 @@ const Register = (props) => {
             )
             dispatch(
                 {
-                    id:data.data.data.id,
-                    type:'setId'
+                    id: data.data.data.id,
+                    type: 'setId'
                 }
             )
             APIkit.defaults.headers.common["Authorization"] = 'Bearer ' + data.data.data.token
-            navigate('Home')
+            navigate(doctormode ? 'DoctorHome' : 'Home')
         }
         const onFailed = (data) => {
             setLoading(false)
@@ -95,11 +97,12 @@ const Register = (props) => {
             });
         }
         setLoading(true)
+        // console.log(payload)
         APIkit.post('register', payload).then(onSuccess).catch(onFailed)
     }
 
     useEffect(() => {
-        console.log(user.phone)
+        console.log(APIkit.defaults.headers)
         messaging()
             .getToken()
             .then(token => {
@@ -111,9 +114,9 @@ const Register = (props) => {
         })
     }, [])
     return (
-        <View style={StandardStyles.container}>
+        <View style={styles.container}>
             <AwesomeLoading indicatorId={17} size={100} isActive={loading} text="loading" />
-            <View style={styles.container}>
+            <View style={StandardStyles.container}>
                 <Image source={{ uri: Images.default_symbol }} style={styles.logo} />
                 <Label size="small" name="Email" />
                 <TextInput onChangeText={emailValidate} style={[StandardStyles.input, { borderColor: emailVaild ? Colors.success : email.length == 0 ? Colors.lightgrey : Colors.danger }]} textContentType="emailAddress" />
@@ -131,8 +134,10 @@ const Register = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-        alignSelf: 'center',
-        alignContent: "center",
+        flex: 1,
+        backgroundColor: Colors.primaryBack,
+        alignContent: 'center',
+        alignItems: "center"
     },
     logo: {
         width: screenWidth * 0.3,

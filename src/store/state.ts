@@ -8,16 +8,16 @@ type Action =
     | { type: 'setPhone'; phone: number }
     | { type: 'setId'; id:number}
     | { type: 'setToken'; token: string }
-    | { type: 'setMode' ; mode: string};
+    | { type: 'setDoctorMode' ; mode: boolean};
 
 
 export const { dispatch, useGlobalState } = createStore(
     (state, action: Action) => {
         switch (action.type) {
-            case 'setMode':
+            case 'setDoctorMode':
                 return {
                     ...state,
-                    mode:action.mode
+                    doctormode:action.mode
                 }
             case 'setId':
                 return{
@@ -90,6 +90,6 @@ export const { dispatch, useGlobalState } = createStore(
             id:null,
         },
         token:'',
-        mode:''
+        doctormode:false
     }
 )

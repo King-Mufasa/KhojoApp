@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native'
 import Category from '../../../components/category'
-import StandardStyles from '../../../styles/standardstyles'
+import {StandardStyles} from '../../../styles/standardstyles'
 import Images from '../../../styles/images'
 
 

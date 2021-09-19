@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, ScrollView } from 'react-native'
 import Collapsible from 'react-native-collapsible';
 import APIkit from '../../../api/apikit'
 import Spinner from 'react-native-loading-spinner-overlay';
-import StandardStyles from '../../../styles/standardstyles';
+import {StandardStyles} from '../../../styles/standardstyles';
 import Accordion from 'react-native-collapsible/Accordion';
 import Commonstyle from '../../../styles/comonview';
 import Colors from '../../../styles/color';
@@ -112,7 +112,7 @@ const RequestList = () => {
         getMyRequest()
     }, [])
     return (
-        <View style={StandardStyles.container}>
+        <View style={[StandardStyles.container]}>
             <ScrollView showsVerticalScrollIndicator={false}>
             <Spinner visible={loading} />
             <SearchComponent placeholder="Search with Request Id"/>

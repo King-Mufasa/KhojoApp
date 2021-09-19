@@ -2,7 +2,7 @@ import React from 'react'
 import { View, StyleSheet, Text, Image } from 'react-native'
 import { screenWidth } from '../../module/IntroSlider/src/themes'
 import Images from '../../styles/images'
-import StandardStyles from '../../styles/standardstyles'
+import {StandardStyles} from '../../styles/standardstyles'
 import config from '../../config'
 import Fontsize from '../../styles/fontsize'
 import Icon from 'react-native-vector-icons/FontAwesome';

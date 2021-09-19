@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useGlobalState } from '../store/state'
+import { dispatch, useGlobalState } from '../store/state'
 import { Image, StyleSheet, Text, View, ImageBackground, Animated } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Toggle from 'react-native-toggle-element';
 import Colors from '../styles/color';
-import StandardStyles from '../styles/standardstyles';
+import {StandardStyles} from '../styles/standardstyles';
 import Fontsize from '../styles/fontsize';
 import Images from '../styles/images';
 import { screenHeight, screenWidth } from '../module/IntroSlider/src/themes';
@@ -12,7 +12,7 @@ import GeneralStatusBarColor from '../styles/statusbar';
 import KButton from '../components/KButton';
 const ModeSelect = ({ navigation }) => {
     // const mode = useGlobalState('mode')
-    const [mode, setMode] = useState(true)
+    const [mode, setMode] = useState(false)
     const [opacity, setOpacity] = useState(1)
     // const fadeIn = new Animated.Value(0)
     // const fadeOut = new Animated.Value(1)
@@ -24,7 +24,7 @@ const ModeSelect = ({ navigation }) => {
         Animated.timing(fadeAnim, {
             toValue: 1,
             duration: 250,
-            useNativeDriver:true
+            useNativeDriver: true
         }).start();
     };
 
@@ -33,17 +33,23 @@ const ModeSelect = ({ navigation }) => {
         Animated.timing(fadeAnim, {
             toValue: 0,
             duration: 250,
-            useNativeDriver:true
+            useNativeDriver: true
         }).start(fadeIn);
     };
-    
-    const switchMode = (mode) =>{
+
+    const switchMode = (mode) => {
         fadeOut()
-        
+
     }
     const start = () => {
-        const {navigate} = navigation
-        navigate(mode ? "Login" : 'Register')
+        dispatch(
+            {
+                mode: mode,
+                type: 'setDoctorMode'
+            }
+        )
+        const { navigate } = navigation
+        navigate("Login", { mode: mode })
     }
     useEffect(() => {
         console.log(mode)
@@ -53,7 +59,7 @@ const ModeSelect = ({ navigation }) => {
             <GeneralStatusBarColor />
 
             <View style={[StandardStyles.commonview, { padding: 0, width: screenWidth * 0.7 }]}>
-                <Animated.Image style={[styles.modeCover,{ opacity: fadeAnim }]} source={mode ? Images.mode_doctor:Images.mode_patient}  />
+                <Animated.Image style={[styles.modeCover, { opacity: fadeAnim }]} source={mode ? Images.mode_doctor : Images.mode_patient} />
             </View>
             <Text style={[Fontsize.large, { color: Colors.other_3 }]}>Select who you are.</Text>
             <View style={[styles.modeselect, StandardStyles.commonview]}>

@@ -5,7 +5,7 @@ import TestItem from '../../../components/items/testitem'
 import APIkit from '../../../api/apikit'
 import Spinner from 'react-native-loading-spinner-overlay';
 import Modal from "react-native-modal";
-import StandardStyles from '../../../styles/standardstyles';
+import {StandardStyles} from '../../../styles/standardstyles';
 import VendorDetails from '../../../components/vendordetail';
 import Label from '../../../components/label';
 import SearchComponent from '../../../components/search';

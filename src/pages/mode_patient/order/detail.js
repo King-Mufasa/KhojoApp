@@ -5,7 +5,7 @@ import APIkit from '../../../api/apikit'
 import OrderItem from '../../../components/items/orderitems'
 import Colors from '../../../styles/color';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import StandardStyles from '../../../styles/standardstyles';
+import {StandardStyles} from '../../../styles/standardstyles';
 import OfferBadge from '../../../components/util/offer';
 import Label from '../../../components/label';
 import BadgeButton from '../../../components/badgebtn';

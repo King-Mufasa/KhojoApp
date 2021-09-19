@@ -134,9 +134,15 @@ const EditProfile = () => {
         }).then(onSuccess).catch(onFailue)
 
     }
+    useEffect(()=>{
+        setLoading(false)
+        setModalShow(false)
+        console.log(false)
+    },[])
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView >
             <AwesomeLoading indicatorId={17} size={100} isActive={loading} text="loading" />
+            <View style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <Modal
                     testID={'modal'}
@@ -181,6 +187,7 @@ const EditProfile = () => {
                     <KButton name="Save" style={{ width: "100%", marginTop: 40 }} click={PostProfile} />
                 </SafeAreaView>
             </ScrollView>
+            </View>
         </SafeAreaView >
     )
 }

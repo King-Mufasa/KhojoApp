@@ -19,6 +19,7 @@ const OnBoardingScreen =(props)=> {
     const [phone,setPhone] = useState('')
     
     const navigate = () =>{
+        console.log("KILl")
         const { navigate } = props.navigation;
         navigate("ModeSelect",{phone:phone})
     }

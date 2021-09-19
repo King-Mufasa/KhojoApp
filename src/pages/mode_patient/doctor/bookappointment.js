@@ -6,7 +6,7 @@ import { LocaleConfig } from 'react-native-calendars';
 import APIkit from '../../../api/apikit';
 import Snackbar from 'react-native-snackbar';
 import EventItem from '../../../components/items/eventitem';
-import StandardStyles from '../../../styles/standardstyles';
+import {StandardStyles} from '../../../styles/standardstyles';
 import Spinner from 'react-native-loading-spinner-overlay';
 import Appointment from '../../../components/modalcontent/appointment';
 import Modal from "react-native-modal";
@@ -192,7 +192,7 @@ const ScheduleAppointment = (props) => {
         setEventDate(buffer)
     }, [event]);
     return (
-        <SafeAreaView style={StandardStyles.container}>
+        <SafeAreaView style={[StandardStyles.container]}>
             <Spinner visible={isloading} />
             <Modal
                     testID={'modal'}

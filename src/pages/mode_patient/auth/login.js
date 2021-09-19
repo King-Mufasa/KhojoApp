@@ -22,17 +22,93 @@ import config from '../../../config';
 import { PhoneInput } from '../../../components/phoneinput';
 import { screenHeight, screenWidth } from '../../../module/IntroSlider/src/themes';
 import Snackbar from 'react-native-snackbar'
-const Login = (props) => {
+import GeneralStatusBarColor from '../../../styles/statusbar'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import AwesomeLoading from 'react-native-awesome-loading'
+
+const Login = ({ navigation }) => {
+    const [doctormode] = useGlobalState('doctormode')
     const [loading, setLoading] = useState(false);
     const [auth, setAuth] = useState(false)
     const [token, setToken] = useState('');
     const [errors, setError] = useState({ errors: null })
     const [password, setPassword] = useState({ password: '' })
-    const [phone,setPhone] = useState()
+    const [phone, setPhone] = useState()
     const [user] = useGlobalState('user');
+    const [processing, setProcessing] = useState(false)
+    const { email, name, image, gender } = user;
     // const { token } = useGlobalState('token');
 
-    const { email, name, image, gender } = user;
+
+    // Save user data to async storage for next auto login. 
+    const storeData = async (value) => {
+        try {
+            const jsonValue = JSON.stringify(value)
+            await AsyncStorage.setItem(config.storageKey, jsonValue)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    // Get saved token from async storage.
+    const getData = async () => {
+        try {
+            const value = await AsyncStorage.getItem(config.storageKey)
+            console.log(value)
+            if (value !== null) {
+                let userdata = JSON.parse(value)
+                dispatch({
+                    phone: userdata.phone,
+                    type: 'setPhone'
+                })
+                dispatch(
+                    {
+                        name: userdata.name,
+                        type: 'setName'
+                    }
+                )
+                if (userdata.image !== undefined && userdata.image !== null)
+                    dispatch(
+                        {
+                            image: {
+                                uri: config.baseurl + userdata.image,
+                            },
+                            type: 'setImage'
+                        }
+                    )
+                dispatch(
+                    {
+                        gender: userdata.gender,
+                        type: 'setGender'
+                    }
+                )
+                dispatch(
+                    {
+                        email: userdata.email,
+                        type: 'setEmail'
+                    }
+                )
+                dispatch(
+                    {
+                        id: userdata.id,
+                        type: 'setId'
+                    }
+                )
+                setProcessing(false)
+                APIkit.defaults.headers.common["Authorization"] = 'Bearer ' + userdata.token
+                if (userdata.type === config.user)
+                    navigate()
+                else
+                    navigateToDoctor()
+            }
+            setProcessing(false)
+        } catch (e) {
+            console.log(e)
+            setProcessing(false)
+        }
+    }
+
+
     const onUsernameChange = phone => {
         dispatch({
             phone: phone,
@@ -46,13 +122,17 @@ const Login = (props) => {
     }
 
     const navigate = () => {
-        const { navigate } = props.navigation
+        const { navigate } = navigation
         navigate("Home")
+    }
+    const navigateToDoctor = () => {
+        const { navigate } = navigation
+        navigate("DoctorHome")
     }
 
     const signup = () => {
-        const { navigate } = props.navigation
-        navigate("SendOtp",{phone:phone})
+        const { navigate } = navigation
+        navigate("SendOtp", { phone: phone })
     }
 
     const onPressLogin = () => {
@@ -65,6 +145,7 @@ const Login = (props) => {
         else {
             const payload = { phone, password };
             const onSuccess = ({ data }) => {
+                storeData(data.data)
                 console.log(data.data)
                 setLoading(false)
                 setAuth(true)
@@ -75,15 +156,15 @@ const Login = (props) => {
                         type: 'setName'
                     }
                 )
-                if(data.data.image!=null)
-                dispatch(
-                    {
-                        image: {
-                            uri: config.baseurl + data.data.image,
-                        },
-                        type: 'setImage'
-                    }
-                )
+                if (data.data.image != null)
+                    dispatch(
+                        {
+                            image: {
+                                uri: config.baseurl + data.data.image,
+                            },
+                            type: 'setImage'
+                        }
+                    )
                 dispatch(
                     {
                         gender: data.data.gender,
@@ -102,14 +183,20 @@ const Login = (props) => {
                         type: 'setId'
                     }
                 )
-                // dispatch(
-                //     {
-                //         token: 'Bearer ' + data.data.token,
-                //         type: 'setToken'
-                //     }
-                // )
                 APIkit.defaults.headers.common["Authorization"] = 'Bearer ' + data.data.token
-                navigate()
+                dispatch(
+                    {
+                        type:'setDoctorMode',
+                        mode: data.data.type === config.doctor
+                    }
+                )
+                if (data.data.type === config.user){
+                    navigate()
+                    
+                }
+                else{
+                    navigateToDoctor()
+                }
             }
 
             const onFailue = error => {
@@ -118,28 +205,13 @@ const Login = (props) => {
                 setAuth(false)
                 setError(error.response.data)
             }
-
             setLoading(true)
-
+            
             APIkit.post('login/', payload).then(onSuccess).catch(onFailue)
         }
-
     }
 
-    getNonFieldErrorMessage = () => {
-        let message = null;
-        if (errors.non_field_errors) {
-            message = (
-                <View style={styles.errorMessageContainerStyle}>
-                    {errors.non_field_errors.map(item => (
-                        <Text style={styles.errorMessageTextStyle} key={item}>{item}</Text>
-                    ))}
-                </View>
-            )
-        }
-        return message
-    }
-    getErrorMessageByField = (field) => {
+    const getErrorMessageByField = (field) => {
         // Checks for error message in specified field
         // Shows error message from backend
         let message = null;
@@ -157,6 +229,12 @@ const Login = (props) => {
         return message;
     }
     useEffect(() => {
+        // Auto login
+        // setProcessing(true)
+        // getData()
+
+
+        console.log("mode" + doctormode)
         setPhone("1234567890")
         setPassword('123456')
         setAuth(false)
@@ -164,7 +242,9 @@ const Login = (props) => {
     }, []);
     return (
         <View style={styles.containerStyle}>
+            <GeneralStatusBarColor />
             <Spinner visible={loading} />
+            <AwesomeLoading indicatorId={17} size={100} isActive={processing} text="loading" />
             {!auth ? <View style={styles.containerStyle}>
                 <View style={styles.logotypeContainer}>
                     <Image
@@ -209,12 +289,8 @@ const Login = (props) => {
                     underlineColorAndroid="transparent"
                     placeholderTextColor="#999"
                 />
-
-                {getErrorMessageByField('password')}
-
-                {getNonFieldErrorMessage()}
-                <KButton style={styles.send} name="LOGIN" click={onPressLogin} />
-                <KButton style={styles.send} name="SIGN UP" click={signup} />
+                <KButton style={[styles.send]} name="LOGIN" click={onPressLogin} />
+                <KButton style={[styles.send]} name="SIGN UP" click={signup} />
                 {/* <TouchableOpacity
                     style={styles.loginButton}
                     onPress={onPressLogin.bind(this)}>
@@ -260,7 +336,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         borderColor: Colors.lightgrey,
         borderWidth: 1,
-        marginTop:20
+        marginTop: 20
     },
     loginButton: {
         borderColor: Colors.primary,
@@ -288,7 +364,7 @@ const styles = StyleSheet.create({
     },
     send: {
         width: screenWidth * 0.85,
-        marginBottom: 50
+        marginBottom: 20
     },
 })
 

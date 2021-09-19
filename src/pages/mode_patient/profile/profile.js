@@ -28,12 +28,13 @@ const Profile = (props) => {
 
     const { navigate } = props.navigation
     const [user] = useGlobalState('user')
+    const [doctormode] = useGlobalState('doctormode')
     const { image, name } = user
     return (
         <SafeAreaView style={styles.container}>
             <ProfileHeader user={user} url={{ uri: (image != null ? image.uri : Images.default_symbol) }} nav={navigate} name={name} />
-            <Divider orientation="horizontal" inset={true} insetType="middle" />
             
+            <Divider orientation="horizontal" inset={true} insetType="middle" />
             <SectionList
                 style={styles.scrollView}
                 sections={[
@@ -42,7 +43,7 @@ const Profile = (props) => {
                             { icon: "first-order", label: 'My Order', key: "OrderMenu" }
                             , { icon: "address-book", label: 'Manage Address', key: "ManageAddress" }
                             , { icon: "user", label: 'Manage Patient', key: "ManagePatient" }
-                            , { icon: "map", label: 'My Location', key:"MyPlace" }
+                            , { icon: "map", label: 'My Location', key: "MyPlace" }
                             // , { icon: "flask", label: 'My Lab Tests' }
                             // , { icon: "credit-card-alt", label: 'Payment Methods' }
                         ]
@@ -56,11 +57,21 @@ const Profile = (props) => {
                         ]
                     },
                 ]}
-                renderItem={({ item }) => <TouchableHighlight style={styles.listbutton} activeOpacity={0.6} underlayColor="#DDDDDD" onPress={() => navigate(item.key)}><SafeAreaView style={styles.listitem}><Icon name={item.icon} size={25} style={styles.icon} /><Text style={styles.item}>{item.label}</Text></SafeAreaView></TouchableHighlight>}
+                renderItem={({ item }) =>
+                    <TouchableHighlight style={styles.listbutton} activeOpacity={0.6} underlayColor="#DDDDDD" onPress={() => navigate(item.key)}>
+                        <SafeAreaView style={styles.listitem}>
+                            <Icon name={item.icon} size={25} style={{
+                                color: doctormode?Colors.doctor_primary:Colors.primary,
+                                width: screenWidth * 0.1
+                            }} />
+                            <Text style={styles.item}>{item.label}
+                            </Text>
+                        </SafeAreaView>
+                    </TouchableHighlight>}
                 renderSectionHeader={({ section }) => <Text style={[styles.sectionHeader, Fontsize.small]}>{section.title}</Text>}
                 keyExtractor={(item, index) => index}
             />
-            
+
         </SafeAreaView>
     )
 }
@@ -126,8 +137,7 @@ const styles = StyleSheet.create({
         marginBottom: 20
     },
     icon: {
-        color: Colors.primary,
-        width: screenWidth * 0.1
+
     }
 
 

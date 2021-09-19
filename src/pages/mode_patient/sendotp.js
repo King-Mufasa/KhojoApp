@@ -14,14 +14,16 @@ import Fontsize from '../../styles/fontsize';
 import auth from '@react-native-firebase/auth';
 import Snackbar from 'react-native-snackbar';
 import AwesomeLoading from 'react-native-awesome-loading';
+import { dispatch, useGlobalState } from '../../store/state';
 
 
 const SendOtp = (props) => {
+    const [doctormode] = useGlobalState('doctormode')
     const [agree, setAgree] = useState(false)
     const [editable, setEditable] = useState(false)
     const [confirm, setConfirm] = useState(null);
     const [code, setCode] = useState('');
-    const [phone, setPhone] = useState(props.navigation.state.params.phone)
+    const [phone, setPhone] = useState()
     const [loading,setLoading] = useState(false)
     async function signInWithPhoneNumber(phoneNumber) {
         setLoading(true)
@@ -40,6 +42,16 @@ const SendOtp = (props) => {
             console.log('Invalid code.');
         }
     }
+    const setUserPhone = (number) => {
+        setPhone(number)
+        if(number.length == 10)
+        dispatch(
+            {
+                type:'setPhone',
+                phone:number
+            }
+        )
+    }
     const navigate = () => {
         if (phone == null || phone.length != 10) {
             Snackbar.show({
@@ -56,28 +68,28 @@ const SendOtp = (props) => {
     }, [])
     return (
         <SafeAreaView style={styles.container}>
-            <AwesomeLoading indicatorId={17} size={100} isActive={loading} text="loading" />
+            <AwesomeLoading indicatorId={17} size={100} isActive={loading} text="sending..." />
             <GeneralStatusBarColor />
             <SkipButton show="none" />
             <Image source={Images.otp1} style={styles.icon} />
-            <PhoneInput align="center" value={phone} onChangeText={setPhone} />
+            <PhoneInput align="center" value={phone} onChangeText={setUserPhone} />
             <SafeAreaView style={styles.agree}>
                 <CheckBox
                     value={agree}
                     onValueChange={(value) =>
                         setAgree(value)
                     }
-                    tintColors={{ true: Color.primary }}
+                    tintColors={{ true: doctormode?Color.doctor_primary:Color.primary }}
                 /><Text style={styles.label}>I agree to Terms & Conditions.</Text>
             </SafeAreaView>
-            <KButton style={styles.send} name="Send OTP" click={navigate} />
-            <SafeAreaView style={styles.change}>
+            <KButton style={[styles.send]} name="Send OTP" click={navigate} />
+            {/* <SafeAreaView style={styles.change}>
                 <Text style={[styles.label, Fontsize.mini]} onPress={
                     () => {
                         setEditable(true)
                     }
                 }>Change Number ?</Text>
-            </SafeAreaView>
+            </SafeAreaView> */}
         </SafeAreaView>
     )
 }

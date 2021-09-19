@@ -50,13 +50,13 @@ import ModeSelect from './pages/modeselect';
   import ServiceGallery from './pages/mode_patient/service/service';
   import ServiceList from './pages/mode_patient/service/servicelist';
   import AppointmentList from './pages/mode_patient/appointment/appointmentlist';
+import DoctorHome from './pages/mode_doctor/home';
+import DoctorSchedule from './pages/mode_doctor/schedule/schedule';
+import ManageSchedule from './pages/mode_doctor/schedule/manageschedule';
 
   
 /** Doctor Mode */
   // #Auth
-  import DoctorLogin from './pages/mode_doctor/auth/login';
-  import DoctorRegister from './pages/mode_doctor/auth/register';
-
 const Onboard = createStackNavigator(
   {
     OnBoard: {
@@ -87,25 +87,31 @@ const OtpStack = createStackNavigator(
     Login: {
       screen: Login,
       navigationOptions: {
-        headerShown: false
+        headerShown: false,
       }
     },
     SendOtp: {
       screen: SendOtp,
       navigationOptions: {
-        headerShown: false
+        headerShown: true,
+        backgroundColor:"#FFFF00",
+        title:""
       }
     },
     VerifyOtp: {
       screen: VerifyOtp,
       navigationOptions: {
-        headerShown: false
+        headerShown: true,
+        backgroundColor:"#FFFF00",
+        title:""
       }
     },
     Register:{
       screen: Register,
       navigationOptions: {
-        headerShown: false
+        headerShown: true,
+        backgroundColor:"#FFFF00",
+        title:""
       }
     }
   }
@@ -145,7 +151,7 @@ const Doctor = createStackNavigator(
       })
     },
     Schedule: {
-      screen: ScheduleAppointment
+      screen: DoctorSchedule
     },
     // SelectLabs:{
     //   screen:PathologyGallery
@@ -227,6 +233,78 @@ const Order = createStackNavigator(
   }
 )
 
+
+const Schedule = createStackNavigator(
+  {
+    Schedule: {
+      // screen: DoctorSchedule,
+      screen: ManageSchedule,
+      navigationOptions: ({ navigation }) => ({
+        color:Colors.primary,
+        headerLeft: () =>
+          <HomeButton click={navigation} />
+      })
+    },
+    ManageSchedule: {
+      screen: ManageSchedule
+    },
+    // SelectLabs:{
+    //   screen:PathologyGallery
+    // }
+  }
+)
+
+const DoctorHomeNav = createMaterialBottomTabNavigator(
+  {
+    HomeScreen: {
+      screen: DoctorHome,
+      navigationOptions: {
+        tabBarLabel: 'Home',
+        tabBarIcon: ({ tintColor }) => (
+          <View>
+            <Icon style={[{ color: tintColor }]} size={25} name={'home'} />
+          </View>),
+      }
+    },
+    DoctorScreen: {
+      screen: Schedule,
+      navigationOptions: {
+        tabBarLabel: 'Schedule',
+        tabBarIcon: ({ tintColor }) => (
+          <View>
+            <Icon style={[{ color: tintColor }]} size={25} name={'calendar-check-o'} />
+          </View>),
+      }
+    },
+    CartScreen: {
+      screen: Order,
+      navigationOptions: {
+        tabBarLabel: 'Payment',
+        tabBarIcon: ({ tintColor }) => (
+          <View>
+            <Icon style={[{ color: tintColor }]} size={25} name={'shopping-cart'} />
+          </View>),
+      }
+    },
+    ProfileScreen: {
+      screen: Profile,
+      navigationOptions: {
+        tabBarLabel: 'Profile',
+        tabBarIcon: ({ tintColor }) => (
+          <View>
+            <Icon style={[{ color: tintColor }]} size={25} name={'user'} />
+          </View>),
+      }
+    }
+  },
+  {
+    initialRouteName: "HomeScreen",
+    activeColor: Colors.doctor_primary,
+    inactiveColor: Colors.lightdark,
+    barStyle: { backgroundColor: Colors.white },
+  },
+)
+
 const BottomTabNav = createMaterialBottomTabNavigator(
   {
     HomeScreen: {
@@ -289,7 +367,8 @@ const RootStack = createSwitchNavigator(
     Pahology: Pahology,
     Pharmacy: Pharmacy,
     Service:Service,
-    Order: Order
+    Order: Order,
+    DoctorHome:DoctorHomeNav,
   },
   {
     initialRouteName: "OnBoard",
