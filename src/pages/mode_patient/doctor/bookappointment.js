@@ -96,12 +96,14 @@ const ScheduleAppointment = (props) => {
             'doctor_id': doctor.id
         }
         const onSuccess = (response) => {
+            console.log(response.data)
             setEvent(response.data)
             
             setLoading(false)
         }
         const onFailed = (response) => {
             setLoading(false)
+            console.log(response)
         }
         setLoading(true)
         APIkit.post('customer.get.doctorevent', payload).then(onSuccess).catch(onFailed)
@@ -183,6 +185,7 @@ const ScheduleAppointment = (props) => {
     useEffect(() => {
         getDoctorEvent()
         getAddress()
+        console.log("KILl")
     }, [])
     useEffect(() => {
         let buffer = []

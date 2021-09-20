@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { View, StyleSheet, TouchableHighlight, Text, FlatList, SectionList } from 'react-native'
+import { View, StyleSheet, TouchableHighlight, Text, FlatList, SectionList, ImageBackground } from 'react-native'
+import AwesomeLoading from 'react-native-awesome-loading';
 import Modal from "react-native-modal";
+import Icon from 'react-native-vector-icons/FontAwesome';
 import APIkit from '../../../api/apikit'
 import KButton from '../../../components/KButton'
 import Label from '../../../components/label'
@@ -44,52 +46,121 @@ const weekdata = [
 
 const WeekDay = (props) => {
     return (
-        <TouchableHighlight style={props.selected == props.info.id ? styles.daybutton : styles.daydefault} onPress={() => { props.action(props.info.id) }} underlayColor={Colors.primaryBack}>
+        <TouchableHighlight style={props.selected + 1 == props.info.id ? styles.daybutton : styles.daydefault} onPress={() => { props.action(props.info.id) }} underlayColor={Colors.primaryBack}>
             <View style={styles.daybtnContent}>
-                <Text style={props.selected == props.info.id ? styles.daylabel : styles.dayLabelDefault}>{props.info.label}</Text>
-                <Text style={props.selected == props.info.id ? styles.daylabel : styles.dayLabelDefault}>{props.info.id}</Text>
+                <Text style={props.selected + 1 == props.info.id ? styles.daylabel : styles.dayLabelDefault}>{props.info.label}</Text>
+                <Text style={props.selected + 1 == props.info.id ? styles.daylabel : styles.dayLabelDefault}>{props.info.id}</Text>
             </View>
         </TouchableHighlight>
     )
 }
 
 const Schedule = (props) => {
+    const icon = ["hospital-o", "home", "video-camera"]
     return (
-        <View style={StandardDoctorStyles.commonview}>
-
+        <View>
+            {(props.info.date === props.selected) ? (
+                <View style={[StandardDoctorStyles.commonview, { alignItems: 'center', flex: 1 }]}>
+                    <ImageBackground style={[styles.typeicon, { backgroundColor: props.info.type == 0 ? Colors.other_2 : props.info.type == 1 ? Colors.other_5 : Colors.other_3 }]}>
+                        <Icon name={icon[props.info.type]} size={25} color={Colors.white} />
+                    </ImageBackground>
+                    <View style={{ justifyContent: 'space-between', flex: 8, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20 }}>
+                        <View>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text>From</Text>
+                                <Text>{props.info.from}</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text>To</Text>
+                                <Text>{props.info.to}</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text>Patients</Text>
+                                <Text>{props.info.patients}</Text>
+                            </View>
+                        </View>
+                        <Icon name="trash-o" size={20} color={Colors.danger} onPress={() => { props.remove(props.info.id) }} />
+                    </View>
+                </View>) : (<></>)}
         </View>
     )
 }
 
+
 const ManageSchedule = ({ navitgation }) => {
-    const [selected, setSelected] = useState(1)
-    const [schedules, setSchedules] = useState()
+    const [selected, setSelected] = useState(0)
+    const [schedules, setSchedules] = useState([])
     const [modalshow, setModalShow] = useState()
-    
+    const [loading, setLoading] = useState(false)
     const getSchedule = () => {
         const onSuccess = (response) => {
-            console.log(response.data)
+            setLoading(false)
+            setSchedules(response.data)
         }
         const onFailed = (response) => {
+            setLoading(false)
             console.log(response)
         }
+        setLoading(true)
         APIkit.post("doctor.event.get").then(onSuccess).catch(onFailed)
     }
+
+    const addSchedule = (type, start, end, patient) => {
+        const payload = {
+            type: type,
+            from: start,
+            to: end,
+            patients: patient,
+            date: selected
+        }
+        setModalShow(false)
+        const onSuccess = (response) => {
+            setLoading(false)
+            if (response.data.status === 'success')
+                getSchedule()
+        }
+        const onFailed = (response) => {
+            setLoading(false)
+            console.log(response)
+        }
+        setLoading(true)
+        APIkit.post('doctor.event.add', payload).then(onSuccess).catch(onFailed)
+    }
+    function removeSchedule(id) {
+        const payload ={
+            event_id:id
+        }
+        const onSuccess = (response) =>{
+            setLoading(false)
+            if(response.data.status == 'success')
+                getSchedule()
+        }
+        const onFailed = (response) =>{
+            setLoading(false)
+            console.log(response)
+        }
+        setLoading(true)
+        APIkit.post('doctor.event.delete',payload).then(onSuccess).catch(onFailed)
+    }
     const selectWeekday = (id) => {
-        setSelected(id)
+        setSelected(id - 1)
     }
     useEffect(() => {
         getSchedule()
     }, [])
+    useEffect(() => {
+        selectWeekday(selected + 1)
+    }, [schedules])
     return (
         <View style={[StandardStyles.container, { paddingTop: 0, paddingBottom: 10 }]}>
+            <AwesomeLoading indicatorId={17} size={100} isActive={loading} text="loading" />
             <Modal
                 testID={'modal'}
                 isVisible={modalshow}
                 onSwipeComplete={() => setModalShow(false)}
                 swipeDirection={['up', 'left', 'right', 'down']}
                 style={styles.modal}>
-                <NewSchedule />
+                <NewSchedule action={addSchedule} />
             </Modal>
             <View style={styles.weekday}>
                 <SectionList
@@ -111,13 +182,13 @@ const ManageSchedule = ({ navitgation }) => {
                 style={styles.scrollView}
                 sections={[
                     {
-                        title: 'week', data: weekdata
+                        title: 'week', data: schedules
                     },
                 ]}
-                renderItem={({ item }) => <Schedule info={item} selected={selected} action={selectWeekday} />}
+                renderItem={({ item }) => <Schedule info={item} selected={selected} action={selectWeekday} remove={removeSchedule} />}
                 keyExtractor={(item, index) => index}
             />
-            <KButton name="Add Schedule" style={{ marginStart: 10, marginEnd: 10 }} click={()=>{setModalShow(true)}}/>
+            <KButton name="Add Schedule" style={{ marginStart: 10, marginEnd: 10 }} click={() => { setModalShow(true) }} />
         </View>
     )
 }
@@ -173,6 +244,14 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         margin: 0,
     },
+    typeicon: {
+        width: 50,
+        height: 50,
+        borderRadius: 50,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    
 })
 
 

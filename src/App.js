@@ -151,7 +151,7 @@ const Doctor = createStackNavigator(
       })
     },
     Schedule: {
-      screen: DoctorSchedule
+      screen: ScheduleAppointment
     },
     // SelectLabs:{
     //   screen:PathologyGallery
@@ -237,8 +237,7 @@ const Order = createStackNavigator(
 const Schedule = createStackNavigator(
   {
     Schedule: {
-      // screen: DoctorSchedule,
-      screen: ManageSchedule,
+      screen: DoctorSchedule,
       navigationOptions: ({ navigation }) => ({
         color:Colors.primary,
         headerLeft: () =>

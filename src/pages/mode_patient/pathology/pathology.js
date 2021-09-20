@@ -6,7 +6,7 @@ import APIkit from '../../../api/apikit'
 import Spinner from 'react-native-loading-spinner-overlay';
 import Modal from "react-native-modal";
 import ModalContent from '../../../components/modalcontent'
-import {StandardStyles} from '../../../styles/standardstyles';
+import { StandardStyles } from '../../../styles/standardstyles';
 import VendorDetails from '../../../components/vendordetail';
 import Label from '../../../components/label';
 import SearchComponent from '../../../components/search';
@@ -39,7 +39,7 @@ const PathologyDetail = (props) => {
     const [patient, setPatient] = useState()
     const [selectedpatient, selectPatient] = useState()
     const [user] = useGlobalState("user")
-    
+
     const getDetails = () => {
         const payload = { type: 'pathology', id: vendorid, filter: filter };
         const onSuccess = (data) => {
@@ -76,14 +76,14 @@ const PathologyDetail = (props) => {
         setFilter(filter)
     }
     const onChangeSelect = (type, id) => {
-        console.log(selectedItems+":" +id)
+        console.log(selectedItems + ":" + id)
         if (type == "test") {
             let buffer = selectedItems
             if (selectedItems.includes(id))
                 buffer.pop(id)
             else
                 buffer.push(id)
-            setSelectedItems(buffer)    
+            setSelectedItems(buffer)
             let total = 0
             tests.forEach(test => {
                 console.log(test.id)
@@ -96,9 +96,9 @@ const PathologyDetail = (props) => {
         else {
             let buffer = selectedBundle
             if (selectedBundle.includes(id))
-            buffer.pop(id)
+                buffer.pop(id)
             else
-            buffer.push(id)
+                buffer.push(id)
             setSelectedBundle(buffer)
             console.log(bundleprice)
             let total = 0
@@ -111,19 +111,19 @@ const PathologyDetail = (props) => {
         }
 
     }
-    const createOrder = (price) =>{
+    const createOrder = (price) => {
         const payload = {
-            'total_price':price,
-            'pure_price':bundleprice+testprice,
-            'bundle':selectedBundle,
-            'tests':selectedItems,
-            'patient':selectedpatient,
-            'pathology':vendorid,
+            'total_price': price,
+            'pure_price': bundleprice + testprice,
+            'bundle': selectedBundle,
+            'tests': selectedItems,
+            'patient': selectedpatient,
+            'pathology': vendorid,
         }
         const onSuccess = (response) => {
             setLoading(false)
             console.log(response.data)
-            const {navigate} = props.navigation
+            const { navigate } = props.navigation
             navigate('OrderList')
         }
         const onFailed = (response) => {
@@ -134,11 +134,11 @@ const PathologyDetail = (props) => {
                 duration: Snackbar.LENGTH_SHORT,
             });
         }
-        APIkit.post('customer.generate.testorder',payload).then(onSuccess).catch(onFailed)
+        APIkit.post('customer.generate.testorder', payload).then(onSuccess).catch(onFailed)
     }
-    const MakePayment = (price) =>{
+    const MakePayment = (price) => {
         console.log(price)
-        if(patient.length==0){
+        if (patient.length == 0) {
             Snackbar.show({
                 text: 'No patient data. create patient on your profile page.',
                 duration: Snackbar.LENGTH_SHORT,
@@ -148,27 +148,27 @@ const PathologyDetail = (props) => {
         setOrderModalShow(false)
         setLoading(true)
         const responseHandler = (result) => {
-            
+
             const data = JSON.parse(result);
             console.log(data.txStatus);
-            if(data.txStatus == "SUCCESS"){
+            if (data.txStatus == "SUCCESS") {
                 createOrder(price)
             }
-            else{
+            else {
                 setLoading(false)
                 Snackbar.show({
                     text: 'Something went wrong.',
                     duration: Snackbar.LENGTH_SHORT,
                 });
             }
-          };
+        };
         const note = "Book Lab Test"
-        makePayment(price,note,user,responseHandler)
+        makePayment(price, note, user, responseHandler)
     }
     const renderHeader = () => {
         return (
             <View>
-                <CartView cart={pathology} count={selectedItems.length + selectedBundle.length} price={bundleprice+testprice} click = {()=>{setOrderModalShow(true)}}/>
+                <CartView cart={pathology} count={selectedItems.length + selectedBundle.length} price={bundleprice + testprice} click={() => { setOrderModalShow(true) }} />
                 <Label name="Available Bundles" />
                 <SectionList
                     horizontal={true}
@@ -179,7 +179,7 @@ const PathologyDetail = (props) => {
                             title: 'Bundles', data: bundles
                         },
                     ]}
-                    renderItem={({ item }) => <BundleItem info={item} change={onChangeSelect} selected={selectedBundle}/>}
+                    renderItem={({ item }) => <BundleItem info={item} change={onChangeSelect} selected={selectedBundle} />}
                     keyExtractor={(item, index) => index}
                 />
                 <Label name="Test List" />
@@ -209,7 +209,7 @@ const PathologyDetail = (props) => {
                 onSwipeComplete={() => setOrderModalShow(false)}
                 swipeDirection={['up', 'left', 'right', 'down']}
                 style={styles.modal}>
-                <BookTest action={MakePayment} type={selectPatient} patient={patient} price = {testprice + bundleprice}/>
+                <BookTest action={MakePayment} type={selectPatient} patient={patient} price={testprice + bundleprice} />
             </Modal>
             <SectionList
                 showsHorizontalScrollIndicator={false}
@@ -233,9 +233,9 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         margin: 0,
     },
-    scrollView:{
-        paddingHorizontal:15,
-        backgroundColor:Colors.primaryBack,
+    scrollView: {
+        paddingHorizontal: 15,
+        backgroundColor: Colors.primaryBack,
     }
 })
 

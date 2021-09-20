@@ -39,7 +39,6 @@ const ModeSelect = ({ navigation }) => {
 
     const switchMode = (mode) => {
         fadeOut()
-
     }
     const start = () => {
         dispatch(

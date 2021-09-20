@@ -33,7 +33,7 @@ const Profile = (props) => {
     return (
         <SafeAreaView style={styles.container}>
             <ProfileHeader user={user} url={{ uri: (image != null ? image.uri : Images.default_symbol) }} nav={navigate} name={name} />
-            
+
             <Divider orientation="horizontal" inset={true} insetType="middle" />
             <SectionList
                 style={styles.scrollView}
@@ -44,8 +44,9 @@ const Profile = (props) => {
                             , { icon: "address-book", label: 'Manage Address', key: "ManageAddress" }
                             , { icon: "user", label: 'Manage Patient', key: "ManagePatient" }
                             , { icon: "map", label: 'My Location', key: "MyPlace" }
-                            // , { icon: "flask", label: 'My Lab Tests' }
-                            // , { icon: "credit-card-alt", label: 'Payment Methods' }
+                            , doctormode ?
+                                { icon: "calendar-check-o", label: 'Manage Schedule', key: 'ManageSchedule' }:
+                                { icon: "credit-card-alt", label: 'Payment Methods' }
                         ]
                     },
                     {
@@ -61,7 +62,7 @@ const Profile = (props) => {
                     <TouchableHighlight style={styles.listbutton} activeOpacity={0.6} underlayColor="#DDDDDD" onPress={() => navigate(item.key)}>
                         <SafeAreaView style={styles.listitem}>
                             <Icon name={item.icon} size={25} style={{
-                                color: doctormode?Colors.doctor_primary:Colors.primary,
+                                color: doctormode ? Colors.doctor_primary : Colors.primary,
                                 width: screenWidth * 0.1
                             }} />
                             <Text style={styles.item}>{item.label}

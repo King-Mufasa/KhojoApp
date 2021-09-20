@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, Text, } from 'react-native'
+import { View, StyleSheet, Text, TextInput } from 'react-native'
 import KButton from '../KButton'
 import Fontsize from '../../styles/fontsize'
 import EditView from '../util/editview'
@@ -10,21 +10,57 @@ import { screenWidth } from '../../module/IntroSlider/src/themes'
 import { RadioButton } from 'react-native-paper';
 import { InputPhone } from '../phoneinput'
 import Label from '../label'
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import moment from 'moment'
+import Snackbar from 'react-native-snackbar';
+import { from } from 'form-data'
 const NewSchedule = (props) => {
     const patienttype = [
         { title: "Clinic Visit", image: 'hospital-o' },
         { title: "Home Visit", image: 'home' },
         { title: "Video Consultation", image: 'video-camera' },
-    ] 
+    ]
     const [tempgender, setTempGender] = useState('m')
-    const [type,setType] = useState()
+    const [type, setType] = useState(0)
     const [date, setDate] = useState()
-    const [starttime, setStartTime] = useState()
-    const [endtime, setEndTime] = useState()
+    const [starttime, setStartTime] = useState("00:00")
+    const [endtime, setEndTime] = useState("00:00")
     const [patient, setPatientCount] = useState()
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const [isstart, toggleStart] = useState(true)
+    const showDatePicker = () => {
+        setDatePickerVisibility(true);
+    };
 
+    const hideDatePicker = () => {
+        setDatePickerVisibility(false);
+    };
+    const handleConfirm = (date) => {
+        if (isstart)
+            setStartTime(moment(date).format("HH:mm"))
+        else
+            setEndTime(moment(date).format("HH:mm"))
+        hideDatePicker();
+    };
+    const addSchedule = () => {
+        if (endtime > starttime && patient > 0) {
+            props.action(type, starttime, endtime, patient)
+        }
+        else {
+            Snackbar.show({
+                text: 'Please input valid data',
+                duration: Snackbar.DURATION_SHORT
+            })
+        }
+    }
     return (
         <View>
+            <DateTimePickerModal
+                isVisible={isDatePickerVisible}
+                mode="time"
+                onConfirm={handleConfirm}
+                onCancel={hideDatePicker}
+            />
             <View style={styles.modal}>
                 <View style={styles.address}>
                     {/* <Text style={Fontsize.small}>Select Address Type: </Text> */}
@@ -35,7 +71,7 @@ const NewSchedule = (props) => {
                             buttonStyle={styles.typeselector}
                             data={patienttype}
                             onSelect={(selectedItem, index) => {
-                                setType(index + 1);
+                                setType(index);
                                 console.log(selectedItem, index)
                             }}
                             renderCustomizedButtonChild={(selectedItem, index) => {
@@ -44,7 +80,7 @@ const NewSchedule = (props) => {
                                 // if data array is an array of objects then return selectedItem.property to render after item is selected
                                 return (
                                     <View style={styles.addressselect}>
-                                        <View style={{ flexDirection: 'row', alignItems:'center' }}>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                             {selectedItem ? (
                                                 <Icon
                                                     name={selectedItem.image}
@@ -76,10 +112,22 @@ const NewSchedule = (props) => {
                         />
                     </View>
                 </View>
-                <EditView label="From" onChangeText={setDate} />
-                <EditView label="To" onChangeText={setStartTime} />
+                <View style={{ width: '100%' }}>
+                    <Text style={[Fontsize.small, { marginTop: 20 }]}>From</Text>
+                    <View style={styles.timepicker}>
+                        <Text style={[styles.time, Fontsize.medium]} >{starttime}</Text>
+                        <KButton style={{ width: "25%", marginTop: 0 }} name="Edit" click={() => { showDatePicker(), toggleStart(true) }} />
+                    </View>
+                </View>
+                <View style={{ width: '100%' }}>
+                    <Text style={[Fontsize.small, { marginTop: 20 }]}>To</Text>
+                    <View style={styles.timepicker}>
+                        <Text style={[styles.time, Fontsize.medium]} >{endtime}</Text>
+                        <KButton style={{ width: "25%", marginTop: 0 }} name="Edit" click={() => { showDatePicker(), toggleStart(false) }} />
+                    </View>
+                </View>
                 <EditView label="Patient Limit" onChangeText={setPatientCount} />
-                <KButton name="Add Schedule" click={() => { props.action(tempgender) }} />
+                <KButton name="Add Schedule" click={() => { addSchedule() }} />
             </View>
         </View>
     )
@@ -110,7 +158,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingHorizontal: 20,
         alignContent: 'center',
-        alignItems:'center'
+        alignItems: 'center'
     },
     addresstype: {
         flexDirection: 'row',
@@ -133,6 +181,19 @@ const styles = StyleSheet.create({
     label: {
         alignSelf: 'center'
     },
+    time: {
+        width: '70%',
+        textAlign: 'center'
+    },
+    timepicker: {
+        flexDirection: 'row',
+        width: "100%",
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: Colors.lightgrey,
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    }
 }
 )
 

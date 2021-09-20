@@ -11,7 +11,7 @@ const BadgeButton = (props) => {
         <TouchableHighlight
             style={[styles.button, props.style,]}
             onPress={(props.click)}
-            underlayColor={Color.primaryBack}>
+            underlayColor={props.underlayColor?props.underlayColor:Color.primaryBack}>
             <Text style={[styles.submitText, Fontsize.mini,
             {
                 color: doctormode ? Color.doctor_primary : Color.primary,

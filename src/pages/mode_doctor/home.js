@@ -101,12 +101,12 @@ const DoctorHome = ({ navigation }) => {
                             </View>
                             <Divider/>
                             <View style={[StandardStyles.coupleview, { width: '100%', justifyContent: 'space-between', marginTop:10 }]}>
-                                <Text style={[Fontsize.small, { color: Colors.other_2, fontWeight: 'bold' }]}>Total Schedule:</Text>
+                                <Text style={[Fontsize.mini, { color: Colors.lightdark, fontWeight: 'bold' }]}>Total Schedule:</Text>
                                 <Text style={[Fontsize.small, { color: Colors.doctor_primary, fontWeight: 'bold' }]}>44</Text>
                             </View>
                             <Divider/>
                             <View style={[StandardStyles.coupleview, { width: '100%', justifyContent: 'space-between', marginTop:10 }]}>
-                                <Text style={[Fontsize.small, { color: Colors.other_2, fontWeight: 'bold' }]}>UpComming Schedule:</Text>
+                                <Text style={[Fontsize.mini, { color: Colors.lightdark, fontWeight: 'bold' }]}>UpComming Schedule:</Text>
                                 <Text style={[Fontsize.small, { color: Colors.doctor_primary, fontWeight: 'bold' }]}>5</Text>
                             </View>
                             <Divider/>
