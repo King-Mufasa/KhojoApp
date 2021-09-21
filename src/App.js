@@ -51,8 +51,9 @@ import ModeSelect from './pages/modeselect';
   import ServiceList from './pages/mode_patient/service/servicelist';
   import AppointmentList from './pages/mode_patient/appointment/appointmentlist';
 import DoctorHome from './pages/mode_doctor/home';
-import DoctorSchedule from './pages/mode_doctor/schedule/schedule';
+import DoctorSchedule from './pages/mode_doctor/schedule/manageappointment';
 import ManageSchedule from './pages/mode_doctor/schedule/manageschedule';
+import SignatureCreator from './pages/mode_doctor/profile/signature';
 
   
 /** Doctor Mode */
@@ -136,7 +137,14 @@ const Profile = createStackNavigator(
     },
     Notification:{
       screen:Notification
+    },
+    ManageSchedule: {
+      screen: ManageSchedule
+    },
+    Signature:{
+      screen:SignatureCreator
     }
+
   }
 )
 
@@ -240,13 +248,12 @@ const Schedule = createStackNavigator(
       screen: DoctorSchedule,
       navigationOptions: ({ navigation }) => ({
         color:Colors.primary,
+        title:"Appointment",
         headerLeft: () =>
           <HomeButton click={navigation} />
       })
     },
-    ManageSchedule: {
-      screen: ManageSchedule
-    },
+    
     // SelectLabs:{
     //   screen:PathologyGallery
     // }

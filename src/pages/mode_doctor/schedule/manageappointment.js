@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { View, StyleSheet, TouchableHighlight, Text, SectionList } from 'react-native'
+import { View, StyleSheet, TouchableHighlight, Text, SectionList, ScrollView } from 'react-native'
 import AwesomeLoading from 'react-native-awesome-loading';
 import Accordion from 'react-native-collapsible/Accordion';
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from 'react-native-vector-icons/FontAwesome5'
 import APIkit from '../../../api/apikit'
 import ScheduleItem from '../../../components/items/scheduleitem'
 import Colors from '../../../styles/color'
@@ -15,7 +15,8 @@ import Badge from '../../../components/util/badge'
 import { Divider } from 'react-native-elements/dist/divider/Divider';
 import Modal from "react-native-modal";
 import AppointmentFilter from '../../../components/modalcontent/appointmentfilter';
-const DoctorSchedule = ({ navitgation }) => {
+import KButton from '../../../components/KButton';
+const DoctorSchedule = ({ navigation }) => {
     const [appointments, setAppointment] = useState([])
     const [pastAppointments, setPastAppointments] = useState([])
     const [upcommingAppointments, setUpcommingAppointments] = useState([])
@@ -42,16 +43,36 @@ const DoctorSchedule = ({ navitgation }) => {
             filter: filter
         }
         const onSuccess = (response) => {
-            console.log(response.data)
             setLoading(false)
             setAppointment(response.data)
+        }
+        const onFailed = (response) => {
+            console.log("Failed" + response)
+            setLoading(false)
+        }
+        setLoading(true)
+        APIkit.post('doctor.schedule.get', payload).then(onSuccess).catch(onFailed)
+    }
+
+    const acceptAppointment = (id, status) => {
+        const payload = { id: id, status: status }
+        const onSuccess = (response) => {
+            console.log(response.data)
+            setLoading(false)
+            getSchedule()
         }
         const onFailed = (response) => {
             console.log(response)
             setLoading(false)
         }
+        console.log(payload)
         setLoading(true)
-        APIkit.post('doctor.schedule.get', payload).then(onSuccess).catch(onFailed)
+        APIkit.post('doctor.appointment.update', payload).then(onSuccess).catch(onFailed)
+    }
+
+    const makePrescription = (id) => {
+        const { navigate } = navigation
+        navigate("makePrescription", { id: id })
     }
 
     const _renderSectionTitle = (section) => {
@@ -81,31 +102,47 @@ const DoctorSchedule = ({ navitgation }) => {
                     </View>
                 </View>
                 <View>
-                    <Text style={styles.label}>{section.type == 0 ? "Clinic Visit" : section.type == 1 ? "Home Visit" : "Video Consultation"}</Text>
+                    <Text style={styles.label}>{section.book_code}</Text>
                 </View>
                 <View>
-                    <Text style={styles.label}>{moment(section.date).format('LL')}</Text>
+                    <Text style={[styles.label, Fontsize.medium, { color: Colors.success, fontWeight: 'bold' }]}>₹ {section.pure_price}</Text>
+                </View>
+                <View>
+                    <Text style={styles.label}></Text>
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                     <Text style={styles.label}>{section.from}</Text>
                     <Divider orientation='vertical' width={1} />
                     <Text style={styles.label}>{section.to}</Text>
                 </View>
-                <View>
-                    <BadgeButton name="Details" click={() => { navigate(section.id) }} underlayColor={Colors.doctor_primary} />
-                </View>
-
+                {section.status == 0 ?
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                        {/* <BadgeButton name="Details" click={() => { navigate(section.id) }} underlayColor={Colors.doctor_primary} /> */}
+                        <KButton name="Accept" type="success" click={() => { acceptAppointment(section.id, 2) }} />
+                        <KButton name='Reject' type="danger" click={() => { acceptAppointment(section.id, -1) }} />
+                    </View> : section.status == 2 ?
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                            {/* <BadgeButton name="Details" click={() => { navigate(section.id) }} underlayColor={Colors.doctor_primary} /> */}
+                            <TouchableHighlight underlayColor={Colors.other_1} style={styles.btnFilter} onPress={() => { makePrescription(section.id) }}>
+                                <Icon name='file-contract' size={20} color={Colors.doctor_primary} />
+                            </TouchableHighlight>
+                            {section.type == 2 ?
+                                <TouchableHighlight underlayColor={Colors.other_1} style={styles.btnFilter} onPress={() => { setModalShow(true) }}>
+                                    <Icon name='video' size={20} color={Colors.doctor_primary} />
+                                </TouchableHighlight>
+                                : <></>}
+                        </View> :
+                        <></>}
             </View>
         );
     };
     const _renderHeader = (section, index) => {
-        console.log(index)
         return (
-            <View style={[styles.appointmentHeaderView, { display: section.book_code ? "flex" : "none" }]} >
+            <View style={[styles.appointmentHeaderView, { display: section.book_code ? "flex" : "none", marginBottom: activeSections[0] == index ? 0 : 10 }]} >
                 <View style={styles.appointmentHeader}>
                     <View>
-                        <Text style={{ color: Colors.lightdark }}>Appointment Code</Text>
-                        <Text>{section.book_code}</Text>
+                        <Text style={{ color: Colors.doctor_primary, fontWeight: 'bold' }}>{section.type == 0 ? "Clinic Visit" : section.type == 1 ? "Home Visit" : "Video Consultation"}</Text>
+                        <Text>{moment(section.date).format('LL')}</Text>
                     </View>
                     <Badge status={section.status === undefined ? 0 : section.status} type="request" />
                 </View>
@@ -117,35 +154,40 @@ const DoctorSchedule = ({ navitgation }) => {
         getSchedule()
     }, [])
     useEffect(() => {
-        let pastbuffer = []
-        let upcommintbuffer = []
-        let firebuffer = []
-        appointments.forEach(appointment => {
-            let appointmentDate = (moment(new Date(appointment.date)).format("MM/DD/yyyy"))
-            let today = moment(new Date()).format("MM/DD/yyyy")
-            if (appointmentDate === today) {
-                console.log('today')
-                console.log(moment().format('HH:mm:ss'))
-                console.log(appointment.to)
-                if (appointment.to > moment().format('HH:mm:ss')) {
-                    upcommintbuffer.push(appointment)
-                    if (appointment.from < moment().format('HH:mm:ss'))
-                        firebuffer.push(appointment.id)
+        if (appointments !== undefined && appointments !== null && appointments.length !== 0) {
+            let pastbuffer = []
+            let upcommintbuffer = []
+            let firebuffer = []
+            appointments.forEach(appointment => {
+                // let appointmentDate = (moment(new Date(appointment.date)).format("yyyy-MM-DD"))
+                let today = moment(new Date()).format("yyyy-MM-DD")
+                console.log(appointment.date)
+                if (appointment.date === today) {
+                    console.log(moment().format('HH:mm:ss'))
+                    console.log(appointment.to)
+                    if (appointment.to > moment().format('HH:mm:ss')) {
+                        upcommintbuffer.push(appointment)
+                        if (appointment.from < moment().format('HH:mm:ss'))
+                            firebuffer.push(appointment.id)
+                    }
+                    else {
+                        pastbuffer.push(appointment)
+
+                    }
                 }
-                else pastbuffer.push(appointment)
-            }
-            else if (appointmentDate < today) {
-                pastbuffer.push(appointment)
-            }
-            else {
-                upcommintbuffer.push(appointment)
-            }
-        });
-        setUpcommingAppointments(upcommintbuffer)
-        setPastAppointments(pastbuffer)
-        setFireAppointments(firebuffer)
+                else if (appointment.date < today) {
+                    pastbuffer.push(appointment)
+                    console.log("KL" + appointment.date + "::" + today)
+                }
+                else {
+                    upcommintbuffer.push(appointment)
+                }
+            });
+            setUpcommingAppointments(upcommintbuffer)
+            setPastAppointments(pastbuffer)
+            setFireAppointments(firebuffer)
+        }
     }, [appointments])
-    console.log(moment(new Date()).format("L"))
     return (
         <View style={[StandardStyles.container,]}>
             <Modal
@@ -157,7 +199,7 @@ const DoctorSchedule = ({ navitgation }) => {
                 <AppointmentFilter />
             </Modal>
             <AwesomeLoading indicatorId={17} size={100} isActive={loading} text="loading" />
-            <View >
+            <View style={{ flex: 1, paddingBottom: 10 }}>
                 <View style={styles.header}>
                     <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                         <TouchableHighlight underlayColor={Colors.white} style={[upcomming ? styles.filterActive : styles.filterDefault, { borderBottomLeftRadius: 20, borderTopLeftRadius: 20 }]} onPress={() => { setUpcomming(true) }}>
@@ -171,8 +213,8 @@ const DoctorSchedule = ({ navitgation }) => {
                             </View>
                         </TouchableHighlight>
                     </View>
-                    <TouchableHighlight style={styles.btnFilter} onPress={() => { setModalShow(true) }}>
-                        <Icon name='filter' size={25} color={Colors.doctor_primary} />
+                    <TouchableHighlight underlayColor={Colors.other_1} style={styles.btnFilter} onPress={() => { setModalShow(true) }}>
+                        <Icon name='filter' size={15} color={Colors.doctor_primary} />
                     </TouchableHighlight>
                 </View>
                 {/* <SectionList
@@ -183,9 +225,8 @@ const DoctorSchedule = ({ navitgation }) => {
                     },
                 ]}
                 renderItem={({ item }) => <ScheduleItem schedule={item} />}
-                keyExtractor={(item, index) => index}
-            /> */}
-                <View style={{ paddingHorizontal: 10 }}>
+                keyExtractor={(item, index) => index}/> */}
+                <ScrollView contentContainerStyle={{ paddingHorizontal: 10, paddingBottom: 20 }} showsVerticalScrollIndicator={false}>
                     <Accordion
                         sections={appointments != null ? upcomming ? upcommingAppointments : pastAppointments : SECTIONS}
                         activeSections={activeSections}
@@ -195,7 +236,7 @@ const DoctorSchedule = ({ navitgation }) => {
                         onChange={setActiveSections}
                         underlayColor={Colors.primaryBack}
                     />
-                </View>
+                </ScrollView>
             </View>
         </View>
     )
@@ -222,8 +263,8 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         justifyContent: 'center',
         alignItems: 'center',
-        shadowColor: Colors.danger,
-        shadowOffset: { width: 1, height: 3 },
+        shadowColor: Colors.white,
+        shadowOffset: { width: 1, height: 1 },
         shadowOpacity: 0.8,
         shadowRadius: 45,
         elevation: 10,
@@ -249,6 +290,7 @@ const styles = StyleSheet.create({
     appointmentHeaderView: {
         marginHorizontal: 10,
         flexDirection: 'row',
+        marginTop: 5
     },
     appointmentHeader: {
         flexDirection: 'row',
@@ -260,9 +302,12 @@ const styles = StyleSheet.create({
         borderRadius: 40,
         paddingHorizontal: 20,
         borderColor: Colors.doctor_primary,
-        borderWidth: 0.5,
+        shadowColor: Colors.doctor_primary,
+        shadowOffset: { width: 1, height: 3 },
+        shadowOpacity: 0.8,
+        shadowRadius: 45,
+        elevation: 10,
         zIndex: 1,
-        elevation: 1,
     },
     subheader: {
         width: '100%',

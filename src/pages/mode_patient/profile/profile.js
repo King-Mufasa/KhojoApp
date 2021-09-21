@@ -5,7 +5,7 @@ import Fontsize from '../../../styles/fontsize'
 import BadgeButton from '../../../components/badgebtn'
 import { screenWidth } from '../../../module/IntroSlider/src/themes'
 import { Divider, } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useGlobalState } from '../../../store/state'
 import Images from '../../../styles/images'
 
@@ -39,19 +39,25 @@ const Profile = (props) => {
                 style={styles.scrollView}
                 sections={[
                     {
-                        title: 'My Account', data: [
+                        title: 'My Account', data: doctormode ? [
+                            { icon: "first-order", label: 'My Order', key: "OrderMenu" }
+                            , { icon: "address-book", label: 'Manage Address', key: "ManageAddress" }
+                            , { icon: "user", label: 'Manage Patient', key: "ManagePatient" }
+                            , { icon: "map-marked-alt", label: 'My Location', key: "MyPlace" }
+                            , { icon: "calendar-check", label: 'Manage Schedule', key: 'ManageSchedule' }
+                            , { icon: "signature", label: 'My Sign', key: 'Signature' }
+                            // , { icon: "credit-card-alt", label: 'Payment Methods' }
+                        ] : [
                             { icon: "first-order", label: 'My Order', key: "OrderMenu" }
                             , { icon: "address-book", label: 'Manage Address', key: "ManageAddress" }
                             , { icon: "user", label: 'Manage Patient', key: "ManagePatient" }
                             , { icon: "map", label: 'My Location', key: "MyPlace" }
-                            , doctormode ?
-                                { icon: "calendar-check-o", label: 'Manage Schedule', key: 'ManageSchedule' }:
-                                { icon: "credit-card-alt", label: 'Payment Methods' }
+                            // , { icon: "credit-card-alt", label: 'Payment Methods' }
                         ]
                     },
                     {
                         title: 'More', data: [
-                            { icon: "wechat", label: 'Help' }
+                            { icon: "hands-helping", label: 'Help' }
                             , { icon: "gratipay", label: 'Rate Us' }
                             , { icon: "question-circle", label: 'FAQs' }
                             // , { icon: "sign-out", label: 'Log Out' }

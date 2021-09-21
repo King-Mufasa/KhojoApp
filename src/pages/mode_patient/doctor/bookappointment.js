@@ -6,12 +6,13 @@ import { LocaleConfig } from 'react-native-calendars';
 import APIkit from '../../../api/apikit';
 import Snackbar from 'react-native-snackbar';
 import EventItem from '../../../components/items/eventitem';
-import {StandardStyles} from '../../../styles/standardstyles';
+import { StandardStyles } from '../../../styles/standardstyles';
 import Spinner from 'react-native-loading-spinner-overlay';
 import Appointment from '../../../components/modalcontent/appointment';
 import Modal from "react-native-modal";
 import makePayment from '../../../module/payment';
 import { useGlobalState } from '../../../store/state';
+import ModalContent from '../../../components/modalcontent';
 // LocaleConfig.locales['en'] = {
 //     monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
 //     monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
@@ -30,6 +31,8 @@ const ScheduleAppointment = (props) => {
     const [markeddate, setMarkedDate] = useState()
     const [dailyevent, setDailyevent] = useState([])
     const [modalshow, setModalShow] = useState(false)
+    const [modalmessage, setModalmessage] = useState('')
+    const [resultshow, setResultShow] = useState(false)
     const [eventdetail, setDetails] = useState()
     const [patient, setPatient] = useState([])
     const [selectedpatient, selectPatient] = useState()
@@ -98,7 +101,7 @@ const ScheduleAppointment = (props) => {
         const onSuccess = (response) => {
             console.log(response.data)
             setEvent(response.data)
-            
+
             setLoading(false)
         }
         const onFailed = (response) => {
@@ -109,23 +112,23 @@ const ScheduleAppointment = (props) => {
         APIkit.post('customer.get.doctorevent', payload).then(onSuccess).catch(onFailed)
     }
     const checkEvent = (id) => {
-        const onSuccess = (response) =>{
+        const onSuccess = (response) => {
             console.log(response.data)
             setLoading(false)
             setDetails(response.data)
             setModalShow(response.data.status)
         }
-        const onFailed = (response) =>{
+        const onFailed = (response) => {
             setLoading(false)
             console.log(response)
         }
         setLoading(true)
-        APIkit.post('customer.event.check',{event_id:id}).then(onSuccess).catch(onFailed)
+        APIkit.post('customer.event.check', { event_id: id }).then(onSuccess).catch(onFailed)
     }
 
-    const bookAppointment = (id,total_price) => {
+    const bookAppointment = (id, total_price) => {
 
-        if(patient.length==0){
+        if (patient.length == 0) {
             Snackbar.show({
                 text: 'No patient data. create patient on your profile page.',
                 duration: Snackbar.LENGTH_SHORT,
@@ -138,17 +141,18 @@ const ScheduleAppointment = (props) => {
             setLoading(false)
             const data = JSON.parse(result);
             console.log(data.txStatus);
-            if(data.txStatus == "SUCCESS"){
+            if (data.txStatus == "SUCCESS") {
                 createAppointment(total_price)
             }
-          };
-        const note = "Book Appointment event:"+ id
-        makePayment(total_price,note,user,responseHandler)
+        };
+        const note = "Book Appointment event:" + id
+        makePayment(total_price, note, user, responseHandler)
     }
 
     const getAddress = () => {
         const onSuccess = (response) => {
             setPatient(response.data)
+
             setLoading(false)
             console.log(patient)
         }
@@ -159,27 +163,31 @@ const ScheduleAppointment = (props) => {
         APIkit.post('customer.patient.get').then(onSuccess).catch(onFailed)
     }
 
-    const createAppointment = (price) =>{
-        const payload = {  
-            "event_id":eventdetail.id,
-            'doctor_id':doctor.id,
-            'patient':selectedpatient,
-            'price':price,
-            'pure_price':eventdetail.price,
-            'date':date.dateString,
-            'type':eventdetail.type
+    const createAppointment = (price) => {
+        const payload = {
+            "event_id": eventdetail.id,
+            'doctor_id': doctor.id,
+            'patient': selectedpatient,
+            'price': price,
+            'pure_price': eventdetail.price,
+            'date': date.dateString,
+            'type': eventdetail.type
         }
-        const onSuccess = (response)=>{
+        const onSuccess = (response) => {
             setLoading(false)
             console.log(response.data)
+            setModalmessage(response.data.message)
+            setResultShow(true)
         }
-        const onFailed = (response) =>{
+        const onFailed = (response) => {
             setLoading(false)
             console.log(response)
+            setModalmessage(response.message)
+            setResultShow(true)
         }
         console.log(payload)
         setLoading(true)
-        APIkit.post('customer.appointment.book',payload).then(onSuccess).catch(onFailed)
+        APIkit.post('customer.appointment.book', payload).then(onSuccess).catch(onFailed)
     }
 
     useEffect(() => {
@@ -190,20 +198,32 @@ const ScheduleAppointment = (props) => {
     useEffect(() => {
         let buffer = []
         event.forEach(item => {
-            if(buffer.indexOf(item.date) === -1) buffer.push(item.date)
+            if (buffer.indexOf(item.date) === -1) buffer.push(item.date)
         });
         setEventDate(buffer)
     }, [event]);
+    useEffect(() => {
+        if (patient !== undefined && patient.length !== 0)
+            selectPatient(patient[0].id)
+    }, [patient])
     return (
         <SafeAreaView style={[StandardStyles.container]}>
             <Spinner visible={isloading} />
             <Modal
-                    testID={'modal'}
-                    isVisible={modalshow}
-                    onSwipeComplete={() => setModalShow(false)}
-                    swipeDirection={['up', 'left', 'right', 'down']}
-                    style={styles.modal}>
-                    <Appointment event = {eventdetail} action={bookAppointment} type={selectPatient} patient={patient}/>
+                testID={'modal'}
+                isVisible={modalshow}
+                onSwipeComplete={() => setModalShow(false)}
+                swipeDirection={['up', 'left', 'right', 'down']}
+                style={styles.modal}>
+                <Appointment event={eventdetail} action={bookAppointment} type={selectPatient} patient={patient} />
+            </Modal>
+            <Modal
+                testID={'modal'}
+                isVisible={resultshow}
+                onSwipeComplete={() => setResultShow(false)}
+                swipeDirection={['up', 'left', 'right', 'down']}
+                style={styles.view}>
+                <ModalContent onPress={() => setResultShow(false)} message={modalmessage} />
             </Modal>
             <Calendar
                 // Initially visible month. Default = Date()
@@ -237,7 +257,7 @@ const ScheduleAppointment = (props) => {
                         title: 'Doctors', data: dailyevent
                     },
                 ]}
-                renderItem={({ item }) => <EventItem info={item} action={checkEvent}/>}
+                renderItem={({ item }) => <EventItem info={item} action={checkEvent} />}
                 keyExtractor={(item, index) => index}
             />
         </SafeAreaView>
