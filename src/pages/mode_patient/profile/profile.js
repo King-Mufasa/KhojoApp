@@ -40,13 +40,11 @@ const Profile = (props) => {
                 sections={[
                     {
                         title: 'My Account', data: doctormode ? [
-                            { icon: "first-order", label: 'My Order', key: "OrderMenu" }
-                            , { icon: "address-book", label: 'Manage Address', key: "ManageAddress" }
-                            , { icon: "user", label: 'Manage Patient', key: "ManagePatient" }
+                            { icon: "user", label: 'My Patients', key: "MyPatients" }
                             , { icon: "map-marked-alt", label: 'My Location', key: "MyPlace" }
                             , { icon: "calendar-check", label: 'Manage Schedule', key: 'ManageSchedule' }
                             , { icon: "signature", label: 'My Sign', key: 'Signature' }
-                            // , { icon: "credit-card-alt", label: 'Payment Methods' }
+                            , { icon: "star-half-alt", label: 'Rating' }
                         ] : [
                             { icon: "first-order", label: 'My Order', key: "OrderMenu" }
                             , { icon: "address-book", label: 'Manage Address', key: "ManageAddress" }

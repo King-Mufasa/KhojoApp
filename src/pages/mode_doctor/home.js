@@ -96,17 +96,17 @@ const DoctorHome = ({ navigation }) => {
                         <View >
                             <Text style={{ color: Colors.lightdark }}>{moment(new Date()).format('LL')}</Text>
                             <View style={[StandardStyles.coupleview, { width: '100%', justifyContent: 'space-between', marginTop:10 }]}>
-                                <Text style={[Fontsize.medium, { color: Colors.other_2, fontWeight: 'bold' }]}>Today's Schedule:</Text>
+                                <Text style={[Fontsize.medium, { color: Colors.other_2, fontWeight: 'bold' }]}>Today's Appointments:</Text>
                                 <Text style={[Fontsize.medium, { color: Colors.success, fontWeight: 'bold' }]}>4</Text>
                             </View>
                             <Divider/>
                             <View style={[StandardStyles.coupleview, { width: '100%', justifyContent: 'space-between', marginTop:10 }]}>
-                                <Text style={[Fontsize.mini, { color: Colors.lightdark, fontWeight: 'bold' }]}>Total Schedule:</Text>
+                                <Text style={[Fontsize.mini, { color: Colors.lightdark, fontWeight: 'bold' }]}>Total Appointments:</Text>
                                 <Text style={[Fontsize.small, { color: Colors.doctor_primary, fontWeight: 'bold' }]}>44</Text>
                             </View>
                             <Divider/>
                             <View style={[StandardStyles.coupleview, { width: '100%', justifyContent: 'space-between', marginTop:10 }]}>
-                                <Text style={[Fontsize.mini, { color: Colors.lightdark, fontWeight: 'bold' }]}>UpComming Schedule:</Text>
+                                <Text style={[Fontsize.mini, { color: Colors.lightdark, fontWeight: 'bold' }]}>UpComming Appointments:</Text>
                                 <Text style={[Fontsize.small, { color: Colors.doctor_primary, fontWeight: 'bold' }]}>5</Text>
                             </View>
                             <Divider/>
