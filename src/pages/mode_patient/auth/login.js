@@ -25,12 +25,14 @@ import Snackbar from 'react-native-snackbar'
 import GeneralStatusBarColor from '../../../styles/statusbar'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AwesomeLoading from 'react-native-awesome-loading'
+import messaging from '@react-native-firebase/messaging'
 
 const Login = ({ navigation }) => {
     const [doctormode] = useGlobalState('doctormode')
     const [loading, setLoading] = useState(false);
     const [auth, setAuth] = useState(false)
     const [token, setToken] = useState('');
+    const [msgtoken, setMsgtoken] = useState()
     const [errors, setError] = useState({ errors: null })
     const [password, setPassword] = useState({ password: '' })
     const [phone, setPhone] = useState()
@@ -143,7 +145,7 @@ const Login = ({ navigation }) => {
             });
         }
         else {
-            const payload = { phone, password };
+            const payload = { phone, password,msgtoken };
             const onSuccess = ({ data }) => {
                 storeData(data.data)
                 console.log(data.data)
@@ -239,6 +241,11 @@ const Login = ({ navigation }) => {
         setPassword('123456')
         setAuth(false)
         setLoading(false)
+        messaging()
+            .getToken()
+            .then(token => {
+                return setMsgtoken(token);
+            });
     }, []);
     return (
         <View style={styles.containerStyle}>

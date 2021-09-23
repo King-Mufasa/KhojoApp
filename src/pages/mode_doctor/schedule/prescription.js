@@ -15,6 +15,7 @@ import { LogBox } from 'react-native';
 import AwesomeLoading from 'react-native-awesome-loading'
 import APIkit from '../../../api/apikit'
 import Snackbar from 'react-native-snackbar'
+import ModalContent from '../../../components/modalcontent'
 const PrescriptionCreator = ({ navigation }) => {
 
     const [medicines, setMedicines] = useState([])
@@ -25,6 +26,10 @@ const PrescriptionCreator = ({ navigation }) => {
     const [tmodalshow, setTModalShow] = useState(false)
     const [appointmentid, setAppointmentId] = useState(null)
     const [loading, setLoading] = useState(false)
+
+    const [resultshow, setResultshow] = useState(false)
+    const [resultmessage, setResultMessage] = useState("")
+
     const removeMedecine = (index) => {
         console.log(index)
         let buffer = medicines
@@ -33,7 +38,7 @@ const PrescriptionCreator = ({ navigation }) => {
     }
 
     const publishPrescription = () => {
-        if(diagnosis.length===0){
+        if (diagnosis.length === 0) {
             Snackbar.show({
                 text: 'Please input all detail information',
                 duration: Snackbar.LENGTH_SHORT,
@@ -41,23 +46,27 @@ const PrescriptionCreator = ({ navigation }) => {
             return
         }
         const payload = {
-            id:appointmentid,
-            diagnosis:diagnosis,
-            medicines:medicines,
-            tests:tests,
-            note:note
+            id: appointmentid,
+            diagnosis: diagnosis,
+            medicines: JSON.stringify(medicines),
+            tests: JSON.stringify(tests),
+            note: note
         }
-        const onSuccess = (response) =>{
+        const onSuccess = (response) => {
             console.log(response.data)
             setLoading(false)
+            setResultMessage("Prescription published successfully.")
+            setResultshow(true)
         }
-        const onFailed = (response) =>{
+        const onFailed = (response) => {
             console.log(response)
+            setResultMessage("Failed to Publish prescription")
+            setResultshow(true)
             setLoading(false)
         }
         setLoading(true)
         console.log(payload)
-        // APIkit.post('doctor.prescription.publish',payload).then(onSuccess).catch(onFailed)
+        APIkit.post('doctor.prescription.publish/', payload).then(onSuccess).catch(onFailed)
     }
     useEffect(() => {
         if (navigation.state.params !== undefined && navigation.state.params.id !== null)
@@ -82,6 +91,14 @@ const PrescriptionCreator = ({ navigation }) => {
                 swipeDirection={['up', 'left', 'right', 'down']}
                 style={styles.modal}>
                 <AddTest settest={setTests} medicine={tests} close={() => { setTModalShow(false) }} />
+            </Modal>
+            <Modal
+                testID={'modal'}
+                isVisible={resultshow}
+                onSwipeComplete={() => setResultshow(false)}
+                swipeDirection={['up', 'left', 'right', 'down']}
+                style={styles.view}>
+                <ModalContent onPress={() => setResultshow(false)} message={resultmessage} />
             </Modal>
             <View style={styles.container}>
                 <View style={styles.header}>
@@ -157,7 +174,7 @@ const PrescriptionCreator = ({ navigation }) => {
                     <TextInput multiline={true} value={note} onChangeText={setNote} />
                 </View>
             </ScrollView>
-            <KButton name="Save" style={{ marginHorizontal: 10 }} click={publishPrescription}/>
+            <KButton name="Save" style={{ marginHorizontal: 10 }} click={publishPrescription} />
         </View>
     )
 }
