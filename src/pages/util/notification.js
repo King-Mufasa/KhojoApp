@@ -25,16 +25,18 @@ const Notification = () =>{
         APIkit.post("getNotification").then(onSuccess).catch(onFailed)
     }
     const remove = (id) =>{
+        const payload = {id}
         setLoading(true)
         const onSuccess = (data) =>{
             setLoading(false)
-            console.log(data.data)
+            console.log(data)
+            setNotifications(data.data)
         }
         const onFailed = (data)=>{
             setLoading(false)
-            console.log(data.data)
+            console.log(data)
         }
-        APIkit.post('removeNotif').then(onSuccess).catch(onFailed)
+        APIkit.post('removeNotif',payload).then(onSuccess).catch(onFailed)
     }
     useEffect(()=>{
         getNotification()

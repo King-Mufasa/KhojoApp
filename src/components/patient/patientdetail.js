@@ -11,7 +11,7 @@ const PatientDetail = (props) => {
             <EditView label="Patient's Full Name" placeholder="Abudul Alaff" onChangeText={props.name}/>
             <EditView label="Patient's Address" placeholder="" keyboardType = "numeric" onChangeText={props.address}/>
             <EditView label="Patient's Age" placeholder="" keyboardType = "numeric" onChangeText={props.age}/>
-            <InputPhone placeholder="Patient's Phone" style={{marginTop:20}} textchange={props.number}/>
+            <InputPhone placeholder="Patient's Phone" style={{marginTop:20}} onChangeText={props.number}/>
             <View style={styles.genderarea}>
                     <View style={styles.gender}>
                         <Text style={styles.label}>Male</Text>

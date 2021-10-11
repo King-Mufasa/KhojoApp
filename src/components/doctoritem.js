@@ -6,13 +6,15 @@ import { screenHeight, screenWidth } from '../module/IntroSlider/src/themes'
 import Rating from './rating'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import KButton from './KButton'
+import config from '../config'
 const DoctorItem = (props) => {
     const avatar = props.info.image
     return (
         <SafeAreaView style={styles.doctor}>
+            <View style={{flexDirection:"row"}}>
             {(avatar != null) ?
-                <Image style={styles.avatar} source={{ uri: 'http://192.168.114.29:8080/' + avatar }} /> :
-                <Image style={styles.fakeavatar} source={{ uri: 'http://192.168.114.29:8080/assets/images/symbol.png' }} />}
+                <Image style={styles.avatar} source={{ uri: config.baseurl + avatar }} /> :
+                <Image style={styles.fakeavatar} source={{ uri: config.baseurl+'assets/images/symbol.png' }} />}
             <SafeAreaView style={styles.doctorinfo}>
                 <View style={styles.name}>
                     <Text style={[Fontsize.medium]}>{props.info.name}</Text>
@@ -25,25 +27,26 @@ const DoctorItem = (props) => {
                     <Text style={styles.text}>Consultation fee:  </Text>
                     <Text style={styles.text}><Icon name="inr" /> {props.info.fee}</Text>
                 </View>
-                <KButton name="Book Consultation" style={{ width: screenWidth * 0.4 }} click={props.click} />
+                
             </SafeAreaView>
+            </View>
+            <KButton name="Book Consultation" style={{ }} click={()=>{props.action(props.info.id)}} />
         </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
     doctor: {
-        flexDirection: 'row',
+        flexDirection: 'column',
         backgroundColor: Colors.white,
         borderRadius: 10,
         marginTop: 20,
-        paddingVertical: 10,
+        padding: 10,
         shadowColor: Colors.primary,
         shadowOffset: { width: 1, height: 1 },
         shadowOpacity: 0.8,
         shadowRadius: 45,
         elevation: 8,
-        margin: 10
     },
     avatar: {
         margin: 5,

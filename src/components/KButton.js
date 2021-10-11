@@ -1,14 +1,20 @@
 import React from 'react';
 import { TouchableHighlight, Text, StyleSheet } from 'react-native'
+import { useGlobalState } from '../store/state';
 import Color from '../styles/color'
 import Fontsize from '../styles/fontsize';
 
 const KButton = (props) => {
+    const [doctormode] = useGlobalState('doctormode')
     return (
         <TouchableHighlight
-            style={[styles.button,props.style]}
+            style={[styles.button,{
+                backgroundColor:props.type=="success"?
+                Color.success:props.type=="danger"?
+                Color.danger:doctormode?Color.doctor_primary:Color.primary
+            },props.style,]}
             onPress={(props.click)}
-            underlayColor={Color.primaryClick}>
+            underlayColor={doctormode?Color.other_2:Color.primaryClick}>
             <Text style={[styles.submitText,Fontsize.small]}>{props.name}</Text>
         </TouchableHighlight>
     );

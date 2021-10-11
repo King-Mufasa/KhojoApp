@@ -1,13 +1,11 @@
 import { StyleSheet, View } from 'react-native'
 import { screenWidth } from '../module/IntroSlider/src/themes'
 import Colors from '../styles/color'
+
 const StandardStyles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.primaryBack,
-        paddingHorizontal: 10,
-        alignItems:'center',
-        justifyContent:'center'
     },
     commonview:{
         padding: 10,
@@ -21,6 +19,20 @@ const StandardStyles = StyleSheet.create({
         elevation: 8,
         margin: 10
     },
+
+    commonfillview:{
+        padding: 10,
+        backgroundColor: Colors.other_2,
+        borderRadius: 10,
+        flexDirection: 'row',
+        shadowColor: Colors.primary,
+        shadowOffset: { width: 1, height: 1 },
+        shadowOpacity: 0.8,
+        shadowRadius: 45,
+        elevation: 8,
+        margin: 10
+    },
+
     commonlightview:{
         padding: 10,
         backgroundColor: Colors.primaryBack,
@@ -49,6 +61,25 @@ const StandardStyles = StyleSheet.create({
         borderColor: Colors.lightgrey,
         borderWidth: 1,
         paddingHorizontal:20
+    },
+    coupleview:{
+        flexDirection:'row',
+        alignItems:'center'
     }
 })
-export default StandardStyles
+
+const StandardDoctorStyles = StyleSheet.create({
+    commonview:{
+        padding: 10,
+        backgroundColor: Colors.white,
+        borderRadius: 10,
+        flexDirection: 'row',
+        shadowColor: Colors.doctor_primary,
+        shadowOffset: { width: 1, height: 1 },
+        shadowOpacity: 0.8,
+        shadowRadius: 45,
+        elevation: 8,
+        margin: 10
+    },
+})
+export {StandardStyles,StandardDoctorStyles }

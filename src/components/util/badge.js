@@ -2,15 +2,20 @@ import React from 'react';
 import { TouchableHighlight, Text, StyleSheet } from 'react-native'
 import Colors from '../../styles/color';
 import Fontsize from '../../styles/fontsize';
-
+import OrderStatus from '../../assets/array/orderstatus';
 const Badge = (props) => {
-    console.log(props)
     return (
         <TouchableHighlight
-            style={[styles.button,{backgroundColor:props.status==0?Colors.lightdark:props.status==-1?Colors.danger:props.status==2?Colors.success:Colors.lightblue}]}
+            style={[styles.button,
+                {backgroundColor:
+                    OrderStatus[props.status+1].backgroundColor
+                }]}
             onPress={(props.click)}
             underlayColor={Colors.white}>
-            <Text style={[styles.submitText,Fontsize.mini,{color:props.status==0?Colors.white:props.status==-1?Colors.white:props.status==2?Colors.white:Colors.primary}]}>{props.status==0?"Pending":props.status==-1?"Rejected":props.status==1?"Accepted":"Completed"}</Text>
+            <Text style={[styles.submitText,Fontsize.mini,{
+                color:
+                OrderStatus[props.status+1].color
+                }]}>{OrderStatus[props.status+1].description}</Text>
         </TouchableHighlight>
     );
 }

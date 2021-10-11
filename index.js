@@ -59,6 +59,9 @@ PushNotification.createChannel({
 },
     (created) => console.log(`CreateChannel returned '${created}'`)
 );
+messaging().setBackgroundMessageHandler(async remoteMessage => {
+    console.log('Message handled in the background!', remoteMessage);
+  });
 export default function Main() {
     useEffect(() => {
         const unsubscribe = messaging().onMessage(async remoteMessage => {

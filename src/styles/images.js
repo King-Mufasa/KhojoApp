@@ -2,9 +2,9 @@ import config from '../config'
 const Images = {
     default_symbol:'https://drive.google.com/thumbnail?id=1RHt9vhUZdUlzEJwO6du8JJRwsfCXSr3I',
     ico_pathology:config.baseurl + "assets/images/icon/pathology.png",
-    ico_pharmacy:"https://drive.google.com/thumbnail?id=1RHt9vhUZdUlzEJwO6du8JJRwsfCXSr3I",
+    ico_pharmacy:config.baseurl + "assets/images/icon/pharmacy.png",
     ico_doctor:config.baseurl + "assets/images/icon/doctor.png",
-    ico_seva_kendra:config.baseurl + "assets/images/icon/pathology.png",
+    ico_seva_kendra:config.baseurl + "assets/images/icon/seva-kendra.png",
     ico_service:config.baseurl + "assets/images/icon/service.png",
     ico_app:config.baseurl + "assets/images/bluelogo_7.png",
     Board1:require('../assets/image/onboard_1.png'),
@@ -34,6 +34,7 @@ const Images = {
     cat_pharmacy:require('../assets/image/cat_pharmacy.png'),
     cat_doctor:require('../assets/image/cat_doctor.png'),
     cat_lab:require('../assets/image/cat_lab.png'),
+    cat_service:require('../assets/image/cat_service.png'),
     key_bone:require('../assets/image/bone.png'),
     key_brain:require('../assets/image/brain.png'),
     key_ear:require('../assets/image/ear.png'),
@@ -52,6 +53,16 @@ const Images = {
     ico_prescription:require('../assets/image/prescription.png'),
     ico_camera:require('../assets/image/ico_camera.png'),
     ico_gallery:require('../assets/image/ico_gallery.png'),
+    ico_order:require('../assets/image/ordermenu/ic_order.png'),
+    ico_request:require('../assets/image/ordermenu/ic_request.png'),
+    ico_service:require('../assets/image/ordermenu/ic_service.png'),
+    ico_appointment:require('../assets/image/ordermenu/ic_appointment.png'),
+    mark_custom:require('../assets/image/map/mark_custom.png'),
+    mark_office:require('../assets/image/map/mark_office.png'),
+    mark_home:require('../assets/image/map/mark_home.png'),
+    mark_default:require('../assets/image/map/mark_default.png'),
+    mode_doctor:require('../assets/image/mode/doctor_mode.png'),
+    mode_patient:require('../assets/image/mode/patient_mode.png')
 }
 
 

@@ -8,7 +8,8 @@ const Label = (props) =>{
             [{
                 textAlign:'left',
                 fontWeight:'bold',
-                marginHorizontal:10
+                marginHorizontal:10,
+                marginVertical:10
             },
             props.size=="medium"?Fontsize.medium:Fontsize.mini
         ]

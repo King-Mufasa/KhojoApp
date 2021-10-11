@@ -6,12 +6,27 @@ type Action =
     | { tyle: 'setGender'; gender: string }
     | { type: 'setImage'; image: object }
     | { type: 'setPhone'; phone: number }
-    | { type: 'setToken'; token: string };
+    | { type: 'setId'; id:number}
+    | { type: 'setToken'; token: string }
+    | { type: 'setDoctorMode' ; mode: boolean};
 
 
 export const { dispatch, useGlobalState } = createStore(
     (state, action: Action) => {
         switch (action.type) {
+            case 'setDoctorMode':
+                return {
+                    ...state,
+                    doctormode:action.mode
+                }
+            case 'setId':
+                return{
+                    ...state,
+                    user:{
+                        ...state.user,
+                        id:action.id
+                    }
+                }
             case 'setName':
                 return {
                     ...state,
@@ -72,7 +87,9 @@ export const { dispatch, useGlobalState } = createStore(
             email: '',
             image: null,
             phone: '',
+            id:null,
         },
         token:'',
+        doctormode:false
     }
 )
